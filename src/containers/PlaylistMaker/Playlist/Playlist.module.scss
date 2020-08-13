@@ -1,0 +1,24 @@
+@import '../../../assets/variables';
+
+.Playlist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  width: 40%;
+  padding: 14px;
+  background-color: var(--playlist);
+  box-shadow: 0 4px 2px 2px $gray;
+  .Save {
+    margin-top: 20px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .Playlist {
+    height: unset;
+    min-height: max-content;
+    width: 90%;
+    margin-bottom: 2rem;
+  }
+}

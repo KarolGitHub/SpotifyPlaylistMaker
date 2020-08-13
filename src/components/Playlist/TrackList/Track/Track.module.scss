@@ -1,0 +1,38 @@
+@import '../../../../assets/variables';
+.Track {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $light;
+
+  .Information {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: fit-content;
+    color: var(--infoFontColor);
+
+    p {
+      font-size: inherit;
+      font-weight: 300;
+    }
+
+    h3 {
+      margin-bottom: 3px;
+    }
+  }
+
+  .Action {
+    cursor: pointer;
+    padding: 8px;
+    font-size: 30px;
+    font-weight: 600;
+    transition: color .25s;
+    border: 0px;
+    background-color: var(--mainBg1);
+
+    :hover {
+      color: var(--hover);
+    }
+  }
+}

@@ -1,0 +1,28 @@
+.PlaylistMaker {
+  height: 100%;
+  padding: 0 5% 5% 5%;
+
+  .Playlist {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .PlaylistMaker {
+    max-width: 1000px;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .PlaylistMaker {
+    max-width: 600px;
+    margin: auto;
+    .Playlist {
+      align-items: center;
+      flex-direction: column;
+    }
+  }
+}

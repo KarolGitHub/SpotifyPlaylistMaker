@@ -1,0 +1,35 @@
+@import '../../../assets/variables';
+
+.Button {
+  cursor: pointer;
+  width: 160px;
+  height: max-content;
+  padding: 12px 0;
+  border-radius: 54px;
+  text-align: center;
+  font-size: inherit;
+  transition: background-color .25s;
+  border: 0px;
+  color: $white;
+}
+
+.Search {
+  background-color: $blue;
+}
+
+.Save {
+  background-color: $purple;
+}
+
+.Cancel {
+  background-color: $danger;
+}
+
+.Confirm {
+  background-color: $success;
+}
+
+:disabled {
+  color: $disabled;
+  cursor: not-allowed;
+}

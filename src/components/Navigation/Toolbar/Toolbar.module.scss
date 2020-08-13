@@ -1,0 +1,29 @@
+.Toolbar {
+  height: 60px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--mainBg1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 90;
+  background-color: var(--navBg);
+}
+
+.Toolbar nav {
+  height: 100%;
+}
+
+.Logo {
+  height: 80%;
+}
+
+@media (max-width: 600px) {
+  .DesktopOnly {
+      display: none;
+  }
+}

@@ -1,0 +1,24 @@
+@import '../../../assets/variables';
+
+.SearchResults {
+  width: 50%;
+  height: 950px;
+  overflow-y: scroll;
+  padding: 14px;
+  background-color: var(--playlist);
+  box-shadow: 0 4px 2px 2px $gray;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+@media only screen and (max-width: 800px) {
+  .SearchResults {
+    height: unset;
+    min-height:max-content;
+    width: 90%;
+    margin-bottom: 2rem;
+  }
+}
