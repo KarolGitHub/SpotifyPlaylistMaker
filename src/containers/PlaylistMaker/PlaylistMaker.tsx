@@ -9,6 +9,7 @@ import Spinner from "./../../components/UI/Spinner/Spinner";
 import Modal from "./../../components/UI/Modal/Modal";
 import Checkout from "../../components/Playlist/Checkout/Checkout";
 // import axios from "../../axios-spotify";
+import { Track, Tracklist } from './../../shared/utility';
 import { RootState } from "../../index";
 
 type Props = {};
@@ -16,29 +17,38 @@ type Props = {};
 const PlaylistMaker: FunctionComponent<Props> = () => {
   const [isModal, setModal] = useState(false);
 
-  const list = useSelector((state: RootState) => {
+  const list: Tracklist = useSelector((state: RootState) => {
     return state.playlistMaker.playlist;
   });
-  const results = useSelector((state: RootState) => {
+  const results: Tracklist = useSelector((state: RootState) => {
     return state.playlistMaker.searchResults;
   });
-  const loading = useSelector((state: RootState) => {
+  const loading: boolean = useSelector((state: RootState) => {
     return state.playlistMaker.loading;
   });
-  const error = useSelector((state: RootState) => {
+  const error: boolean = useSelector((state: RootState) => {
     return state.playlistMaker.error;
   });
 
   const modalHandler = (prevState: boolean) => {
     setModal(!prevState);
   };
-  const savePlaylistHandler = () => {};
+  const savePlaylistHandler = (val: string) => {
+    const trackURIs: Array<string> = [];
+    list.map((track: Track) => track.uri && trackURIs.push(track.uri));
+    console.log(trackURIs);
+    console.log(val);
+  };
+
+  const searchHandler = (val: string) => {
+    console.log(val);
+  };
 
   const modal = (
     <Modal open={isModal} clicked={() => modalHandler(isModal)}>
       <Checkout
         cancel={() => modalHandler(isModal)}
-        confirm={savePlaylistHandler}
+        confirm={(val: string) => savePlaylistHandler(val)}
       />
     </Modal>
   );
@@ -47,7 +57,7 @@ const PlaylistMaker: FunctionComponent<Props> = () => {
     <div className={classes.PlaylistMaker}>
       {modal}
       <div className={classes.SearchBar}>
-        <SearchBar />
+        <SearchBar clicked={(val: string) => searchHandler(val)} />
       </div>
       <div className={classes.Playlist}>
         <SearchResults tracklist={results} />
@@ -55,8 +65,8 @@ const PlaylistMaker: FunctionComponent<Props> = () => {
       </div>
     </div>
   ) : (
-    <Spinner />
-  );
+      <Spinner />
+    );
 };
 
 export default PlaylistMaker;

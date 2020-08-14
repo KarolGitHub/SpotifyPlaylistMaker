@@ -7,7 +7,7 @@ import { updateObject, isValid } from "../../../shared/utility";
 
 type Props = {
   cancel: () => void;
-  confirm: () => void;
+  confirm: (val: string) => void;
 };
 
 const Checkout: FunctionComponent<Props> = ({ cancel, confirm }) => {
@@ -44,7 +44,7 @@ const Checkout: FunctionComponent<Props> = ({ cancel, confirm }) => {
       <Button btnType="Cancel" clicked={cancel}>
         Cancel
       </Button>
-      <Button btnType="Confirm" clicked={confirm} disabled={!input.valid}>
+      <Button btnType="Confirm" clicked={() => confirm(input.value)} disabled={!input.valid}>
         Confirm
       </Button>
     </div>

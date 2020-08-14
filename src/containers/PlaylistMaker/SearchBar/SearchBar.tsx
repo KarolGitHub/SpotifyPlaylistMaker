@@ -5,7 +5,11 @@ import Button from "../../../components/UI/Button/Button";
 import Input from "../../../components/UI/Input/Input";
 import { updateObject, isValid } from "../../../shared/utility";
 
-const SearchBar: FunctionComponent = () => {
+type Props = {
+  clicked: (val: string) => void;
+}
+
+const SearchBar: FunctionComponent<Props> = ({ clicked }) => {
   const [input, setInput] = useState({
     value: "",
     validation: {
@@ -15,7 +19,6 @@ const SearchBar: FunctionComponent = () => {
     touched: false,
   });
 
-  const searchHandler = () => {};
   const inputChangedHandler = useCallback(
     (event: { target: HTMLInputElement }) => {
       const updatedInput = updateObject(input, {
@@ -36,7 +39,10 @@ const SearchBar: FunctionComponent = () => {
         invalid={input.touched ? !input.valid : false}
         placeholder={"Enter A Song Name"}
       />
-      <Button btnType="Search" clicked={searchHandler} disabled={!input.valid}>
+      <Button
+        btnType="Search"
+        clicked={() => clicked(input.value)}
+        disabled={!input.valid}>
         Search
       </Button>
     </div>

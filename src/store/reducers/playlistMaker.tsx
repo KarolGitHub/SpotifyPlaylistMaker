@@ -1,13 +1,5 @@
 import * as actionTypes from "../actions/actionsTypes";
-import { updateObject } from "../../shared/utility";
-
-type Tracklist = Array<{
-  title: string;
-  artist: string;
-  album?: string;
-  year?: string;
-  length?: string;
-}>;
+import { updateObject, Tracklist} from "../../shared/utility";
 
 type State = {
   playlist: Tracklist;
@@ -23,6 +15,7 @@ const initialState: State = {
       artist: "Zeromancer",
       year: "2000",
       length: "3:15",
+      uri: '123'
     },
     {
       title: "Something You Need",
@@ -30,6 +23,7 @@ const initialState: State = {
       year: "2000",
       album: "Infinity",
       length: "3:56",
+      uri: '123123'
     },
     {
       title: "Violet",
@@ -42,6 +36,7 @@ const initialState: State = {
       artist: "The Birthday Massacre",
       length: "3:30",
       year: "2007",
+      uri: '23452435'
     },
   ],
   error: false,

@@ -4,11 +4,12 @@ import classes from "./Track.module.scss";
 
 type Props = {
   trackData: {
-    title: string;
-    artist: string;
-    album?: string;
-    year?: string;
-    length?: string;
+    title: string,
+    artist: string,
+    album?: string,
+    year?: string,
+    length?: string,
+    uri?: string
   };
   clicked: () => void;
   children: any;

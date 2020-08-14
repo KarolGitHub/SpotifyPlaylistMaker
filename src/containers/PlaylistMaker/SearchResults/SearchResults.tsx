@@ -2,15 +2,10 @@ import React, { FunctionComponent } from "react";
 
 import classes from "./SearchResults.module.scss";
 import TrackList from "../../../components/Playlist/TrackList/Tracklist";
+import {Tracklist} from '../../../shared/utility';
 
 type Props = {
-  tracklist: Array<{
-    title: string;
-    artist: string;
-    album?: string;
-    year?: string;
-    length?: string;
-  }>;
+  tracklist: Tracklist;
 };
 
 const SearchResults: FunctionComponent<Props> = ({ tracklist }) => {

@@ -4,15 +4,10 @@ import { useDispatch } from "react-redux";
 import * as actions from "../../../store/actions/index";
 import classes from "./TrackList.module.scss";
 import Track from "./Track/Track";
+import { Tracklist } from '../../../shared/utility';
 
 type Props = {
-  tracklist: Array<{
-    title: string;
-    artist: string;
-    album?: string;
-    year?: string;
-    length?: string;
-  }>;
+  tracklist: Tracklist;
   isPlaylist?: boolean;
 };
 
