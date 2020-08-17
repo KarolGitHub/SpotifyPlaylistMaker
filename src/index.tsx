@@ -4,18 +4,21 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
+import thunk from "redux-thunk";
 import burgerBuilderReducer from "./store/reducers/playlistMaker";
+import authReducer from "./store/reducers/auth";
 
 const reducer = combineReducers({
   playlistMaker: burgerBuilderReducer,
+  auth: authReducer,
 });
 
 export type RootState = ReturnType<typeof reducer>;
 
-const store = createStore(reducer, composeWithDevTools());
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>

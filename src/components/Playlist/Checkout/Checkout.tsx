@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState, useCallback } from "react";
 
-import classes from "./Checkout.module.scss";
+// import classes from "./Checkout.module.scss";
 import Button from "../../../components/UI/Button/Button";
 import Input from "../../UI/Input/Input";
 import { updateObject, isValid } from "../../../shared/utility";
@@ -33,7 +33,7 @@ const Checkout: FunctionComponent<Props> = ({ cancel, confirm }) => {
   );
 
   return (
-    <div className={classes.Checkout}>
+    <div>
       <h3>Your Playlist</h3>
       <Input
         value={input.value}
@@ -44,7 +44,11 @@ const Checkout: FunctionComponent<Props> = ({ cancel, confirm }) => {
       <Button btnType="Cancel" clicked={cancel}>
         Cancel
       </Button>
-      <Button btnType="Confirm" clicked={() => confirm(input.value)} disabled={!input.valid}>
+      <Button
+        btnType="Confirm"
+        clicked={() => confirm(input.value)}
+        disabled={!input.valid}
+      >
         Confirm
       </Button>
     </div>

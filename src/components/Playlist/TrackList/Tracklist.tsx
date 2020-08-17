@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import * as actions from "../../../store/actions/index";
 import classes from "./TrackList.module.scss";
 import Track from "./Track/Track";
-import { Tracklist } from '../../../shared/utility';
+import { Tracklist } from "../../../shared/utility";
 
 type Props = {
   tracklist: Tracklist;
@@ -20,7 +20,7 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
     clickSign = "-";
   }
   const tracks = tracklist.map((track, id) => (
-    <Track key={id} trackData={track} clicked={() => onClickCallback(id)}>
+    <Track key={id} track={track} clicked={() => onClickCallback(id)}>
       {clickSign}
     </Track>
   ));

@@ -7,7 +7,7 @@ import { updateObject, isValid } from "../../../shared/utility";
 
 type Props = {
   clicked: (val: string) => void;
-}
+};
 
 const SearchBar: FunctionComponent<Props> = ({ clicked }) => {
   const [input, setInput] = useState({
@@ -42,7 +42,8 @@ const SearchBar: FunctionComponent<Props> = ({ clicked }) => {
       <Button
         btnType="Search"
         clicked={() => clicked(input.value)}
-        disabled={!input.valid}>
+        disabled={!input.valid}
+      >
         Search
       </Button>
     </div>

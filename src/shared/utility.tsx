@@ -1,14 +1,27 @@
+export type SpotifyTrack = {
+  id: string;
+  name: string;
+  artists: Array<{
+    name: string;
+  }>;
+  album: {
+    name: string;
+  };
+  year?: string;
+  length?: string;
+  uri?: string;
+};
+
 export type Track = {
-  title: string,
-  artist: string,
-  album?: string,
-  year?: string,
-  length?: string,
-  uri?: string
-}
+  id: string;
+  name: string;
+  artist: string;
+  album: string;
+  uri: string;
+};
 export type Tracklist = Array<Track>;
 
-export const updateObject = (oldObject: any, updatedProps: any) => {
+export const updateObject = (oldObject: any, updatedProps?: any) => {
   return {
     ...oldObject,
     ...updatedProps,
@@ -16,11 +29,11 @@ export const updateObject = (oldObject: any, updatedProps: any) => {
 };
 
 type Rules = {
-  required?: boolean,
-  minLength?: number,
-  maxLength?: number,
-  isEmail?: boolean,
-  isNumeric?: boolean
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  isEmail?: boolean;
+  isNumeric?: boolean;
 };
 
 export const isValid = (value = "", rules: Rules, isSignup = true) => {
@@ -33,8 +46,8 @@ export const isValid = (value = "", rules: Rules, isSignup = true) => {
   if (rules.required) {
     isValid = isSignup
       ? value.trim() !== "" &&
-      (rules.minLength ? value.length >= rules.minLength : true) &&
-      (rules.maxLength ? value.length <= rules.maxLength : true)
+        (rules.minLength ? value.length >= rules.minLength : true) &&
+        (rules.maxLength ? value.length <= rules.maxLength : true)
       : true;
 
     if (rules.isEmail) {

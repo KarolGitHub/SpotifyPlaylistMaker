@@ -1,29 +1,21 @@
 import React, { FunctionComponent } from "react";
 
 import classes from "./Track.module.scss";
+import { Track as TrackData } from "../../../../shared/utility";
 
 type Props = {
-  trackData: {
-    title: string,
-    artist: string,
-    album?: string,
-    year?: string,
-    length?: string,
-    uri?: string
-  };
+  track: TrackData;
   clicked: () => void;
   children: any;
 };
-const Track: FunctionComponent<Props> = ({ trackData, clicked, children }) => {
+const Track: FunctionComponent<Props> = ({ track, clicked, children }) => {
   return (
     <div className={classes.Track}>
       <div className={classes.Information}>
-        <h3>{trackData.title}</h3>
+        <h3>{track.name}</h3>
         <p>
-          {trackData.artist}
-          {trackData.album && " |" + trackData.album}
-          {trackData.year && " |" + trackData.year}
-          {trackData.length && " |" + trackData.length}
+          {track.artist + " | "}
+          {track.album}
         </p>
       </div>
       <button className={classes.Action} onClick={clicked}>

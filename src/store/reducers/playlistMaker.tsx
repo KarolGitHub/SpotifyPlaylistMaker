@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionsTypes";
-import { updateObject, Tracklist} from "../../shared/utility";
+import { updateObject, Tracklist } from "../../shared/utility";
 
 type State = {
   playlist: Tracklist;
@@ -7,63 +7,103 @@ type State = {
   error: false;
   loading: false;
 };
+type Action = {
+  type: string;
+  id: string;
+  tracklist: Tracklist;
+  error: string;
+};
 const initialState: State = {
   playlist: [],
   searchResults: [
-    {
-      title: "Dr. Online",
+   /*  {
+      id: "1",
+      name: "Dr. Online",
       artist: "Zeromancer",
-      year: "2000",
-      length: "3:15",
-      uri: '123'
+      album: "Dr. Online",
+      uri: "123",
     },
     {
-      title: "Something You Need",
+      id: "2",
+      name: "Something You Need",
       artist: "Against The Current",
-      year: "2000",
       album: "Infinity",
-      length: "3:56",
-      uri: '123123'
+      uri: "123123",
     },
     {
-      title: "Violet",
+      id: "3",
+      name: "Violet",
       artist: "The Birthday Massacre",
       album: "Violet",
-      length: "3:37",
+      uri: "123123",
     },
     {
-      title: "Kill the Lights",
+      id: "4",
+      name: "Kill the Lights",
       artist: "The Birthday Massacre",
-      length: "3:30",
-      year: "2007",
-      uri: '23452435'
-    },
+      album: "Violet",
+      uri: "23452435",
+    }, */
   ],
   error: false,
   loading: false,
 };
 
-const addTrack = (state: State, action: { type: string; id: number }) => {
+const addTrack = (state: State, action: Action) => {
   return updateObject(state, {
-    playlist: state.playlist.concat(state.searchResults[action.id]),
+    playlist: state.playlist.concat(state.searchResults[+action.id]),
   });
 };
 
-const deleteTrack = (state: State, action: { type: string; id: number }) => {
+const deleteTrack = (state: State, action: { id: string }) => {
   return updateObject(state, {
-    playlist: state.playlist.filter((_, index) => index !== action.id),
+    playlist: state.playlist.filter((_, index) => index !== +action.id),
   });
 };
 
-const reducer = (
-  state = initialState,
-  action: { type: string; id: number }
+const searchTracksStart = (state: State) => {
+  return updateObject(state, { loading: true });
+};
+const searchTracksSuccess = (
+  state: State,
+  action: { tracklist: Tracklist }
 ) => {
+  return updateObject(state, {
+    searchResults: action.tracklist,
+    loading: false,
+  });
+};
+const searchTracksFail = (state: State, action: { error: string }) => {
+  return updateObject(state, { error: action.error, loading: false });
+};
+const savePlaylistStart = (state: State) => {
+  return updateObject(state, { loading: true });
+};
+const savePlaylistSuccess = (state: State) => {
+  return updateObject(state, { loading: false });
+};
+const savePlaylistFail = (state: State, action: { error: string }) => {
+  return updateObject(state, { error: action.error, loading: false });
+};
+
+const reducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
     case actionTypes.ADD_TRACK:
       return addTrack(state, action);
     case actionTypes.DELETE_TRACK:
       return deleteTrack(state, action);
+    case actionTypes.SEARCH_TRACKS_START:
+      return searchTracksStart(state);
+    case actionTypes.SEARCH_TRACKS_SUCCESS:
+      return searchTracksSuccess(state, action);
+    case actionTypes.SEARCH_TRACKS_FAIL:
+      return searchTracksFail(state, action);
+    case actionTypes.SAVE_PLAYLIST_START:
+      return savePlaylistStart(state);
+    case actionTypes.SAVE_PLAYLIST_SUCCESS:
+      return savePlaylistSuccess(state);
+    case actionTypes.SAVE_PLAYLIST_FAIL:
+      return savePlaylistFail(state, action);
     default:
       return state;
   }

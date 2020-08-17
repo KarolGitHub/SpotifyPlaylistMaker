@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 
 import classes from "./SearchResults.module.scss";
 import TrackList from "../../../components/Playlist/TrackList/Tracklist";
-import {Tracklist} from '../../../shared/utility';
+import { Tracklist } from "../../../shared/utility";
 
 type Props = {
   tracklist: Tracklist;
