@@ -1,18 +1,45 @@
-import React, { FunctionComponent, Suspense } from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
+import React, {
+  FunctionComponent,
+  Suspense,
+  useCallback,
+  useEffect,
+} from "react";
+import { Route, Switch, withRouter, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "./Hoc/Layout/Layout";
 import PlaylistMaker from "./containers/PlaylistMaker/PlaylistMaker";
 import Auth from "./containers/Auth/Auth";
+import Logout from "./containers/Auth/Logout/Logout";
 import Spinner from "./components/UI/Spinner/Spinner";
+import * as actions from "./store/actions/index";
+import { RootState } from "./index";
 
-type Props = {};
+const App: FunctionComponent = () => {
+  const token: boolean = useSelector((state: RootState) => {
+    return state.auth.token !== null;
+  });
+  const dispatch = useDispatch();
+  const onTryAutoSignup = useCallback(
+    () => dispatch(actions.authCheckState()),
+    [dispatch]
+  );
 
-const App: FunctionComponent<Props> = () => {
-  const routes = (
+  useEffect(() => {
+    onTryAutoSignup();
+  }, [onTryAutoSignup]);
+
+  const routes = !token ? (
     <Switch>
       <Route path="/login" component={Auth} />
       <Route path="/" exact component={PlaylistMaker} />
+      <Redirect to="/" />
+    </Switch>
+  ) : (
+    <Switch>
+      <Route path="/logout" component={Logout} />
+      <Route path="/" exact component={PlaylistMaker} />
+      <Redirect to="/" />
     </Switch>
   );
 

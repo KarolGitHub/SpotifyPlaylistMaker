@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 
 import classes from "./Spinner.module.scss";
 
-const spinner: FunctionComponent = () => {
+const spinner = () => {
   return <div className={classes.Spinner}>Loading...</div>;
 };
 

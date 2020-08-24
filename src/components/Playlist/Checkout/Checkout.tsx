@@ -32,12 +32,21 @@ const Checkout: FunctionComponent<Props> = ({ cancel, confirm }) => {
     [input]
   );
 
+  const pressedHandler = (event: { keyCode: number }) => {
+    if (event.keyCode === 13) {
+      confirm(input.value);
+    } else if (event.keyCode === 27) {
+      cancel();
+    }
+  };
+
   return (
     <div>
       <h3>Your Playlist</h3>
       <Input
         value={input.value}
         changed={(event) => inputChangedHandler(event)}
+        pressed={(event) => pressedHandler(event)}
         invalid={input.touched ? !input.valid : false}
         placeholder={"Enter A Playlist Name"}
       />

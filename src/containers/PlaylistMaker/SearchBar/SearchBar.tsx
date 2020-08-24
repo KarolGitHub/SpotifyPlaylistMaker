@@ -31,11 +31,18 @@ const SearchBar: FunctionComponent<Props> = ({ clicked }) => {
     [input]
   );
 
+  const pressedHandler = (event: { keyCode: number }) => {
+    if (event.keyCode === 13) {
+      clicked(input.value);
+    }
+  };
+
   return (
     <div className={classes.SearchBar}>
       <Input
         value={input.value}
         changed={(event) => inputChangedHandler(event)}
+        pressed={(event) => pressedHandler(event)}
         invalid={input.touched ? !input.valid : false}
         placeholder={"Enter A Song Name"}
       />

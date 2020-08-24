@@ -1,11 +1,15 @@
 import React, { FunctionComponent } from "react";
+import { RootState } from "../../../index";
+import { useSelector } from "react-redux";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
 import "./NavigationItems.scss";
 
-type Props = {};
+const NavigationItems: FunctionComponent = () => {
+  const token: string = useSelector((state: RootState) => {
+    return state.auth.token;
+  });
 
-const NavigationItems: FunctionComponent<Props> = () => {
   const themeSwitchHandler = () => {
     document.body.classList.toggle("dark-theme");
   };
@@ -22,7 +26,11 @@ const NavigationItems: FunctionComponent<Props> = () => {
       <NavigationItem link="/" exact>
         Playlist Maker
       </NavigationItem>
-      <NavigationItem link="/login">Log In</NavigationItem>
+      {token ? (
+        <NavigationItem link="/logout">Log Out</NavigationItem>
+      ) : (
+        <NavigationItem link="/login">Log In</NavigationItem>
+      )}
     </ul>
   );
 };

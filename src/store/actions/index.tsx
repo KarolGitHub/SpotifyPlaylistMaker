@@ -11,7 +11,12 @@ export {
   authStart,
   authSuccess,
   checkAuthTimeout,
+  setAuthRedirectURL,
   logout,
-  setAuthRedirectPath,
-  getAccessToken,
 } from "./auth";
+export {
+  playTrackStart,
+  playTrackPause,
+  playTrackEnd,
+  playTrackFail,
+} from "./player";

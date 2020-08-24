@@ -11,6 +11,7 @@
   --infoFontColor: #{$dark};
   --themeSwitchColor: #{$light};
   --playlist: #{$goldCrayola};
+  --spinner: #{$lightGradient1};
 }
 
 .dark-theme {
@@ -24,6 +25,7 @@
   --infoFontColor: #{$white};
   --themeSwitchColor: #{$dark};
   --playlist: #{$navy-blue};
+  --spinner: #{$darkGradient1};
 }
 
 * {
@@ -32,6 +34,7 @@
   -moz-transition: background-color 0.6s ease, color 1s ease;
   -o-transition: background-color 0.6s ease, color 1s ease;
   transition: background-color 0.6s ease, color 1s ease;
+  outline: none;
 }
 
 body,

@@ -1,7 +1,6 @@
 import * as actionTypes from "./actionsTypes";
 import axios from "../../axios-spotify";
 import { Dispatch } from "redux";
-import { getAccessToken } from "./auth";
 import { Tracklist } from "../../shared/utility";
 import { AxiosResponse, AxiosError } from "axios";
 
@@ -25,14 +24,13 @@ export const savePlaylistStart = () => {
 };
 
 export const savePlaylist = (
-  token: string,
-  isSignup: boolean,
+  accessToken: string,
   name: string,
   trackURIs: Array<string>
 ) => {
   return (dispatch: Dispatch) => {
     dispatch(savePlaylistStart());
-    const accessToken = getAccessToken(token, isSignup);
+    // const accessToken = getAccessToken(token);
     const headers = {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json",
@@ -115,30 +113,29 @@ export const searchTracksFail = (error: string) => {
 };
 
 export const searchTracks = (
-  token: string,
-  isSignup: boolean,
+  accessToken: string,
   searchType: string,
   term: string
 ) => {
   return (dispatch: Dispatch) => {
     dispatch(searchTracksStart());
-    const accessToken = getAccessToken(token, isSignup);
-    const queryParams =
-      `search?type=${searchType}&limit=50&q=${term}`;
+    // const accessToken = getAccessToken(token);
+    const queryParams = `search?type=${searchType}&limit=50&q=${term}`;
     axios
       .get(queryParams, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
+      .then((response) => JSON.parse(JSON.stringify(response)))
       .then((response) => {
-        const jsonResponse = JSON.parse(JSON.stringify(response.data));
-        const tracks = jsonResponse.tracks.items.map((track: any) => ({
+        const tracks = response.data.tracks.items.map((track: any) => ({
           id: track.id,
           name: track.name,
           artist: track.artists[0].name,
           album: track.album.name,
           uri: track.uri,
+          preview_url: track.preview_url,
         }));
         dispatch(searchTracksSuccess(tracks));
       })

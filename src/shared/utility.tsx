@@ -10,16 +10,23 @@ export type SpotifyTrack = {
   year?: string;
   length?: string;
   uri?: string;
+  preview_url?: string;
 };
 
 export type Track = {
   id: string;
+  key?: number;
   name: string;
   artist: string;
   album: string;
   uri: string;
+  preview_url: string;
 };
 export type Tracklist = Array<Track>;
+
+// export type playStatus = 'PLAYING' | 'STOPPED' | 'PAUSED';
+
+export type Tuple = [number, boolean, boolean];
 
 export const updateObject = (oldObject: any, updatedProps?: any) => {
   return {

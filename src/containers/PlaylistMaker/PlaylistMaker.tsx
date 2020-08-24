@@ -1,5 +1,6 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import ReactPlayer from "react-player";
 
 import classes from "./PlaylistMaker.module.scss";
 import SearchBar from "./SearchBar/SearchBar";
@@ -8,23 +9,15 @@ import SearchResults from "./SearchResults/SearchResults";
 import Spinner from "./../../components/UI/Spinner/Spinner";
 import Modal from "./../../components/UI/Modal/Modal";
 import Checkout from "../../components/Playlist/Checkout/Checkout";
-// import axios from "../../axios-spotify";
-import { Track, Tracklist } from "./../../shared/utility";
+import { Track, Tracklist, Tuple } from "./../../shared/utility";
 import { RootState } from "../../index";
+import errorHandler from "./../../Hoc/errorHandler/errorHandler";
+import axios from "./../../axios-spotify";
 import * as actions from "./../../store/actions/index";
 
-type Props = {};
-
-const PlaylistMaker: FunctionComponent<Props> = () => {
+const PlaylistMaker: FunctionComponent = () => {
   const [isModal, setModal] = useState(false);
-  // const [isSignup, setSignup] = useState(false);
-
-  const dispatch = useDispatch();
-
-  const onTracksSearch = (type: string, term: string) =>
-    dispatch(actions.searchTracks(token, false, type, term));
-  const onPlaylistSave = (name: string, trackURIs: Array<string>) =>
-    dispatch(actions.savePlaylist(token, false, name, trackURIs));
+  const [redirect, setRedirect] = useState(false);
 
   const list: Tracklist = useSelector((state: RootState) => {
     return state.playlistMaker.playlist;
@@ -41,6 +34,34 @@ const PlaylistMaker: FunctionComponent<Props> = () => {
   const token: string = useSelector((state: RootState) => {
     return state.auth.token;
   });
+  const authRedirectPath: string = useSelector((state: RootState) => {
+    return state.auth.authRedirectPath;
+  });
+  const playerState: Tuple = useSelector((state: RootState) => {
+    return state.player.playerState;
+  });
+
+  const dispatch = useDispatch();
+
+  const onTracksSearch = (type: string, term: string) => {
+    if (token) {
+      dispatch(actions.searchTracks(token, type, term));
+    } else {
+      setRedirect(true);
+    }
+  };
+  const onPlaylistSave = (name: string, trackURIs: Array<string>) => {
+    if (token) {
+      dispatch(actions.savePlaylist(token, name, trackURIs));
+    } else {
+      setRedirect(true);
+    }
+  };
+
+  const onPlay = () => dispatch(actions.playTrackStart(playerState));
+  const onPause = () => dispatch(actions.playTrackPause(playerState));
+  const onEnded = () => dispatch(actions.playTrackEnd());
+  const onFail = (err: any) => dispatch(actions.playTrackFail(err));
 
   const modalHandler = (prevState: boolean) => {
     setModal(!prevState);
@@ -50,9 +71,9 @@ const PlaylistMaker: FunctionComponent<Props> = () => {
     list.map((track: Track) => trackURIs.push(track.uri));
     onPlaylistSave(val, trackURIs);
   };
-
   const searchHandler = (type: string, term: string) => {
     onTracksSearch(type, term);
+    console.log(window.innerWidth);
   };
 
   const modal = (
@@ -64,6 +85,54 @@ const PlaylistMaker: FunctionComponent<Props> = () => {
     </Modal>
   );
 
+  useEffect(() => {
+    if (redirect) {
+      window.location.assign(authRedirectPath);
+    }
+    //eslint-disable-next-line
+  }, [redirect]);
+
+  useEffect(() => {
+    if (!authRedirectPath) {
+      dispatch(actions.setAuthRedirectURL());
+    }
+  }, [authRedirectPath, dispatch]);
+
+  const playerWidth: number =
+    window.innerWidth > 1280
+      ? 640
+      : window.innerWidth <= 1280 && window.innerWidth > 640
+      ? 0.5 * window.innerWidth
+      : window.innerWidth;
+
+  let player = null;
+
+  if (playerState) {
+    player = (
+      <ReactPlayer
+        className={classes.Player}
+        url={
+          playerState[2]
+            ? list[playerState[0]].preview_url
+            : results[playerState[0]].preview_url
+        }
+        playing={playerState[1]}
+        onPlay={onPlay}
+        onPause={onPause}
+        onEnded={onEnded}
+        onError={(err: any) => onFail(err)}
+        controls
+        volume={0.1}
+        width={playerWidth}
+        config={{
+          file: {
+            forceAudio: true,
+          },
+        }}
+      />
+    );
+  }
+
   return !error && !loading ? (
     <div className={classes.PlaylistMaker}>
       {modal}
@@ -74,6 +143,7 @@ const PlaylistMaker: FunctionComponent<Props> = () => {
         <div className={classes.Playlist}>
           <SearchResults tracklist={results} />
           <Playlist tracklist={list} clicked={() => modalHandler(isModal)} />
+          <div className={classes.PlayerWrapper}>{player}</div>
         </div>
       ) : (
         <Spinner />
@@ -84,4 +154,4 @@ const PlaylistMaker: FunctionComponent<Props> = () => {
   );
 };
 
-export default PlaylistMaker;
+export default errorHandler(PlaylistMaker, axios);

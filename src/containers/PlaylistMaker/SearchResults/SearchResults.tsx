@@ -12,7 +12,7 @@ const SearchResults: FunctionComponent<Props> = ({ tracklist }) => {
   return (
     <div className={classes.SearchResults}>
       <h1>Search Results</h1>
-      <TrackList tracklist={tracklist} />
+      <TrackList tracklist={tracklist} isPlaylist={false} />
     </div>
   );
 };

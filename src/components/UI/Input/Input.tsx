@@ -4,12 +4,14 @@ import classes from "./Input.module.scss";
 type Props = {
   value?: string;
   changed: (event: { target: HTMLInputElement }) => void;
+  pressed: (event: { keyCode: number }) => void;
   invalid: boolean;
   placeholder: string;
 };
 const Input: FunctionComponent<Props> = ({
   value,
   changed,
+  pressed,
   invalid,
   placeholder,
 }) => {
@@ -32,6 +34,7 @@ const Input: FunctionComponent<Props> = ({
         autoFocus
         onBlur={() => invalid}
         onChange={(event) => changed(event)}
+        onKeyUp={(event) => pressed(event)}
         placeholder={placeholder}
       />
       {validationError}

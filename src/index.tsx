@@ -10,10 +10,12 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import burgerBuilderReducer from "./store/reducers/playlistMaker";
 import authReducer from "./store/reducers/auth";
+import playerReducer from "./store/reducers/player";
 
 const reducer = combineReducers({
   playlistMaker: burgerBuilderReducer,
   auth: authReducer,
+  player: playerReducer,
 });
 
 export type RootState = ReturnType<typeof reducer>;
