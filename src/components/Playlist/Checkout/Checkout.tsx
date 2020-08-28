@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useCallback } from "react";
+import React, { FunctionComponent, useState } from "react";
 
 // import classes from "./Checkout.module.scss";
 import Button from "../../../components/UI/Button/Button";
@@ -20,20 +20,17 @@ const Checkout: FunctionComponent<Props> = ({ cancel, confirm }) => {
     touched: false,
   });
 
-  const inputChangedHandler = useCallback(
-    (event: { target: HTMLInputElement }) => {
-      const updatedInput = updateObject(input, {
-        value: event.target.value,
-        valid: isValid(event.target.value, input.validation),
-        touched: true,
-      });
-      setInput(updatedInput);
-    },
-    [input]
-  );
+  const inputChangedHandler = (event: { target: HTMLInputElement }) => {
+    const updatedInput = updateObject(input, {
+      value: event.target.value,
+      valid: isValid(event.target.value, input.validation),
+      touched: true,
+    });
+    setInput(updatedInput);
+  };
 
   const pressedHandler = (event: { keyCode: number }) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && input.value.length > 0) {
       confirm(input.value);
     } else if (event.keyCode === 27) {
       cancel();

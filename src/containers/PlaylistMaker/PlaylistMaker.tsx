@@ -1,19 +1,26 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
-import ReactPlayer from "react-player";
 
 import classes from "./PlaylistMaker.module.scss";
 import SearchBar from "./SearchBar/SearchBar";
 import Playlist from "./Playlist/Playlist";
 import SearchResults from "./SearchResults/SearchResults";
+import Player from "./Player/Player";
 import Spinner from "./../../components/UI/Spinner/Spinner";
 import Modal from "./../../components/UI/Modal/Modal";
 import Checkout from "../../components/Playlist/Checkout/Checkout";
-import { Track, Tracklist, Tuple } from "./../../shared/utility";
+import { Track, Tracklist, Tuple, authPopup } from "./../../shared/utility";
 import { RootState } from "../../index";
 import errorHandler from "./../../Hoc/errorHandler/errorHandler";
 import axios from "./../../axios-spotify";
 import * as actions from "./../../store/actions/index";
+import Button from "../../components/UI/Button/Button";
 
 const PlaylistMaker: FunctionComponent = () => {
   const [isModal, setModal] = useState(false);
@@ -31,6 +38,9 @@ const PlaylistMaker: FunctionComponent = () => {
   const error: boolean = useSelector((state: RootState) => {
     return state.playlistMaker.error;
   });
+  const saveResult: boolean = useSelector((state: RootState) => {
+    return state.playlistMaker.saveResult;
+  });
   const token: string = useSelector((state: RootState) => {
     return state.auth.token;
   });
@@ -43,51 +53,63 @@ const PlaylistMaker: FunctionComponent = () => {
 
   const dispatch = useDispatch();
 
-  const onTracksSearch = (type: string, term: string) => {
-    if (token) {
+  const onTracksSearch = useCallback(
+    (type: string, term: string) => {
       dispatch(actions.searchTracks(token, type, term));
-    } else {
-      setRedirect(true);
-    }
-  };
-  const onPlaylistSave = (name: string, trackURIs: Array<string>) => {
-    if (token) {
+    },
+    [dispatch, token]
+  );
+  const onPlaylistSave = useCallback(
+    (name: string, trackURIs: Array<string>) => {
       dispatch(actions.savePlaylist(token, name, trackURIs));
-    } else {
-      setRedirect(true);
-    }
-  };
-
-  const onPlay = () => dispatch(actions.playTrackStart(playerState));
-  const onPause = () => dispatch(actions.playTrackPause(playerState));
-  const onEnded = () => dispatch(actions.playTrackEnd());
-  const onFail = (err: any) => dispatch(actions.playTrackFail(err));
+    },
+    [dispatch, token]
+  );
+  const onSuccessConfirm = useCallback(() => {
+    dispatch(actions.successConfirm());
+  }, [dispatch]);
 
   const modalHandler = (prevState: boolean) => {
     setModal(!prevState);
   };
-  const savePlaylistHandler = (val: string) => {
-    const trackURIs: Array<string> = [];
-    list.map((track: Track) => trackURIs.push(track.uri));
-    onPlaylistSave(val, trackURIs);
-  };
-  const searchHandler = (type: string, term: string) => {
-    onTracksSearch(type, term);
-    console.log(window.innerWidth);
-  };
+  const confirmModalHandler = useCallback(
+    (prevState: boolean) => {
+      onSuccessConfirm();
+      setModal(!prevState);
+    },
+    [onSuccessConfirm]
+  );
 
-  const modal = (
-    <Modal open={isModal} clicked={() => modalHandler(isModal)}>
-      <Checkout
-        cancel={() => modalHandler(isModal)}
-        confirm={(val: string) => savePlaylistHandler(val)}
-      />
-    </Modal>
+  const savePlaylistHandler = useCallback(
+    (val: string) => {
+      const trackURIs: Array<string> = [];
+      list.map((track: Track) => trackURIs.push(track.uri));
+      if (token) {
+        onPlaylistSave(val, trackURIs);
+      } else {
+        setRedirect(true);
+      }
+    },
+    [token, list, onPlaylistSave]
+  );
+  const searchHandler = useCallback(
+    (type: string, term: string) => {
+      if (token) {
+        onTracksSearch(type, term);
+      } else {
+        setRedirect(true);
+      }
+    },
+    [onTracksSearch, token, setRedirect]
   );
 
   useEffect(() => {
     if (redirect) {
-      window.location.assign(authRedirectPath);
+      // window.location.assign(authRedirectPath);
+      const window = authPopup(authRedirectPath);
+      window?.addEventListener("beforeunload", () => {
+        dispatch(actions.authCheckState());
+      });
     }
     //eslint-disable-next-line
   }, [redirect]);
@@ -98,56 +120,83 @@ const PlaylistMaker: FunctionComponent = () => {
     }
   }, [authRedirectPath, dispatch]);
 
-  const playerWidth: number =
-    window.innerWidth > 1280
-      ? 640
-      : window.innerWidth <= 1280 && window.innerWidth > 640
-      ? 0.5 * window.innerWidth
-      : window.innerWidth;
+  useEffect(() => {
+    return () => {
+      if (saveResult) {
+        onSuccessConfirm();
+      }
+    };
+  });
 
-  let player = null;
+  const modal = useMemo(
+    () =>
+      saveResult ? (
+        <Modal open={isModal} clicked={() => confirmModalHandler(isModal)}>
+          <div>
+            <p style={{ color: "green" }}>Playlist Save Succesful!</p>
+            <Button
+              btnType="Confirm"
+              clicked={() => confirmModalHandler(isModal)}
+            >
+              Confirm
+            </Button>
+          </div>
+        </Modal>
+      ) : (
+        <Modal open={isModal} clicked={() => modalHandler(isModal)}>
+          <Checkout
+            cancel={() => modalHandler(isModal)}
+            confirm={(val: string) => savePlaylistHandler(val)}
+          />
+        </Modal>
+      ),
+    //eslint-disable-next-line
+    [isModal, saveResult]
+  );
 
-  if (playerState) {
-    player = (
-      <ReactPlayer
-        className={classes.Player}
-        url={
-          playerState[2]
-            ? list[playerState[0]].preview_url
-            : results[playerState[0]].preview_url
-        }
-        playing={playerState[1]}
-        onPlay={onPlay}
-        onPause={onPause}
-        onEnded={onEnded}
-        onError={(err: any) => onFail(err)}
-        controls
-        volume={0.1}
-        width={playerWidth}
-        config={{
-          file: {
-            forceAudio: true,
-          },
-        }}
-      />
-    );
-  }
+  const searchBar = useMemo(
+    () => (
+      <div className={classes.SearchBar}>
+        <SearchBar clicked={(val: string) => searchHandler("track", val)} />
+      </div>
+    ),
+    [searchHandler]
+  );
+
+  const searchResults = useMemo(() => <SearchResults tracklist={results} />, [
+    results,
+  ]);
+
+  const playlist = useMemo(
+    () => <Playlist tracklist={list} clicked={() => modalHandler(isModal)} />,
+    //eslint-disable-next-line
+    [list]
+  );
+
+  const player = useMemo(
+    () =>
+      playerState && (
+        <Player
+          url={
+            playerState[2]
+              ? list[playerState[0]].preview_url
+              : results[playerState[0]].preview_url
+          }
+          playerState={playerState}
+        />
+      ),
+    [results, list, playerState]
+  );
 
   return !error && !loading ? (
     <div className={classes.PlaylistMaker}>
       {modal}
-      <div className={classes.SearchBar}>
-        <SearchBar clicked={(val: string) => searchHandler("track", val)} />
+      {searchBar}
+      <div className={classes.Playlist}>
+        {searchResults}
+        {playlist}
+        {player}
       </div>
-      {results ? (
-        <div className={classes.Playlist}>
-          <SearchResults tracklist={results} />
-          <Playlist tracklist={list} clicked={() => modalHandler(isModal)} />
-          <div className={classes.PlayerWrapper}>{player}</div>
-        </div>
-      ) : (
-        <Spinner />
-      )}
     </div>
   ) : (
     <Spinner />

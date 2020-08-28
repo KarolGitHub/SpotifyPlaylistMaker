@@ -13,7 +13,7 @@ const reducer = (
   action: {
     type: string;
     token: string;
-    error: string;
+    error: any;
     url: string;
   }
 ) => {

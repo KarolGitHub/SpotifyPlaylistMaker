@@ -2,6 +2,7 @@ export {
   addTrack,
   deleteTrack,
   savePlaylist,
+  successConfirm,
   searchTracks,
 } from "./playlistMaker";
 export {
@@ -15,6 +16,7 @@ export {
   logout,
 } from "./auth";
 export {
+  playTrackStateUpdate,
   playTrackStart,
   playTrackPause,
   playTrackEnd,

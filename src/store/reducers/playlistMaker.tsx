@@ -1,20 +1,24 @@
 import * as actionTypes from "../actions/actionsTypes";
-import { updateObject, Tracklist } from "../../shared/utility";
+import { updateObject, Tracklist, arrayDiff } from "../../shared/utility";
 
 type State = {
   playlist: Tracklist;
   searchResults: Tracklist;
-  error: false;
-  loading: false;
+  error: any;
+  loading: boolean;
+  saveResult: boolean;
 };
 type Action = {
   type: string;
   id: string;
   tracklist: Tracklist;
-  error: string;
+  error: any;
 };
 const initialState: State = {
   playlist: [],
+  error: null,
+  loading: false,
+  saveResult: false,
   searchResults: [
     /*  {
       id: "1",
@@ -45,8 +49,6 @@ const initialState: State = {
       uri: "23452435",
     }, */
   ],
-  error: false,
-  loading: false,
 };
 
 const addTrack = (state: State, action: Action) => {
@@ -69,7 +71,7 @@ const searchTracksSuccess = (
   action: { tracklist: Tracklist }
 ) => {
   return updateObject(state, {
-    searchResults: action.tracklist,
+    searchResults: arrayDiff(action.tracklist, state.playlist),
     loading: false,
   });
 };
@@ -80,7 +82,10 @@ const savePlaylistStart = (state: State) => {
   return updateObject(state, { loading: true });
 };
 const savePlaylistSuccess = (state: State) => {
-  return updateObject(state, { loading: false });
+  return updateObject(state, { loading: false, saveResult: true });
+};
+const successConfirm = (state: State) => {
+  return updateObject(state, { saveResult: false });
 };
 const savePlaylistFail = (state: State, action: { error: string }) => {
   return updateObject(state, { error: action.error, loading: false });
@@ -102,6 +107,8 @@ const reducer = (state: State = initialState, action: Action) => {
       return savePlaylistStart(state);
     case actionTypes.SAVE_PLAYLIST_SUCCESS:
       return savePlaylistSuccess(state);
+    case actionTypes.SUCCESS_CONFIRM:
+      return successConfirm(state);
     case actionTypes.SAVE_PLAYLIST_FAIL:
       return savePlaylistFail(state, action);
     default:

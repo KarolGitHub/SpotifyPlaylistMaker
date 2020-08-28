@@ -84,6 +84,11 @@ export const savePlaylistSuccess = () => {
     type: actionTypes.SAVE_PLAYLIST_SUCCESS,
   };
 };
+export const successConfirm = () => {
+  return {
+    type: actionTypes.SUCCESS_CONFIRM,
+  };
+};
 
 export const savePlaylistFail = (error: string) => {
   return {

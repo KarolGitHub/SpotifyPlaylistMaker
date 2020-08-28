@@ -15,6 +15,8 @@ const reducer = (
   }
 ) => {
   switch (action.type) {
+    case actionTypes.PLAY_TRACK_STATE_UPDATE:
+      return updateObject(state, { playerState: action.playerState });
     case actionTypes.PLAY_TRACK_START:
       return updateObject(state, { playerState: action.playerState });
     case actionTypes.PLAY_TRACK_PAUSE:

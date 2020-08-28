@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as actions from "../../../store/actions/index";
@@ -13,38 +13,54 @@ type Props = {
 };
 
 const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
-  const playerState: Tuple = useSelector((state: RootState) => {
+  const playerState: Tuple | null = useSelector((state: RootState) => {
     return state.player.playerState;
   });
 
   const dispatch = useDispatch();
-  const onPlayTrack = (id: number) => {
-    let newPlayerState: Tuple = [id, true, isPlaylist];
-    if (playerState) {
-      // newPlayerState = [id, playerState[0] !== id ? true : false, isPlaylist];
-      if (playerState[0] === id) {
-        dispatch(actions.playTrackPause(playerState));
+
+  const onPlayTrack = useCallback(
+    (id: number) => {
+      let newPlayerState: Tuple = [id, true, isPlaylist];
+      if (playerState && playerState[0] === id) {
+        dispatch(
+          actions.playTrackStateUpdate([
+            playerState[0],
+            !playerState[1],
+            playerState[2],
+          ])
+        );
       } else {
-        dispatch(actions.playTrackStart(newPlayerState));
+        dispatch(actions.playTrackStateUpdate(newPlayerState));
       }
-    } else {
-      dispatch(actions.playTrackStart(newPlayerState));
-    }
-  };
-  let onClickCallback = (id: number) => dispatch(actions.addTrack(id));
-  let clickSign = "+";
-  if (isPlaylist) {
-    onClickCallback = (id: number) => dispatch(actions.deleteTrack(id));
-    clickSign = "-";
-  }
+    },
+    [dispatch, playerState, isPlaylist]
+  );
+
+  const onAddTrack = useCallback(
+    (id: number) => dispatch(actions.addTrack(id)),
+    [dispatch]
+  );
+  const onDeleteTrack = useCallback(
+    (id: number) => dispatch(actions.deleteTrack(id)),
+    [dispatch]
+  );
+
+  const clickSign = isPlaylist ? "-" : "+";
+  const onCLickCallback = isPlaylist ? onDeleteTrack : onAddTrack;
+
   const tracks = tracklist.map((track, id) => (
     <Track
       key={id}
       index={id}
       track={track}
-      clicked={() => onClickCallback(id)}
+      clicked={() => onCLickCallback(id)}
       played={() => onPlayTrack(id)}
-      playerState={playerState && playerState[0] === id ? playerState : null}
+      playerState={
+        playerState && playerState[0] === id && playerState[2] === isPlaylist
+          ? playerState
+          : null
+      }
       isPlaylist={isPlaylist}
     >
       {clickSign}

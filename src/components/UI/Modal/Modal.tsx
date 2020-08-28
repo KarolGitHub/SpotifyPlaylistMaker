@@ -6,11 +6,17 @@ import classes from "./Modal.module.scss";
 type Props = {
   open: boolean;
   clicked: () => void;
+  invisible?: boolean;
   children: any;
 };
-const Modal: FunctionComponent<Props> = ({ open, clicked, children }) => (
+const Modal: FunctionComponent<Props> = ({
+  open,
+  clicked,
+  invisible,
+  children,
+}) => (
   <React.Fragment>
-    <Backdrop open={open} clicked={clicked} />
+    <Backdrop open={open} clicked={clicked} invisible={invisible} />
     <div
       className={classes.Modal}
       style={{

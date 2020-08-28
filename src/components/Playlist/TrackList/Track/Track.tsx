@@ -21,19 +21,35 @@ const Track: FunctionComponent<Props> = ({
   isPlaylist,
   children,
 }) => {
-  let playClasses = classes.PlayButton;
   let buttonClasses = [classes.Action, classes.Add].join(" ");
-  if (playerState && playerState[1]) {
-    playClasses = [classes.PlayButton, classes.Paused].join(" ");
-  }
+
   if (isPlaylist) {
     buttonClasses = [classes.Action, classes.Remove].join(" ");
   }
 
-  return (
-    <div className={classes.Track}>
-      <button className={playClasses} onClick={played} />
-      <div className={classes.Information} onClick={played}>
+  let infoClasses = classes.Information;
+  let information = (
+    <div className={infoClasses}>
+      <h3>
+        {index + 1}. {track.name}
+      </h3>
+      <p>
+        {track.artist} | {track.album}
+      </p>
+    </div>
+  );
+
+  let playButton = null;
+
+  if (track.preview_url) {
+    let playClasses = classes.PlayButton;
+    if (playerState && playerState[1]) {
+      playClasses = [classes.PlayButton, classes.Paused].join(" ");
+    }
+    playButton = <button className={playClasses} onClick={played} />;
+    infoClasses = [classes.Information, classes.Playable].join(" ");
+    information = (
+      <div className={infoClasses} onClick={played}>
         <h3>
           {index + 1}. {track.name}
         </h3>
@@ -41,6 +57,13 @@ const Track: FunctionComponent<Props> = ({
           {track.artist} | {track.album}
         </p>
       </div>
+    );
+  }
+
+  return (
+    <div className={classes.Track}>
+      {playButton}
+      {information}
       <button className={buttonClasses} onClick={clicked}>
         {children}
       </button>
@@ -48,4 +71,4 @@ const Track: FunctionComponent<Props> = ({
   );
 };
 
-export default Track;
+export default React.memo(Track);

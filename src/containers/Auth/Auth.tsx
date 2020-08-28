@@ -5,6 +5,7 @@ import { Redirect } from "react-router";
 import { RootState } from "../../index";
 import * as actions from "./../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import { authPopup } from "../../shared/utility";
 
 const Auth: FunctionComponent = () => {
   const dispatch = useDispatch();
@@ -23,16 +24,18 @@ const Auth: FunctionComponent = () => {
   });
 
   const onAuth = useCallback(() => dispatch(actions.auth()), [dispatch]);
-  /*   const onSetAuthRedirectURL = useCallback(() =>
-      dispatch(actions.setAuthRedirectURL()), [dispatch]); */
 
   useEffect(() => {
     if (authRedirectPath) {
-      window.location.assign(authRedirectPath);
+      const window = authPopup(authRedirectPath);
+      window?.addEventListener("beforeunload", () => {
+        dispatch(actions.authCheckState());
+      });
     } else {
       onAuth();
+      window?.close();
     }
-  }, [onAuth, authRedirectPath]);
+  }, [onAuth, authRedirectPath, dispatch]);
 
   const redirect = !loading ? (
     !token ? (

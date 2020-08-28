@@ -5,8 +5,18 @@ import classes from "./Backdrop.module.scss";
 type Props = {
   open: boolean;
   clicked: () => void;
+  invisible?: boolean;
 };
-const backdrop: FunctionComponent<Props> = ({ open, clicked }) =>
-  open ? <div className={classes.Backdrop} onClick={clicked}></div> : null;
+const backdrop: FunctionComponent<Props> = ({ open, clicked, invisible }) =>
+  open ? (
+    <div
+      className={
+        invisible
+          ? classes.Backdrop
+          : [classes.Backdrop, classes.Visible].join(" ")
+      }
+      onClick={clicked}
+    ></div>
+  ) : null;
 
 export default backdrop;

@@ -10,20 +10,20 @@
   top: 40%;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
+  text-align: -webkit-center;
 }
 
 @media (max-width: 800px) {
   .Modal {
-      top: 10%;
       left: 5%;
       width: 90%;
       padding: 5px;
   }
 }
 
-@media (min-width: 800px) {
+@media (min-width: 801px) {
   .Modal {
-      width: 500px;
-      left: calc(50% - 250px);
+      width: 600px;
+      left: calc(50% - 300px);
   }
 }

@@ -75,12 +75,10 @@ export const auth = () => {
 };
 
 export const checkAuthTimeout = (expirationTime: number) => {
-  setTimeout(() => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("expirationDate");
-  }, expirationTime * 1000);
-  return {
-    type: actionTypes.AUTH_CHECK_TIMEOUT,
+  return (dispatch: Dispatch) => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime * 1000);
   };
 };
 
@@ -94,6 +92,7 @@ export const logout = () => {
 
 export const authCheckState = () => {
   return (dispatch: Dispatch) => {
+    window.removeEventListener("beforeunload", () => {});
     const token = localStorage.getItem("token");
     if (!token) {
       dispatch(logout());
@@ -105,10 +104,8 @@ export const authCheckState = () => {
         dispatch(logout());
       } else {
         dispatch(authSuccess(token));
-        dispatch(
-          checkAuthTimeout(
-            (expirationDate.getTime() - Number(new Date().getTime())) / 1000
-          )
+        checkAuthTimeout(
+          (expirationDate.getTime() - Number(new Date().getTime())) / 1000
         );
       }
     }
