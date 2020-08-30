@@ -28,12 +28,13 @@
   }
 
   .Information {
+    width: min-content;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: var(--infoFontColor);
-    
+
     border-right: 1px solid $light;
 
     p {
@@ -58,6 +59,12 @@
     transition: color .25s;
     border: 0px;
     background-color: var(--mainBg1);
+    width: 37px;
+
+    &.Check {
+      cursor: unset;
+      color: $success;
+    }
 
     &.Add:hover {
       color: $success;
@@ -71,4 +78,8 @@
 
 .Track:hover .PlayButton {
   display: inline-block;
+}
+
+.Track:first-child {
+  border-top: 1px solid $light;
 }

@@ -4,78 +4,57 @@ import { updateObject, Tracklist, arrayDiff } from "../../shared/utility";
 type State = {
   playlist: Tracklist;
   searchResults: Tracklist;
+  searchResultsLimit: number;
+  addedTrackIDs: Array<string>;
   error: any;
   loading: boolean;
   saveResult: boolean;
 };
 type Action = {
   type: string;
+  index: number;
   id: string;
   tracklist: Tracklist;
+  searchResultsLimit: number;
   error: any;
 };
 const initialState: State = {
   playlist: [],
+  searchResults: [],
+  searchResultsLimit: 20,
+  addedTrackIDs: [],
   error: null,
   loading: false,
   saveResult: false,
-  searchResults: [
-    /*  {
-      id: "1",
-      name: "Dr. Online",
-      artist: "Zeromancer",
-      album: "Dr. Online",
-      uri: "123",
-    },
-    {
-      id: "2",
-      name: "Something You Need",
-      artist: "Against The Current",
-      album: "Infinity",
-      uri: "123123",
-    },
-    {
-      id: "3",
-      name: "Violet",
-      artist: "The Birthday Massacre",
-      album: "Violet",
-      uri: "123123",
-    },
-    {
-      id: "4",
-      name: "Kill the Lights",
-      artist: "The Birthday Massacre",
-      album: "Violet",
-      uri: "23452435",
-    }, */
-  ],
 };
 
 const addTrack = (state: State, action: Action) => {
   return updateObject(state, {
-    playlist: state.playlist.concat(state.searchResults[+action.id]),
+    playlist: state.playlist.concat(state.searchResults[action.index]),
+    addedTrackIDs: [...state.addedTrackIDs, action.id],
   });
 };
 
-const deleteTrack = (state: State, action: { id: string }) => {
+const deleteTrack = (state: State, action: Action) => {
   return updateObject(state, {
-    playlist: state.playlist.filter((_, index) => index !== +action.id),
+    playlist: state.playlist.filter((_, index) => index !== action.index),
+    addedTrackIDs: state.addedTrackIDs.filter((id) => id !== action.id),
   });
 };
 
-const searchTracksStart = (state: State) => {
-  return updateObject(state, { loading: true });
+const searchTracksStart = (state: State, action: Action) => {
+  return updateObject(state, {
+    loading: true,
+    searchResultsLimit: action.searchResultsLimit,
+  });
 };
-const searchTracksSuccess = (
-  state: State,
-  action: { tracklist: Tracklist }
-) => {
+const searchTracksSuccess = (state: State, action: Action) => {
   return updateObject(state, {
     searchResults: arrayDiff(action.tracklist, state.playlist),
     loading: false,
   });
 };
-const searchTracksFail = (state: State, action: { error: string }) => {
+const searchTracksFail = (state: State, action: Action) => {
   return updateObject(state, { error: action.error, loading: false });
 };
 const savePlaylistStart = (state: State) => {
@@ -87,7 +66,7 @@ const savePlaylistSuccess = (state: State) => {
 const successConfirm = (state: State) => {
   return updateObject(state, { saveResult: false });
 };
-const savePlaylistFail = (state: State, action: { error: string }) => {
+const savePlaylistFail = (state: State, action: Action) => {
   return updateObject(state, { error: action.error, loading: false });
 };
 
@@ -98,7 +77,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case actionTypes.DELETE_TRACK:
       return deleteTrack(state, action);
     case actionTypes.SEARCH_TRACKS_START:
-      return searchTracksStart(state);
+      return searchTracksStart(state, action);
     case actionTypes.SEARCH_TRACKS_SUCCESS:
       return searchTracksSuccess(state, action);
     case actionTypes.SEARCH_TRACKS_FAIL:

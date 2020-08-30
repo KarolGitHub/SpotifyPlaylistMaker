@@ -16,6 +16,9 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
   const playerState: Tuple | null = useSelector((state: RootState) => {
     return state.player.playerState;
   });
+  const addedTrackIDs: Array<string> = useSelector((state: RootState) => {
+    return !isPlaylist ? state.playlistMaker.addedTrackIDs : null;
+  });
 
   const dispatch = useDispatch();
 
@@ -38,34 +41,40 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
   );
 
   const onAddTrack = useCallback(
-    (id: number) => dispatch(actions.addTrack(id)),
+    (index: number, id: string) => dispatch(actions.addTrack(index, id)),
     [dispatch]
   );
   const onDeleteTrack = useCallback(
-    (id: number) => dispatch(actions.deleteTrack(id)),
+    (index: number, id: string) => dispatch(actions.deleteTrack(index, id)),
     [dispatch]
   );
 
-  const clickSign = isPlaylist ? "-" : "+";
   const onCLickCallback = isPlaylist ? onDeleteTrack : onAddTrack;
 
-  const tracks = tracklist.map((track, id) => (
-    <Track
-      key={id}
-      index={id}
-      track={track}
-      clicked={() => onCLickCallback(id)}
-      played={() => onPlayTrack(id)}
-      playerState={
-        playerState && playerState[0] === id && playerState[2] === isPlaylist
-          ? playerState
-          : null
-      }
-      isPlaylist={isPlaylist}
-    >
-      {clickSign}
-    </Track>
-  ));
+  const tracks = tracklist.map((track, index) => {
+    const isInPlaylist = addedTrackIDs
+      ? addedTrackIDs.findIndex((id) => id === track.id) !== -1
+        ? true
+        : false
+      : null;
+    return (
+      <Track
+        key={index}
+        index={index}
+        track={track}
+        clicked={(id: string) => onCLickCallback(index, id)}
+        played={() => onPlayTrack(index)}
+        playerState={
+          playerState &&
+          playerState[0] === index &&
+          playerState[2] === isPlaylist
+            ? playerState
+            : null
+        }
+        isInPlaylist={isInPlaylist}
+      />
+    );
+  });
   return <div className={classes.TrackList}>{tracks}</div>;
 };
 

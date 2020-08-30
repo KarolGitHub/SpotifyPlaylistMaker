@@ -1,0 +1,25 @@
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 2px dotted #222;
+  left: -7px;
+  .tooltiptext {
+    width: 40px;
+    background-color: var(--navBg);
+    color: var(--fontColor);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    ::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #222 transparent transparent transparent;
+    }
+  }
+}

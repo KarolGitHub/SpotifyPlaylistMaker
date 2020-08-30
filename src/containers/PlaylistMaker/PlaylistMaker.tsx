@@ -32,6 +32,9 @@ const PlaylistMaker: FunctionComponent = () => {
   const results: Tracklist = useSelector((state: RootState) => {
     return state.playlistMaker.searchResults;
   });
+  const searchResultsLimit: number = useSelector((state: RootState) => {
+    return state.playlistMaker.searchResultsLimit;
+  });
   const loading: boolean = useSelector((state: RootState) => {
     return state.playlistMaker.loading;
   });
@@ -54,8 +57,8 @@ const PlaylistMaker: FunctionComponent = () => {
   const dispatch = useDispatch();
 
   const onTracksSearch = useCallback(
-    (type: string, term: string) => {
-      dispatch(actions.searchTracks(token, type, term));
+    (type: string, term: string, limit: number) => {
+      dispatch(actions.searchTracks(token, type, term, limit));
     },
     [dispatch, token]
   );
@@ -72,6 +75,7 @@ const PlaylistMaker: FunctionComponent = () => {
   const modalHandler = (prevState: boolean) => {
     setModal(!prevState);
   };
+
   const confirmModalHandler = useCallback(
     (prevState: boolean) => {
       onSuccessConfirm();
@@ -93,9 +97,9 @@ const PlaylistMaker: FunctionComponent = () => {
     [token, list, onPlaylistSave]
   );
   const searchHandler = useCallback(
-    (type: string, term: string) => {
+    (type: string, term: string, limit: number) => {
       if (token) {
-        onTracksSearch(type, term);
+        onTracksSearch(type, term, limit);
       } else {
         setRedirect(true);
       }
@@ -124,6 +128,7 @@ const PlaylistMaker: FunctionComponent = () => {
     return () => {
       if (saveResult) {
         onSuccessConfirm();
+        setModal(false);
       }
     };
   });
@@ -157,10 +162,15 @@ const PlaylistMaker: FunctionComponent = () => {
   const searchBar = useMemo(
     () => (
       <div className={classes.SearchBar}>
-        <SearchBar clicked={(val: string) => searchHandler("track", val)} />
+        <SearchBar
+          clicked={(val: string, limit: number) =>
+            searchHandler("track", val, limit)
+          }
+          limit={searchResultsLimit}
+        />
       </div>
     ),
-    [searchHandler]
+    [searchHandler, searchResultsLimit]
   );
 
   const searchResults = useMemo(() => <SearchResults tracklist={results} />, [

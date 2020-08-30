@@ -78,7 +78,7 @@ export const checkAuthTimeout = (expirationTime: number) => {
   return (dispatch: Dispatch) => {
     setTimeout(() => {
       dispatch(logout());
-    }, expirationTime * 1000);
+    }, (expirationTime - 5) * 1000);
   };
 };
 

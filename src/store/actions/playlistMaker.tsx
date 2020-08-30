@@ -4,15 +4,17 @@ import { Dispatch } from "redux";
 import { Tracklist } from "../../shared/utility";
 import { AxiosResponse, AxiosError } from "axios";
 
-export const addTrack = (id: number) => {
+export const addTrack = (index: number, id: string) => {
   return {
     type: actionTypes.ADD_TRACK,
+    index: index,
     id: id,
   };
 };
-export const deleteTrack = (id: number) => {
+export const deleteTrack = (index: number, id: string) => {
   return {
     type: actionTypes.DELETE_TRACK,
+    index: index,
     id: id,
   };
 };
@@ -97,9 +99,10 @@ export const savePlaylistFail = (error: string) => {
   };
 };
 
-export const searchTracksStart = () => {
+export const searchTracksStart = (limit: number) => {
   return {
     type: actionTypes.SEARCH_TRACKS_START,
+    searchResultsLimit: limit,
   };
 };
 
@@ -120,12 +123,13 @@ export const searchTracksFail = (error: string) => {
 export const searchTracks = (
   accessToken: string,
   searchType: string,
-  term: string
+  term: string,
+  limit: number
 ) => {
   return (dispatch: Dispatch) => {
-    dispatch(searchTracksStart());
+    dispatch(searchTracksStart(limit));
     // const accessToken = getAccessToken(token);
-    const queryParams = `search?type=${searchType}&limit=50&q=${term}`;
+    const queryParams = `search?type=${searchType}&limit=${limit}&q=${term}`;
     axios
       .get(queryParams, {
         headers: {

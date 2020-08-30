@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useRef } from "react";
 
 import classes from "./Track.module.scss";
 import { Track as TrackData, Tuple } from "../../../../shared/utility";
@@ -6,11 +6,10 @@ import { Track as TrackData, Tuple } from "../../../../shared/utility";
 type Props = {
   index: number;
   track: TrackData;
-  clicked: () => void;
+  clicked: (id: string) => void;
   playerState: Tuple | null;
   played: () => void;
-  isPlaylist: boolean;
-  children: any;
+  isInPlaylist: boolean | null;
 };
 const Track: FunctionComponent<Props> = ({
   index,
@@ -18,13 +17,20 @@ const Track: FunctionComponent<Props> = ({
   clicked,
   playerState,
   played,
-  isPlaylist,
-  children,
+  isInPlaylist,
 }) => {
-  let buttonClasses = [classes.Action, classes.Add].join(" ");
+  let btnRef: any = useRef();
 
-  if (isPlaylist) {
-    buttonClasses = [classes.Action, classes.Remove].join(" ");
+  let btnClass = [classes.Action, classes.Remove].join(" "),
+    disabled = false,
+    children = "-";
+  if (isInPlaylist) {
+    btnClass = [classes.Action, classes.Check].join(" ");
+    disabled = true;
+    children = String.fromCharCode(10004);
+  } else if (isInPlaylist === false) {
+    btnClass = [classes.Action, classes.Add].join(" ");
+    children = "+";
   }
 
   let infoClasses = classes.Information;
@@ -64,7 +70,12 @@ const Track: FunctionComponent<Props> = ({
     <div className={classes.Track}>
       {playButton}
       {information}
-      <button className={buttonClasses} onClick={clicked}>
+      <button
+        ref={btnRef}
+        className={btnClass}
+        disabled={disabled}
+        onClick={() => clicked(track.id)}
+      >
         {children}
       </button>
     </div>
