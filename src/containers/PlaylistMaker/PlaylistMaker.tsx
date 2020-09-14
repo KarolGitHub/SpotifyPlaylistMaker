@@ -15,7 +15,14 @@ import Player from "./Player/Player";
 import Spinner from "./../../components/UI/Spinner/Spinner";
 import Modal from "./../../components/UI/Modal/Modal";
 import Checkout from "../../components/Playlist/Checkout/Checkout";
-import { Track, Tracklist, Tuple, authPopup } from "./../../shared/utility";
+import {
+  Track,
+  Tracklist,
+  Tuple,
+  authPopup,
+  PlaylistPayload,
+  PlaylistInfo,
+} from "./../../shared/utility";
 import { RootState } from "../../index";
 import errorHandler from "./../../Hoc/errorHandler/errorHandler";
 import axios from "./../../axios-spotify";
@@ -26,7 +33,7 @@ const PlaylistMaker: FunctionComponent = () => {
   const [isModal, setModal] = useState(false);
   const [redirect, setRedirect] = useState(false);
 
-  const list: Tracklist = useSelector((state: RootState) => {
+  const tracks: Tracklist = useSelector((state: RootState) => {
     return state.playlistMaker.playlist;
   });
   const results: Tracklist = useSelector((state: RootState) => {
@@ -38,7 +45,7 @@ const PlaylistMaker: FunctionComponent = () => {
   const loading: boolean = useSelector((state: RootState) => {
     return state.playlistMaker.loading;
   });
-  const error: boolean = useSelector((state: RootState) => {
+  const error: any = useSelector((state: RootState) => {
     return state.playlistMaker.error;
   });
   const saveResult: boolean = useSelector((state: RootState) => {
@@ -47,30 +54,60 @@ const PlaylistMaker: FunctionComponent = () => {
   const token: string = useSelector((state: RootState) => {
     return state.auth.token;
   });
+  const userId: string = useSelector((state: RootState) => {
+    return state.auth.userId;
+  });
   const authRedirectPath: string = useSelector((state: RootState) => {
     return state.auth.authRedirectPath;
   });
   const playerState: Tuple = useSelector((state: RootState) => {
     return state.player.playerState;
   });
+  const playlistInfo: PlaylistInfo | null = useSelector((state: RootState) => {
+    return state.playlists.playlistInfo;
+  });
 
   const dispatch = useDispatch();
 
   const onTracksSearch = useCallback(
-    (type: string, term: string, limit: number) => {
-      dispatch(actions.searchTracks(token, type, term, limit));
-    },
+    (type: string, term: string, limit: number) =>
+      dispatch(actions.searchTracks(token, type, term, limit)),
     [dispatch, token]
   );
   const onPlaylistSave = useCallback(
-    (name: string, trackURIs: Array<string>) => {
-      dispatch(actions.savePlaylist(token, name, trackURIs));
-    },
-    [dispatch, token]
+    (payload: PlaylistPayload, trackURIs: Array<string>) =>
+      dispatch(actions.savePlaylist(token, userId, payload, trackURIs)),
+    [dispatch, token, userId]
   );
-  const onSuccessConfirm = useCallback(() => {
-    dispatch(actions.successConfirm());
-  }, [dispatch]);
+  const onSuccessConfirm = useCallback(
+    () => dispatch(actions.successConfirm()),
+    [dispatch]
+  );
+  const onClearPlaylist = useCallback(() => dispatch(actions.clearPlaylist()), [
+    dispatch,
+  ]);
+  const onEditPlaylist = useCallback(
+    (payload, trackURIs, changedDetails) =>
+      dispatch(
+        actions.editPlaylist(
+          token,
+          userId,
+          payload,
+          trackURIs,
+          changedDetails,
+          playlistInfo?.id
+        )
+      ),
+    [dispatch, token, userId, playlistInfo]
+  );
+  const onSetTracks = useCallback(() => dispatch(actions.setTracks([])), [
+    dispatch,
+  ]);
+
+  const compareDetails = (
+    userPayload: PlaylistPayload,
+    playlistPayload: PlaylistPayload
+  ) => [JSON.stringify(userPayload) !== JSON.stringify(playlistPayload)];
 
   const modalHandler = (prevState: boolean) => {
     setModal(!prevState);
@@ -80,21 +117,27 @@ const PlaylistMaker: FunctionComponent = () => {
     (prevState: boolean) => {
       onSuccessConfirm();
       setModal(!prevState);
+      onClearPlaylist();
     },
-    [onSuccessConfirm]
+    [onSuccessConfirm, onClearPlaylist]
   );
 
   const savePlaylistHandler = useCallback(
-    (val: string) => {
+    (payload: PlaylistPayload) => {
       const trackURIs: Array<string> = [];
-      list.map((track: Track) => trackURIs.push(track.uri));
+      tracks.map((track: Track) => trackURIs.push(track.uri));
       if (token) {
-        onPlaylistSave(val, trackURIs);
+        if (playlistInfo) {
+          const changedDetails = compareDetails(payload, playlistInfo.payload);
+          onEditPlaylist(payload, trackURIs, changedDetails);
+        } else {
+          onPlaylistSave(payload, trackURIs);
+        }
       } else {
         setRedirect(true);
       }
     },
-    [token, list, onPlaylistSave]
+    [token, tracks, onPlaylistSave, playlistInfo, onEditPlaylist]
   );
   const searchHandler = useCallback(
     (type: string, term: string, limit: number) => {
@@ -109,21 +152,17 @@ const PlaylistMaker: FunctionComponent = () => {
 
   useEffect(() => {
     if (redirect) {
-      // window.location.assign(authRedirectPath);
       const window = authPopup(authRedirectPath);
       window?.addEventListener("beforeunload", () => {
         dispatch(actions.authCheckState());
       });
     }
-    //eslint-disable-next-line
-  }, [redirect]);
-
+  }, [dispatch, redirect, authRedirectPath]);
   useEffect(() => {
     if (!authRedirectPath) {
       dispatch(actions.setAuthRedirectURL());
     }
   }, [authRedirectPath, dispatch]);
-
   useEffect(() => {
     return () => {
       if (saveResult) {
@@ -131,7 +170,15 @@ const PlaylistMaker: FunctionComponent = () => {
         setModal(false);
       }
     };
-  });
+  }, [saveResult, onClearPlaylist, onSuccessConfirm]);
+  useEffect(() => {
+    return () => {
+      if (playlistInfo) {
+        onClearPlaylist();
+        onSetTracks();
+      }
+    };
+  }, [playlistInfo, onClearPlaylist, onSetTracks]);
 
   const modal = useMemo(
     () =>
@@ -140,7 +187,7 @@ const PlaylistMaker: FunctionComponent = () => {
           <div>
             <p style={{ color: "green" }}>Playlist Save Succesful!</p>
             <Button
-              btnType="Confirm"
+              btnType="green"
               clicked={() => confirmModalHandler(isModal)}
             >
               Confirm
@@ -150,13 +197,19 @@ const PlaylistMaker: FunctionComponent = () => {
       ) : (
         <Modal open={isModal} clicked={() => modalHandler(isModal)}>
           <Checkout
+            playlistInfo={playlistInfo?.payload}
             cancel={() => modalHandler(isModal)}
-            confirm={(val: string) => savePlaylistHandler(val)}
+            confirm={(payload: PlaylistPayload) => savePlaylistHandler(payload)}
           />
         </Modal>
       ),
-    //eslint-disable-next-line
-    [isModal, saveResult]
+    [
+      isModal,
+      saveResult,
+      confirmModalHandler,
+      playlistInfo,
+      savePlaylistHandler,
+    ]
   );
 
   const searchBar = useMemo(
@@ -178,9 +231,14 @@ const PlaylistMaker: FunctionComponent = () => {
   ]);
 
   const playlist = useMemo(
-    () => <Playlist tracklist={list} clicked={() => modalHandler(isModal)} />,
-    //eslint-disable-next-line
-    [list]
+    () => (
+      <Playlist
+        tracklist={tracks}
+        name={playlistInfo?.payload.name}
+        clicked={() => modalHandler(isModal)}
+      />
+    ), //eslint-disable-next-line
+    [tracks]
   );
 
   const player = useMemo(
@@ -189,27 +247,31 @@ const PlaylistMaker: FunctionComponent = () => {
         <Player
           url={
             playerState[2]
-              ? list[playerState[0]].preview_url
-              : results[playerState[0]].preview_url
+              ? tracks[playerState[0]]?.preview_url
+              : results[playerState[0]]?.preview_url
           }
           playerState={playerState}
         />
       ),
-    [results, list, playerState]
+    [results, tracks, playerState]
   );
 
-  return !error && !loading ? (
-    <div className={classes.PlaylistMaker}>
-      {modal}
-      {searchBar}
-      <div className={classes.Playlist}>
-        {searchResults}
-        {playlist}
-        {player}
+  return !error ? (
+    !loading ? (
+      <div className={classes.PlaylistMaker}>
+        {modal}
+        {searchBar}
+        <div className={classes.Playlist}>
+          {searchResults}
+          {playlist}
+          {player}
+        </div>
       </div>
-    </div>
+    ) : (
+      <Spinner />
+    )
   ) : (
-    <Spinner />
+    <p>{error + ""}</p>
   );
 };
 

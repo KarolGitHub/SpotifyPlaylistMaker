@@ -20,6 +20,10 @@ const SearchBar: FunctionComponent<Props> = ({ clicked, limit }) => {
     },
     valid: false,
     touched: false,
+    elementConfig: {
+      type: "text",
+      placeholder: "Enter A Song Name",
+    },
   });
 
   const searchResultsLimit = useRef(limit);
@@ -95,12 +99,13 @@ const SearchBar: FunctionComponent<Props> = ({ clicked, limit }) => {
         changed={(event) => inputChangedHandler(event)}
         pressed={(event) => pressedHandler(event)}
         invalid={input.touched ? !input.valid : false}
-        placeholder={"Enter A Song Name"}
+        elementConfig={input.elementConfig}
+        focus
       />
       <p>Search Results Limit</p>
       {slider}
       <Button
-        btnType="Search"
+        btnType="blue"
         clicked={() => clicked(input.value, searchResultsLimit.current)}
         disabled={!input.valid}
       >

@@ -7,16 +7,17 @@ import { Tracklist } from "../../../shared/utility";
 
 type Props = {
   tracklist: Tracklist;
+  name?: string;
   clicked: any;
 };
-const Playlist: FunctionComponent<Props> = ({ tracklist, clicked }) => {
+const Playlist: FunctionComponent<Props> = ({ tracklist, name, clicked }) => {
   return (
     <div className={classes.Playlist}>
-      <h1>New Playlist</h1>
+      <h1>{name ? name : "New Playlist"}</h1>
       <TrackList tracklist={tracklist} isPlaylist />
       <div className={classes.Save}>
         <Button
-          btnType="Save"
+          btnType="purple"
           clicked={clicked}
           disabled={tracklist.length < 1}
         >

@@ -4,17 +4,10 @@ export {
   savePlaylist,
   successConfirm,
   searchTracks,
+  editPlaylist,
+  setTracks,
 } from "./playlistMaker";
-export {
-  auth,
-  authCheckState,
-  authFail,
-  authStart,
-  authSuccess,
-  checkAuthTimeout,
-  setAuthRedirectURL,
-  logout,
-} from "./auth";
+export { auth, authCheckState, setAuthRedirectURL, logout } from "./auth";
 export {
   playTrackStateUpdate,
   playTrackStart,
@@ -22,3 +15,10 @@ export {
   playTrackEnd,
   playTrackFail,
 } from "./player";
+export {
+  fetchPlaylists,
+  fetchTracks,
+  deleteTracks,
+  clearPlaylist,
+  setRedirect,
+} from "./playlists";

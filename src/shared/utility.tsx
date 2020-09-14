@@ -24,18 +24,55 @@ export type Track = {
 };
 export type Tracklist = Array<Track>;
 
-// export type playStatus = 'PLAYING' | 'STOPPED' | 'PAUSED';
-
-export type Tuple = [number, boolean, boolean];
-
-export const updateObject = (oldObject: any, updatedProps?: any) => {
-  return {
-    ...oldObject,
-    ...updatedProps,
+export type SpotifyPlaylist = {
+  id: string;
+  name: string;
+  user: string;
+  public: boolean;
+  collaborative: boolean;
+  description: string;
+  tracks: {
+    uri: string;
+    total: number;
   };
 };
 
-export const arrayDiff = (search: Tracklist, playlist: Tracklist) => [
+export type PlaylistPayload = {
+  name: string;
+  public: boolean;
+  collaborative: boolean;
+  description: string;
+};
+
+export type Playlist = {
+  id: string;
+  payload: PlaylistPayload;
+  tracks: { total: number; href: string };
+};
+
+export type PlaylistInfo = {
+  id: string;
+  payload: PlaylistPayload;
+  uri: string;
+};
+
+export type Tuple = [number, boolean, boolean];
+
+export const updateObject = (oldObject: Object, updatedState?: any) => {
+  return {
+    ...oldObject,
+    ...updatedState,
+  };
+};
+export const updateArray = (oldArray: Array<any>, updatedState?: any) => {
+  if (updatedState) {
+    return [...oldArray, updatedState];
+  } else {
+    return [...oldArray];
+  }
+};
+
+export const tracksDiff = (search: Tracklist, playlist: Tracklist) => [
   ...search.filter((searchItem) =>
     playlist.every((playlistItem) => searchItem.id !== playlistItem.id)
   ),
@@ -47,7 +84,7 @@ type Rules = {
   maxLength?: number;
   isEmail?: boolean;
   isNumeric?: boolean;
-};
+} | null;
 
 export const isValid = (value = "", rules: Rules) => {
   let isValid = true;

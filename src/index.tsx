@@ -8,14 +8,16 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import burgerBuilderReducer from "./store/reducers/playlistMaker";
+import playlistMakerReducer from "./store/reducers/playlistMaker";
 import authReducer from "./store/reducers/auth";
 import playerReducer from "./store/reducers/player";
+import playlistsReducer from "./store/reducers/playlists";
 
 const reducer = combineReducers({
-  playlistMaker: burgerBuilderReducer,
+  playlistMaker: playlistMakerReducer,
   auth: authReducer,
   player: playerReducer,
+  playlists: playlistsReducer,
 });
 
 export type RootState = ReturnType<typeof reducer>;

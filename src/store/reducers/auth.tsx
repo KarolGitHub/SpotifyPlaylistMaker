@@ -3,6 +3,7 @@ import { updateObject } from "../../shared/utility";
 
 const initialState = {
   token: null,
+  userId: null,
   error: null,
   loading: false,
   authRedirectPath: null,
@@ -13,6 +14,7 @@ const reducer = (
   action: {
     type: string;
     token: string;
+    userId: string;
     error: any;
     url: string;
   }
@@ -23,12 +25,13 @@ const reducer = (
     case actionTypes.AUTH_SUCCESS:
       return updateObject(state, {
         token: action.token,
+        userId: action.userId,
         authRedirectPath: null,
         error: null,
         loading: false,
       });
     case actionTypes.AUTH_LOGOUT:
-      return updateObject(state, { token: null });
+      return updateObject(state, { token: null, userId: null });
     case actionTypes.SET_AUTH_REDIRECT_URL:
       return updateObject(state, { authRedirectPath: action.url });
     case actionTypes.AUTH_FAIL:

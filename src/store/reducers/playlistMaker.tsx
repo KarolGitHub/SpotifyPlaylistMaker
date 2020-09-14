@@ -1,5 +1,10 @@
 import * as actionTypes from "../actions/actionsTypes";
-import { updateObject, Tracklist, arrayDiff } from "../../shared/utility";
+import {
+  updateObject,
+  Tracklist,
+  tracksDiff,
+  updateArray,
+} from "../../shared/utility";
 
 type State = {
   playlist: Tracklist;
@@ -31,7 +36,7 @@ const initialState: State = {
 const addTrack = (state: State, action: Action) => {
   return updateObject(state, {
     playlist: state.playlist.concat(state.searchResults[action.index]),
-    addedTrackIDs: [...state.addedTrackIDs, action.id],
+    addedTrackIDs: updateArray(state.addedTrackIDs, action.id),
   });
 };
 
@@ -50,7 +55,7 @@ const searchTracksStart = (state: State, action: Action) => {
 };
 const searchTracksSuccess = (state: State, action: Action) => {
   return updateObject(state, {
-    searchResults: arrayDiff(action.tracklist, state.playlist),
+    searchResults: tracksDiff(action.tracklist, state.playlist),
     loading: false,
   });
 };
@@ -63,11 +68,23 @@ const savePlaylistStart = (state: State) => {
 const savePlaylistSuccess = (state: State) => {
   return updateObject(state, { loading: false, saveResult: true });
 };
+const savePlaylistFail = (state: State, action: Action) => {
+  return updateObject(state, { error: action.error, loading: false });
+};
+const editPlaylistStart = (state: State) => {
+  return updateObject(state, { loading: true });
+};
+const editPlaylistSuccess = (state: State) => {
+  return updateObject(state, { loading: false, saveResult: true });
+};
+const editPlaylistFail = (state: State, action: Action) => {
+  return updateObject(state, { error: action.error, loading: false });
+};
 const successConfirm = (state: State) => {
   return updateObject(state, { saveResult: false });
 };
-const savePlaylistFail = (state: State, action: Action) => {
-  return updateObject(state, { error: action.error, loading: false });
+const setTracks = (state: State, action: Action) => {
+  return updateObject(state, { playlist: action.tracklist });
 };
 
 const reducer = (state: State = initialState, action: Action) => {
@@ -86,10 +103,18 @@ const reducer = (state: State = initialState, action: Action) => {
       return savePlaylistStart(state);
     case actionTypes.SAVE_PLAYLIST_SUCCESS:
       return savePlaylistSuccess(state);
-    case actionTypes.SUCCESS_CONFIRM:
-      return successConfirm(state);
     case actionTypes.SAVE_PLAYLIST_FAIL:
       return savePlaylistFail(state, action);
+    case actionTypes.EDIT_PLAYLIST_START:
+      return editPlaylistStart(state);
+    case actionTypes.EDIT_PLAYLIST_SUCCESS:
+      return editPlaylistSuccess(state);
+    case actionTypes.EDIT_PLAYLIST_FAIL:
+      return editPlaylistFail(state, action);
+    case actionTypes.SUCCESS_CONFIRM:
+      return successConfirm(state);
+    case actionTypes.SET_TRACKS:
+      return setTracks(state, action);
     default:
       return state;
   }

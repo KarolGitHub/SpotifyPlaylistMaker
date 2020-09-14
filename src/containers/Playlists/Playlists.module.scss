@@ -1,0 +1,44 @@
+@import '../../assets/variables';
+
+.Playlists {
+  margin: 20px auto;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 2px 3px #ccc;
+  border: 1px solid #eee;
+  padding: 10px;
+  box-sizing: border-box;
+
+  .Span {
+    text-transform: capitalize;
+    display: inline-block;
+    margin: 0 8px;
+    border: 1px solid #ccc;
+    padding: 5px;
+  }
+
+  .Tracks {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+
+    h3 {
+      margin-top: 0;
+    }
+  }
+
+  .Checkbox {
+    -webkit-appearance: checkbox;
+    appearance: checkbox;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+}
+
+.ModalButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}

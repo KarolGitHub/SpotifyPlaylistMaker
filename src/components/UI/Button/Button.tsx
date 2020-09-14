@@ -3,35 +3,51 @@ import classes from "./Button.module.scss";
 
 type Props = {
   btnType?: string;
-  clicked: () => void;
+  table?: boolean;
+  clicked?: () => void;
   disabled?: boolean;
+  type?: "button" | "submit";
   children?: any;
 };
 const Button: FunctionComponent<Props> = ({
   btnType,
+  table,
   children,
   clicked,
+  type,
   disabled,
 }) => {
-  let className = classes.Button;
+  let className;
   switch (btnType) {
-    case "Search":
-      className = [classes.Button, classes.Search].join(" ");
+    case "blue":
+      className = [classes.Button, classes.Blue].join(" ");
       break;
-    case "Save":
-      className = [classes.Button, classes.Save].join(" ");
+    case "purple":
+      className = [classes.Button, classes.Purple].join(" ");
       break;
-    case "Cancel":
+    case "red":
+      className = [classes.Button, classes.Red].join(" ");
+      break;
+    case "green":
+      className = [classes.Button, classes.Green].join(" ");
+      break;
+    case "cancel":
       className = [classes.Button, classes.Cancel].join(" ");
       break;
-    case "Confirm":
-      className = [classes.Button, classes.Confirm].join(" ");
-      break;
     default:
+      className = classes.Button;
+  }
+  if (table) {
+    className = [className, classes.TableButton].join(" ");
   }
 
   return (
-    <button className={className} onClick={clicked} disabled={disabled}>
+    <button
+      className={className}
+      onClick={clicked}
+      disabled={disabled}
+      type={type ? type : "button"}
+    >
       {children}
     </button>
   );

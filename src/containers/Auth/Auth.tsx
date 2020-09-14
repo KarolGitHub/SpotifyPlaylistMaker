@@ -28,27 +28,26 @@ const Auth: FunctionComponent = () => {
   useEffect(() => {
     if (authRedirectPath) {
       const window = authPopup(authRedirectPath);
-      window?.addEventListener("beforeunload", () => {
+      window?.addEventListener("beforeunload", (e) => {
         dispatch(actions.authCheckState());
       });
     } else {
       onAuth();
-      window?.close();
     }
   }, [onAuth, authRedirectPath, dispatch]);
 
-  const redirect = !loading ? (
-    !token ? (
+  const redirect = !token ? (
+    !loading ? (
       !error ? (
         <Spinner />
       ) : (
         <Redirect to="/" />
       )
     ) : (
-      <Redirect to="/" />
+      <Spinner />
     )
   ) : (
-    <Spinner />
+    <Redirect to="/" />
   );
 
   return redirect;

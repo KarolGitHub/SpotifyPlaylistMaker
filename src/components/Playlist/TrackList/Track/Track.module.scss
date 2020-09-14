@@ -63,15 +63,15 @@
 
     &.Check {
       cursor: unset;
-      color: $success;
+      color: $green;
     }
 
     &.Add:hover {
-      color: $success;
+      color: $green;
     }
 
     &.Remove:hover {
-      color: $danger;
+      color: $red;
     }
   }
 }

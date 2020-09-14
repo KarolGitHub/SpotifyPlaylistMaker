@@ -1,0 +1,24 @@
+.Input {
+  align-content: center;
+  align-self: center;
+  border: 1px solid #ccc;
+  background-color: white;
+  font: inherit;
+  padding: 6px 10px;
+  display: block;
+  color: black;
+  min-width: 50px;
+  max-width: 150px;
+  height: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    background-color: #ccc;
+  }
+}
+
+@media(max-width: 750px) {
+  .Input {
+    width: 100%;
+  }
+}

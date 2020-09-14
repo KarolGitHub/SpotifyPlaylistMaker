@@ -6,8 +6,8 @@ import NavigationItem from "./NavigationItem/NavigationItem";
 import "./NavigationItems.scss";
 
 const NavigationItems: FunctionComponent = () => {
-  const token: string = useSelector((state: RootState) => {
-    return state.auth.token;
+  const token: boolean = useSelector((state: RootState) => {
+    return state.auth.token !== null;
   });
 
   const themeSwitchHandler = () => {
@@ -26,6 +26,9 @@ const NavigationItems: FunctionComponent = () => {
       <NavigationItem link="/" exact>
         Playlist Maker
       </NavigationItem>
+      {token ? (
+        <NavigationItem link="/playlists">Playlists</NavigationItem>
+      ) : null}
       {token ? (
         <NavigationItem link="/logout">Log Out</NavigationItem>
       ) : (

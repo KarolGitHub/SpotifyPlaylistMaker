@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef } from "react";
+import React, { FunctionComponent } from "react";
 
 import classes from "./Track.module.scss";
 import { Track as TrackData, Tuple } from "../../../../shared/utility";
@@ -19,8 +19,6 @@ const Track: FunctionComponent<Props> = ({
   played,
   isInPlaylist,
 }) => {
-  let btnRef: any = useRef();
-
   let btnClass = [classes.Action, classes.Remove].join(" "),
     disabled = false,
     children = "-";
@@ -71,7 +69,6 @@ const Track: FunctionComponent<Props> = ({
       {playButton}
       {information}
       <button
-        ref={btnRef}
         className={btnClass}
         disabled={disabled}
         onClick={() => clicked(track.id)}

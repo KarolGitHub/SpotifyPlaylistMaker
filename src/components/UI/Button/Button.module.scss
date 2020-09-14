@@ -13,20 +13,40 @@
   color: $white;
 }
 
-.Search {
+.TableButton {
+  width: 80px;
+}
+
+.DeleteAll {
+  border-radius: 30px;
+  width: 80px;
+  font-size: 15px;
+}
+
+.Back {
+  margin-bottom: 20px;
+}
+
+.Blue {
   background-color: $blue;
 }
 
-.Save {
+.Purple {
   background-color: $purple;
 }
 
-.Cancel {
-  background-color: $danger;
+.Red {
+  background-color: $red;
 }
 
-.Confirm {
-  background-color: $success;
+.Green {
+  background-color: $green;
+}
+
+.Cancel {
+  background-color: unset;
+  border: 1px solid var(--fontColor);
+  transition: border-color .25s;
 }
 
 :disabled {
