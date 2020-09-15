@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AxiosRequestConfig, AxiosError } from "axios";
+import Axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 
 export default (httpClient: any) => {
   const [error, setError] = useState<boolean | any>(false);
@@ -9,9 +9,11 @@ export default (httpClient: any) => {
     return req;
   });
   const resInterceptor = response.use(
-    (res: AxiosRequestConfig) => res,
+    (res: AxiosResponse) => res,
     (err: AxiosError) => {
-      setError(err);
+      if (!Axios.isCancel(err)) {
+        setError(err);
+      }
       return Promise.reject(err);
     }
   );

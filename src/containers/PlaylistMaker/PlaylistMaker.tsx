@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
+  lazy,
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -11,7 +12,6 @@ import classes from "./PlaylistMaker.module.scss";
 import SearchBar from "./SearchBar/SearchBar";
 import Playlist from "./Playlist/Playlist";
 import SearchResults from "./SearchResults/SearchResults";
-import Player from "./Player/Player";
 import Spinner from "./../../components/UI/Spinner/Spinner";
 import Modal from "./../../components/UI/Modal/Modal";
 import Checkout from "../../components/Playlist/Checkout/Checkout";
@@ -28,6 +28,10 @@ import errorHandler from "./../../Hoc/errorHandler/errorHandler";
 import axios from "./../../axios-spotify";
 import * as actions from "./../../store/actions/index";
 import Button from "../../components/UI/Button/Button";
+
+const Player = lazy(() => {
+  return import("./Player/Player");
+});
 
 const PlaylistMaker: FunctionComponent = () => {
   const [isModal, setModal] = useState(false);

@@ -72,8 +72,8 @@ export const searchTracks = (
         dispatch(searchTracksSuccess(tracks));
       })
       .catch((error) => {
-        if (error.response) {
-          dispatch(searchTracksFail(error.response.data.error));
+        if (error.response?.data) {
+          dispatch(searchTracksFail(error.response.data.error.message));
         } else if (error.message) {
           dispatch(searchTracksFail(error.message));
         } else {
@@ -119,8 +119,8 @@ export const savePlaylist = (
         dispatch(savePlaylistSuccess());
       })
       .catch((error: AxiosError) => {
-        if (error.response) {
-          dispatch(savePlaylistFail(error.response.data.error));
+        if (error.response?.data) {
+          dispatch(savePlaylistFail(error.response.data.error.message));
         } else if (error.message) {
           dispatch(savePlaylistFail(error.message));
         } else {
@@ -183,8 +183,8 @@ export const editPlaylist = (
         dispatch(editPlaylistSuccess());
       })
       .catch((error: AxiosError) => {
-        if (error.response) {
-          dispatch(editPlaylistFail(error.response.data.error));
+        if (error.response?.data) {
+          dispatch(editPlaylistFail(error.response.data.error.message));
         } else if (error.message) {
           dispatch(editPlaylistFail(error.message));
         } else {

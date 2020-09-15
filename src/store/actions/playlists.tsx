@@ -9,14 +9,18 @@ import {
   SpotifyPlaylist,
   PlaylistInfo,
 } from "../../shared/utility";
-import { AxiosResponse, AxiosError } from "axios";
+import Axios, { AxiosResponse, AxiosError } from "axios";
 
 export const fetchPlaylistsStart = () => {
   return {
     type: actionTypes.FETCH_PLAYLISTS_START,
   };
 };
-export const fetchPlaylists = (accessToken: string, userId: string) => {
+export const fetchPlaylists = (
+  accessToken: string,
+  userId: string,
+  cancelToken: any
+) => {
   return (dispatch: Dispatch) => {
     dispatch(fetchPlaylistsStart());
     const headers = {
@@ -25,7 +29,7 @@ export const fetchPlaylists = (accessToken: string, userId: string) => {
     };
     const queryParams = `users/${userId}/playlists?limit=50`;
     axios
-      .get(queryParams, { headers: headers })
+      .get(queryParams, { headers: headers, cancelToken: cancelToken })
       .then((response: AxiosResponse) => JSON.parse(JSON.stringify(response)))
       .then((response: AxiosResponse) => {
         const playlists = updateArray(updateObject(response.data).items).map(
@@ -43,12 +47,14 @@ export const fetchPlaylists = (accessToken: string, userId: string) => {
         dispatch(fetchPlaylistsSuccess(playlists));
       })
       .catch((error: AxiosError) => {
-        if (error.response) {
-          dispatch(fetchPlaylistsFail(error.response.data.error));
-        } else if (error.message) {
-          dispatch(fetchPlaylistsFail(error.message));
-        } else {
-          dispatch(fetchPlaylistsFail("Unexpected Error!"));
+        if (!Axios.isCancel(error)) {
+          if (error.response?.data) {
+            dispatch(fetchPlaylistsFail(error.response.data.error.message));
+          } else if (error.message) {
+            dispatch(fetchPlaylistsFail(error.message));
+          } else {
+            dispatch(fetchPlaylistsFail("Unexpected Error!"));
+          }
         }
       });
   };
@@ -100,8 +106,8 @@ export const fetchTracks = (
         dispatch(fetchTracksSuccess(tracks, { id, payload, uri }, redirect));
       })
       .catch((error: AxiosError) => {
-        if (error.response) {
-          dispatch(fetchTracksFail(error.response.data.error));
+        if (error.response?.data) {
+          dispatch(fetchTracksFail(error.response.data.error.message));
         } else if (error.message) {
           dispatch(fetchTracksFail(error.message));
         } else {
@@ -150,8 +156,9 @@ export const deleteTracks = (
       .delete(queryParams, { headers: headers, data: tracks })
       .then(() => dispatch(deleteTracksSuccess()))
       .catch((error: AxiosError) => {
-        if (error.response) {
-          dispatch(deleteTracksFail(error.response.data.message));
+        console.log(error);
+        if (error.response?.data) {
+          dispatch(deleteTracksFail(error.response.data.error.message));
         } else if (error.message) {
           dispatch(deleteTracksFail(error.message));
         } else {

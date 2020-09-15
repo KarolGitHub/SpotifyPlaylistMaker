@@ -19,6 +19,7 @@ import { CellProps } from "./ReactTable/Filters/Filters";
 import Modal from "./../../components/UI/Modal/Modal";
 import Button from "../../components/UI/Button/Button";
 import { Redirect } from "react-router-dom";
+import Axios from "axios";
 
 const Playlists: FunctionComponent = () => {
   const [isPlaylist, setPlaylist] = useState(false);
@@ -54,7 +55,8 @@ const Playlists: FunctionComponent = () => {
   const dispatch = useDispatch();
 
   const onFetchPlaylists = useCallback(
-    () => dispatch(actions.fetchPlaylists(token, userId)),
+    (cancelToken: any) =>
+      dispatch(actions.fetchPlaylists(token, userId, cancelToken)),
     [dispatch, token, userId]
   );
   const onFetchTracks = useCallback(
@@ -97,9 +99,13 @@ const Playlists: FunctionComponent = () => {
   ]);
 
   useEffect(() => {
+    let source = Axios.CancelToken.source();
     if (playlists.length === 0) {
-      onFetchPlaylists();
+      onFetchPlaylists(source.token);
     }
+    return () => {
+      source.cancel();
+    };
   }, [playlists, onFetchPlaylists]);
   useEffect(() => {
     return () => {

@@ -79,8 +79,8 @@ export const auth = () => {
           })
           .then(() => window.close())
           .catch((error: AxiosError) => {
-            if (error.response) {
-              dispatch(authFail(error.response.data.error));
+            if (error.response?.data) {
+              dispatch(authFail(error.response.data.error.message));
             } else if (error.message) {
               dispatch(authFail(error.message));
             } else {
