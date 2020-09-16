@@ -7,18 +7,22 @@ type Props = {
   open: boolean;
   clicked: () => void;
   invisible?: boolean;
+  table?: boolean;
   children: any;
 };
 const Modal: FunctionComponent<Props> = ({
   open,
   clicked,
   invisible,
+  table,
   children,
 }) => (
   <React.Fragment>
     <Backdrop open={open} clicked={clicked} invisible={invisible} />
     <div
-      className={classes.Modal}
+      className={
+        table ? [classes.Table, classes.Modal].join(" ") : classes.Modal
+      }
       style={{
         transform: open ? "translate(0)" : "translate(-100vh)",
         opacity: open ? "1" : "0",

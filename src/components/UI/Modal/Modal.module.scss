@@ -15,15 +15,25 @@
 
 @media (max-width: 800px) {
   .Modal {
-      left: 5%;
-      width: 90%;
-      padding: 5px;
+    top: 20%;
+    left: 5%;
+    width: 90%;
+    padding: 5px;
+  }
+}
+
+@media (max-width: 800px) {
+  .Table {
+    top: 40%;
+    left: 5%;
+    width: 90%;
+    padding: 5px;
   }
 }
 
 @media (min-width: 801px) {
   .Modal {
-      width: 600px;
-      left: calc(50% - 300px);
+    width: 600px;
+    left: calc(50% - 300px);
   }
 }

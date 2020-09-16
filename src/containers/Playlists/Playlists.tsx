@@ -13,7 +13,7 @@ import errorHandler from "./../../Hoc/errorHandler/errorHandler";
 import * as actions from "../../store/actions/index";
 import playlistsClasses from "./Playlists.module.scss";
 import buttonClasses from "../../components/UI/Button/Button.module.scss";
-import { PlaylistInfo, SpotifyPlaylist, Tracklist } from "../../shared/utility";
+import { Playlist, PlaylistInfo, Tracklist } from "../../shared/utility";
 import ReactTable from "./ReactTable/ReactTable.js";
 import { CellProps } from "./ReactTable/Filters/Filters";
 import Modal from "./../../components/UI/Modal/Modal";
@@ -27,7 +27,7 @@ const Playlists: FunctionComponent = () => {
   const [areAllChecked, setAreAllChecked] = useState(false);
   const [checked, setChecked] = useState<Array<string>>([]);
 
-  const playlists: Array<SpotifyPlaylist> = useSelector((state: RootState) => {
+  const playlists: Array<Playlist> = useSelector((state: RootState) => {
     return state.playlists.playlists;
   });
   const tracks: Tracklist = useSelector((state: RootState) => {
@@ -75,6 +75,7 @@ const Playlists: FunctionComponent = () => {
               ? playlistInfo
               : {
                   id: "",
+                  isEditable: true,
                   payload: {
                     name: "",
                     public: true,
@@ -220,6 +221,7 @@ const Playlists: FunctionComponent = () => {
               clicked={() =>
                 showPlaylistHandler({
                   id: row.original.id,
+                  isEditable: row.original.isEditable,
                   payload: row.original.payload,
                   uri: row.original.tracks.href,
                 })
@@ -243,10 +245,12 @@ const Playlists: FunctionComponent = () => {
             clicked={() =>
               editPlaylistHandler({
                 id: row.original.id,
+                isEditable: row.original.isEditable,
                 payload: row.original.payload,
                 uri: row.original.tracks.href,
               })
             }
+            disabled={!row.original.isEditable}
             btnType="blue"
             table
           >
@@ -264,6 +268,7 @@ const Playlists: FunctionComponent = () => {
         Header: () => (
           <input
             type="checkbox"
+            disabled={!playlistInfo?.isEditable}
             className={playlistsClasses.Checkbox}
             checked={areAllChecked}
             onChange={checkAllHandler}
@@ -278,6 +283,7 @@ const Playlists: FunctionComponent = () => {
           return (
             <input
               type="checkbox"
+              disabled={!playlistInfo?.isEditable}
               checked={checked.indexOf(row.original.uri) !== -1}
               onChange={() => checkRowHandler(row.original.uri)}
               className={playlistsClasses.Checkbox}
@@ -285,7 +291,13 @@ const Playlists: FunctionComponent = () => {
           );
         },
       };
-    }, [areAllChecked, checked, checkAllHandler, checkRowHandler]),
+    }, [
+      areAllChecked,
+      checked,
+      playlistInfo,
+      checkAllHandler,
+      checkRowHandler,
+    ]),
     useMemo(() => {
       return {
         Header: "Name",
@@ -336,20 +348,25 @@ const Playlists: FunctionComponent = () => {
         () => ({ row }: CellProps) => (
           <Button
             clicked={() => modalHandler(row.original.uri)}
+            disabled={!playlistInfo?.isEditable}
             btnType="red"
             table
           >
             Delete
           </Button>
         ),
-        [modalHandler]
+        [modalHandler, playlistInfo]
       ),
     },
   ];
 
   const modal = useMemo(
     () => (
-      <Modal open={isModal ? true : false} clicked={() => modalHandler(null)}>
+      <Modal
+        open={isModal ? true : false}
+        clicked={() => modalHandler(null)}
+        table
+      >
         <div>
           <p>Are you sure you want to delete selected tracks?</p>
           <div className={playlistsClasses.ModalButtons}>

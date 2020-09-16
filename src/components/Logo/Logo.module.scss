@@ -1,9 +1,10 @@
 .Logo {
   background-color: var(--mainBg1);
-  height: 80%;
+  height: 100%;
   box-sizing: border-box;
 }
 
 .Logo img{
+  border-radius: 50%;
   height: 100%;
 }

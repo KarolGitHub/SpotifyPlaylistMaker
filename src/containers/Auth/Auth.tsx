@@ -27,10 +27,12 @@ const Auth: FunctionComponent = () => {
 
   useEffect(() => {
     if (authRedirectPath) {
-      const window = authPopup(authRedirectPath);
-      window?.addEventListener("beforeunload", (e) => {
-        dispatch(actions.authCheckState());
+      window.addEventListener("storage", (e) => {
+        if (e.storageArea?.length === 3) {
+          dispatch(actions.authCheckState());
+        }
       });
+      authPopup(authRedirectPath);
     } else {
       onAuth();
     }

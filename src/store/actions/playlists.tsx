@@ -32,9 +32,11 @@ export const fetchPlaylists = (
       .get(queryParams, { headers: headers, cancelToken: cancelToken })
       .then((response: AxiosResponse) => JSON.parse(JSON.stringify(response)))
       .then((response: AxiosResponse) => {
+        console.log(response.data.items);
         const playlists = updateArray(updateObject(response.data).items).map(
           (playlist: SpotifyPlaylist) => ({
             id: playlist.id,
+            isEditable: playlist.collaborative || playlist.owner.id === userId,
             payload: {
               name: playlist.name,
               public: playlist.public,
@@ -84,7 +86,7 @@ export const fetchTracks = (
 ) => {
   return (dispatch: Dispatch) => {
     dispatch(fetchTracksStart());
-    const { id, payload, uri } = updateObject(info);
+    const { id, isEditable, payload, uri } = updateObject(info);
     const headers = {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json",
@@ -103,7 +105,9 @@ export const fetchTracks = (
             preview_url: item.track.preview_url,
           })
         );
-        dispatch(fetchTracksSuccess(tracks, { id, payload, uri }, redirect));
+        dispatch(
+          fetchTracksSuccess(tracks, { id, isEditable, payload, uri }, redirect)
+        );
       })
       .catch((error: AxiosError) => {
         if (error.response?.data) {

@@ -27,7 +27,7 @@ export type Tracklist = Array<Track>;
 export type SpotifyPlaylist = {
   id: string;
   name: string;
-  user: string;
+  owner: { id: string };
   public: boolean;
   collaborative: boolean;
   description: string;
@@ -46,12 +46,14 @@ export type PlaylistPayload = {
 
 export type Playlist = {
   id: string;
+  isEditable: boolean;
   payload: PlaylistPayload;
   tracks: { total: number; href: string };
 };
 
 export type PlaylistInfo = {
   id: string;
+  isEditable: boolean;
   payload: PlaylistPayload;
   uri: string;
 };
@@ -112,5 +114,4 @@ export const authPopup = (url: string) => {
 
   const newWindow = window.open(url, "Spotify Playlist Maker", windowFeatures);
   newWindow?.focus();
-  return newWindow;
 };

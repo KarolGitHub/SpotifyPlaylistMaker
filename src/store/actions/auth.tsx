@@ -1,8 +1,9 @@
 import * as actionTypes from "./actionsTypes";
-import { prefixURL, client_id, redirect_uri } from "../../axios-spotify";
+import { prefixURL, client_id } from "../../axios-spotify";
 import { Dispatch } from "redux";
 import { AxiosResponse, AxiosError } from "axios";
 import axios from "../../axios-spotify";
+import { redirect_uri } from "../..";
 
 export const authStart = () => {
   return {
@@ -92,6 +93,7 @@ export const auth = () => {
       }
     } else {
       dispatch(authFail(error[1]));
+      window.close();
     }
   };
 };
@@ -115,7 +117,7 @@ export const logout = () => {
 
 export const authCheckState = () => {
   return (dispatch: Dispatch) => {
-    window.removeEventListener("beforeunload", () => {});
+    window.removeEventListener("storage", () => {});
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     if (!token || !userId) {

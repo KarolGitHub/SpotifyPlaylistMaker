@@ -35,10 +35,12 @@
     height: 20px;
     cursor: pointer;
   }
+
+  .ModalButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 }
 
-.ModalButtons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
+

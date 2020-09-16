@@ -156,10 +156,12 @@ const PlaylistMaker: FunctionComponent = () => {
 
   useEffect(() => {
     if (redirect) {
-      const window = authPopup(authRedirectPath);
-      window?.addEventListener("beforeunload", () => {
-        dispatch(actions.authCheckState());
+      window.addEventListener("storage", (e) => {
+        if (e.storageArea?.length === 3) {
+          dispatch(actions.authCheckState());
+        }
       });
+      authPopup(authRedirectPath);
     }
   }, [dispatch, redirect, authRedirectPath]);
   useEffect(() => {
