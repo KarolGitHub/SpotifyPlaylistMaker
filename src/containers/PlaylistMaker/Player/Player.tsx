@@ -35,7 +35,7 @@ const Player: FunctionComponent<Props> = ({ url, playerState }) => {
   ]);
   const onFail = useCallback(
     (err: { target: { error: { message: string } } } | null) => {
-      dispatch(actions.playTrackFail(err?.target.error.message));
+      dispatch(actions.playTrackFail(err?.target?.error?.message));
     },
     [dispatch]
   );

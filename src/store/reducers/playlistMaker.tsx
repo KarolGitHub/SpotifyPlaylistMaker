@@ -84,7 +84,13 @@ const successConfirm = (state: State) => {
   return updateObject(state, { saveResult: false });
 };
 const setTracks = (state: State, action: Action) => {
-  return updateObject(state, { playlist: action.tracklist, error: null });
+  return updateObject(state, {
+    playlist: action.tracklist,
+    addedTrackIDs: state.addedTrackIDs.filter((id) =>
+      action.tracklist.find((track) => track.id === id)
+    ),
+    error: null,
+  });
 };
 
 const reducer = (state: State = initialState, action: Action) => {

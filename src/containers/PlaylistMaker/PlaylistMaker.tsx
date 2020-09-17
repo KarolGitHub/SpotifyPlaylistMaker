@@ -169,22 +169,24 @@ const PlaylistMaker: FunctionComponent = () => {
       dispatch(actions.setAuthRedirectURL());
     }
   }, [authRedirectPath, dispatch]);
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if (saveResult) {
         onSuccessConfirm();
         setModal(false);
       }
-    };
-  }, [saveResult, onClearPlaylist, onSuccessConfirm]);
-  useEffect(() => {
-    return () => {
+    },
+    [saveResult, onSuccessConfirm]
+  );
+  useEffect(
+    () => () => {
       if (playlistInfo) {
         onClearPlaylist();
         onSetTracks();
-      }
-    };
-  }, [playlistInfo, onClearPlaylist, onSetTracks]);
+      } 
+    },//eslint-disable-next-line
+    [playlistInfo]
+  );
 
   const modal = useMemo(
     () =>
@@ -203,7 +205,7 @@ const PlaylistMaker: FunctionComponent = () => {
       ) : (
         <Modal open={isModal} clicked={() => modalHandler(isModal)}>
           <Checkout
-            playlistInfo={playlistInfo?.payload}
+            playlistInfo={playlistInfo ? playlistInfo.payload : null}
             cancel={() => modalHandler(isModal)}
             confirm={(payload: PlaylistPayload) => savePlaylistHandler(payload)}
           />
@@ -240,11 +242,11 @@ const PlaylistMaker: FunctionComponent = () => {
     () => (
       <Playlist
         tracklist={tracks}
-        name={playlistInfo?.payload.name}
+        name={playlistInfo ? playlistInfo.payload.name : null}
         clicked={() => modalHandler(isModal)}
       />
     ), //eslint-disable-next-line
-    [tracks]
+    [tracks, playlistInfo]
   );
 
   const player = useMemo(

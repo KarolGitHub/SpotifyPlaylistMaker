@@ -74,16 +74,16 @@ const Playlists: FunctionComponent = () => {
             playlistInfo
               ? playlistInfo
               : {
-                  id: "",
-                  isEditable: true,
-                  payload: {
-                    name: "",
-                    public: true,
-                    collaborative: false,
-                    description: "",
-                  },
-                  uri: "",
+                id: "",
+                isEditable: true,
+                payload: {
+                  name: "",
+                  public: true,
+                  collaborative: false,
+                  description: "",
                 },
+                uri: "",
+              },
             false
           )
         ),
@@ -98,6 +98,9 @@ const Playlists: FunctionComponent = () => {
   const onSetRedirect = useCallback(() => dispatch(actions.setRedirect()), [
     dispatch,
   ]);
+  const onClearPlaylist = useCallback(() => dispatch(actions.clearPlaylist()), [
+    dispatch,
+  ]);
 
   useEffect(() => {
     let source = Axios.CancelToken.source();
@@ -108,14 +111,17 @@ const Playlists: FunctionComponent = () => {
       source.cancel();
     };
   }, [playlists, onFetchPlaylists]);
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if (redirect) {
         onSetTracks();
         onSetRedirect();
+      } else if (isPlaylist) {
+        onClearPlaylist();
       }
-    };
-  }, [redirect, onSetTracks, onSetRedirect]);
+    },//eslint-disable-next-line
+    [onSetTracks]
+  );
 
   const checkAllHandler = useCallback(() => {
     if (!areAllChecked) {
@@ -399,8 +405,8 @@ const Playlists: FunctionComponent = () => {
       <ReactTable columns={trackColumns} data={tracksData} />
     </div>
   ) : (
-    <ReactTable columns={playlistColumns} data={playlistsData} />
-  );
+      <ReactTable columns={playlistColumns} data={playlistsData} />
+    );
 
   return !error ? (
     !loading ? (
@@ -410,14 +416,14 @@ const Playlists: FunctionComponent = () => {
           {table}
         </div>
       ) : (
-        <Redirect to="/" />
-      )
+          <Redirect to="/" />
+        )
     ) : (
-      <Spinner />
-    )
+        <Spinner />
+      )
   ) : (
-    <p>{error + ""}</p>
-  );
+      <p>{error + ""}</p>
+    );
 };
 
 export default errorHandler(Playlists, axios);

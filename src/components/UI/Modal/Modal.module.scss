@@ -37,3 +37,9 @@
     left: calc(50% - 300px);
   }
 }
+
+@media (max-height: 500px) {
+  .Modal {
+    top: 0%;
+  }
+}

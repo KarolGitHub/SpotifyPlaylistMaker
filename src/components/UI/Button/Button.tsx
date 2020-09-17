@@ -4,7 +4,7 @@ import classes from "./Button.module.scss";
 type Props = {
   btnType?: string;
   table?: boolean;
-  clicked?: () => void;
+  clicked?: (event: any) => void;
   disabled?: boolean;
   type?: "button" | "submit";
   children?: any;

@@ -11,7 +11,7 @@ import {
 import classes from "./Checkout.module.scss";
 
 type Props = {
-  playlistInfo?: PlaylistPayload;
+  playlistInfo: PlaylistPayload | null;
   cancel: () => void;
   confirm: (data: PlaylistPayload) => void;
 };
@@ -186,15 +186,14 @@ const Checkout: FunctionComponent<Props> = ({
   return (
     <div>
       <h3>Your Playlist</h3>
-      <form onSubmit={confirmHandler}>
         {form}
         <div className={classes.ModalButtons}>
           <Button btnType="cancel" clicked={cancel}>
             Cancel
           </Button>
           <Button
-            type="submit"
             btnType="green"
+            clicked={confirmHandler}
             disabled={
               !controls.name.valid ||
               (controls.public.value === "true" &&
@@ -204,7 +203,6 @@ const Checkout: FunctionComponent<Props> = ({
             Save
           </Button>
         </div>
-      </form>
     </div>
   );
 };

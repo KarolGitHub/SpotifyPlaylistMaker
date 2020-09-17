@@ -32,7 +32,6 @@ export const fetchPlaylists = (
       .get(queryParams, { headers: headers, cancelToken: cancelToken })
       .then((response: AxiosResponse) => JSON.parse(JSON.stringify(response)))
       .then((response: AxiosResponse) => {
-        console.log(response.data.items);
         const playlists = updateArray(updateObject(response.data).items).map(
           (playlist: SpotifyPlaylist) => ({
             id: playlist.id,
@@ -160,7 +159,6 @@ export const deleteTracks = (
       .delete(queryParams, { headers: headers, data: tracks })
       .then(() => dispatch(deleteTracksSuccess()))
       .catch((error: AxiosError) => {
-        console.log(error);
         if (error.response?.data) {
           dispatch(deleteTracksFail(error.response.data.error.message));
         } else if (error.message) {

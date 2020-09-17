@@ -7,7 +7,7 @@ import { Tracklist } from "../../../shared/utility";
 
 type Props = {
   tracklist: Tracklist;
-  name?: string;
+  name: string | null;
   clicked: any;
 };
 const Playlist: FunctionComponent<Props> = ({ tracklist, name, clicked }) => {
