@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PlaylistMaker /> Integration tests should render with given state from Redux store 1`] = `ReactWrapper {}`;
+
+exports[`<PlaylistMaker /> Unit tests render without crashing 1`] = `ShallowWrapper {}`;
+
+exports[`<PlaylistMaker /> Unit tests should render with given state from Redux store 1`] = `undefined`;
+
+exports[`<PlaylistMaker /> Unit tests snapshot match 1`] = `ShallowWrapper {}`;

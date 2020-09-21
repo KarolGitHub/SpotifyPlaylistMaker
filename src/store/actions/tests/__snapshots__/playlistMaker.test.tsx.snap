@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlaylistMaker store reducer should handle incoming actions return initial state on default 1`] = `
+Object {
+  "addedTrackIDs": Array [],
+  "error": null,
+  "loading": false,
+  "playlist": Array [],
+  "saveResult": false,
+  "searchResults": Array [],
+  "searchResultsLimit": 20,
+}
+`;
+
+exports[`PlaylistMaker store reducer should handle incoming actions setTracks 1`] = `
+Object {
+  "addedTrackIDs": Array [],
+  "error": null,
+  "loading": false,
+  "playlist": Array [],
+  "saveResult": false,
+  "searchResults": Array [],
+  "searchResultsLimit": 20,
+}
+`;

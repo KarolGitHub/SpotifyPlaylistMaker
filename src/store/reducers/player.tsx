@@ -1,20 +1,20 @@
 import * as actionTypes from "../actions/actionsTypes";
 import { updateObject, Tuple } from "../../shared/utility";
 
-const initialState = {
+export const initialState = {
   playerState: null,
   error: null,
 };
 
 const reducer = (
   state = initialState,
-  action: {
+  action?: {
     type: string;
     playerState: Tuple | null;
     error: any;
   }
 ) => {
-  switch (action.type) {
+  switch (action?.type) {
     case actionTypes.PLAY_TRACK_STATE_UPDATE:
       return updateObject(state, { playerState: action.playerState });
     case actionTypes.PLAY_TRACK_START:

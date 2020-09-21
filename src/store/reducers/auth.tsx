@@ -1,7 +1,7 @@
 import * as actionTypes from "../actions/actionsTypes";
 import { updateObject } from "../../shared/utility";
 
-const initialState = {
+export const initialState = {
   token: null,
   userId: null,
   error: null,
@@ -11,7 +11,7 @@ const initialState = {
 
 const reducer = (
   state = initialState,
-  action: {
+  action?: {
     type: string;
     token: string;
     userId: string;
@@ -19,7 +19,7 @@ const reducer = (
     url: string;
   }
 ) => {
-  switch (action.type) {
+  switch (action?.type) {
     case actionTypes.AUTH_START:
       return updateObject(state, { error: null, loading: true });
     case actionTypes.AUTH_SUCCESS:

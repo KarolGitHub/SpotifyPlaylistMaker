@@ -23,7 +23,7 @@ type Action = {
   playlistInfo: PlaylistInfo | null;
   redirect: boolean;
 };
-const initialState: State = {
+export const initialState: State = {
   playlists: [],
   tracks: [],
   error: null,
@@ -73,8 +73,8 @@ const setRedirect = (state: State) => {
   return updateObject(state, { redirect: false });
 };
 
-const reducer = (state: State = initialState, action: Action) => {
-  switch (action.type) {
+const reducer = (state: State = initialState, action?: Action) => {
+  switch (action?.type) {
     case actionTypes.FETCH_PLAYLISTS_START:
       return fetchPlaylistsStart(state);
     case actionTypes.FETCH_PLAYLISTS_SUCCESS:

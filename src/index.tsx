@@ -22,11 +22,6 @@ const reducer = combineReducers({
 
 export type RootState = ReturnType<typeof reducer>;
 
-export const redirect_uri =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:3000/login"
-    : "https://spotifyplaylistmaker-9f04b.web.app/login";
-
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(

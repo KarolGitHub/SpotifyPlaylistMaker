@@ -23,7 +23,7 @@ type Action = {
   searchResultsLimit: number;
   error: any;
 };
-const initialState: State = {
+export const initialState: State = {
   playlist: [],
   searchResults: [],
   searchResultsLimit: 20,
@@ -93,8 +93,8 @@ const setTracks = (state: State, action: Action) => {
   });
 };
 
-const reducer = (state: State = initialState, action: Action) => {
-  switch (action.type) {
+const reducer = (state: State = initialState, action?: Action) => {
+  switch (action?.type) {
     case actionTypes.ADD_TRACK:
       return addTrack(state, action);
     case actionTypes.DELETE_TRACK:
