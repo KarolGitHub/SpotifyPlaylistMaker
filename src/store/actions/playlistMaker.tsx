@@ -44,13 +44,14 @@ export const searchTracksFail = (error: string) => {
 };
 export const searchTracks = (
   accessToken: string,
+  country: string,
   searchType: string,
   term: string,
   limit: number
 ) => {
   return (dispatch: Dispatch) => {
     dispatch(searchTracksStart(limit));
-    const queryParams = `search?type=${searchType}&limit=${limit}&q=${term}`;
+    const queryParams = `search?type=${searchType}&limit=${limit}&q=${term}&market=${country}`;
     axios
       .get(queryParams, {
         headers: {

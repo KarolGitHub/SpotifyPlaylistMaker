@@ -23,7 +23,7 @@ export {
   authFail,
   authCheckState,
   setAuthRedirectURL,
-  logout
+  logout,
 } from "./auth";
 export {
   playTrackStateUpdate,

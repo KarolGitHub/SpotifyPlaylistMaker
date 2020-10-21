@@ -1,5 +1,5 @@
 import * as actionTypes from "./actionsTypes";
-import { prefixURL, client_id, redirect_uri} from "../../axios-spotify";
+import { prefixURL, client_id, redirect_uri } from "../../axios-spotify";
 import { Dispatch } from "redux";
 import { AxiosResponse, AxiosError } from "axios";
 import axios from "../../axios-spotify";
@@ -10,11 +10,12 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token: string, id: string) => {
+export const authSuccess = (token: string, id: string, country: string) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     token: token,
     userId: id,
+    country: country,
   };
 };
 
@@ -32,7 +33,7 @@ export const setAuthRedirectURL = () => {
     "&redirect_uri=" +
     redirect_uri +
     "&scope=" +
-    "playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative" +
+    "playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative user-read-private" +
     "&response_type=token" +
     "&state=123";
   // "&show_dialog=true";
@@ -69,13 +70,14 @@ export const auth = () => {
         axios
           .get("/me", { headers: headers })
           .then((response) => JSON.parse(JSON.stringify(response)))
-          .then((response: AxiosResponse) => {
-            localStorage.setItem("userId", response.data.id);
+          .then(({ data: { id, country } }: AxiosResponse) => {
+            localStorage.setItem("userId", id);
             localStorage.setItem(
               "expirationDate",
               date.setSeconds(date.getSeconds() + expiresIn).toString()
             );
             localStorage.setItem("token", accessToken);
+            localStorage.setItem("country", country);
           })
           .then(() => window.close())
           .catch((error: AxiosError) => {
@@ -116,10 +118,10 @@ export const logout = () => {
 
 export const authCheckState = () => {
   return (dispatch: Dispatch) => {
-    window.removeEventListener("storage", () => { });
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
-    if (!token || !userId) {
+    const country = localStorage.getItem("country");
+    if (!token || !userId || !country) {
       dispatch(logout());
     } else {
       let expirationDate = new Date(
@@ -128,7 +130,7 @@ export const authCheckState = () => {
       if (expirationDate <= new Date()) {
         dispatch(logout());
       } else {
-        dispatch(authSuccess(token, userId));
+        dispatch(authSuccess(token, userId, country));
         checkAuthTimeout(
           (expirationDate.getTime() - Number(new Date().getTime())) / 1000
         );

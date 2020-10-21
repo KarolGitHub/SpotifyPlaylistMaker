@@ -186,23 +186,23 @@ const Checkout: FunctionComponent<Props> = ({
   return (
     <div>
       <h3>Your Playlist</h3>
-        {form}
-        <div className={classes.ModalButtons}>
-          <Button btnType="cancel" clicked={cancel}>
-            Cancel
-          </Button>
-          <Button
-            btnType="green"
-            clicked={confirmHandler}
-            disabled={
-              !controls.name.valid ||
-              (controls.public.value === "true" &&
-                controls.collaborative.value === "true")
-            }
-          >
-            Save
-          </Button>
-        </div>
+      {form}
+      <div className={classes.ModalButtons}>
+        <Button btnType="cancel" clicked={cancel}>
+          Cancel
+        </Button>
+        <Button
+          btnType="green"
+          clicked={(e: any) => confirmHandler(e)}
+          disabled={
+            !controls.name.valid ||
+            (controls.public.value === "true" &&
+              controls.collaborative.value === "true")
+          }
+        >
+          Save
+        </Button>
+      </div>
     </div>
   );
 };

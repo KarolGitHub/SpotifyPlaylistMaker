@@ -61,6 +61,9 @@ const PlaylistMaker: FunctionComponent = () => {
   const userId: string = useSelector((state: RootState) => {
     return state.auth.userId;
   });
+  const country: string = useSelector((state: RootState) => {
+    return state.auth.country;
+  });
   const authRedirectPath: string = useSelector((state: RootState) => {
     return state.auth.authRedirectPath;
   });
@@ -75,8 +78,8 @@ const PlaylistMaker: FunctionComponent = () => {
 
   const onTracksSearch = useCallback(
     (type: string, term: string, limit: number) =>
-      dispatch(actions.searchTracks(token, type, term, limit)),
-    [dispatch, token]
+      dispatch(actions.searchTracks(token, country, type, term, limit)),
+    [dispatch, token, country]
   );
   const onPlaylistSave = useCallback(
     (payload: PlaylistPayload, trackURIs: Array<string>) =>
@@ -156,9 +159,11 @@ const PlaylistMaker: FunctionComponent = () => {
 
   useEffect(() => {
     if (redirect) {
-      window.addEventListener("storage", (e) => {
-        if (e.storageArea?.length === 3) {
+      window.addEventListener("storage", () => {
+        const storage = window.localStorage.getItem("token");
+        if (storage !== null) {
           dispatch(actions.authCheckState());
+          window.removeEventListener("storage", () => {});
         }
       });
       authPopup(authRedirectPath);
@@ -183,8 +188,8 @@ const PlaylistMaker: FunctionComponent = () => {
       if (playlistInfo) {
         onClearPlaylist();
         onSetTracks();
-      } 
-    },//eslint-disable-next-line
+      }
+    }, //eslint-disable-next-line
     [playlistInfo]
   );
 

@@ -27,8 +27,10 @@ const Auth: FunctionComponent = () => {
 
   useEffect(() => {
     if (authRedirectPath) {
-      window.addEventListener("storage", (e) => {
-        if (e.storageArea?.length === 3) {
+      window.addEventListener("storage", () => {
+        const storage = window.localStorage.getItem("token");
+        if (storage !== null) {
+          window.removeEventListener("storage", () => {});
           dispatch(actions.authCheckState());
         }
       });

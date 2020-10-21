@@ -80,6 +80,7 @@ export const fetchTracksStart = () => {
 };
 export const fetchTracks = (
   accessToken: string,
+  country: string,
   info: PlaylistInfo,
   redirect: boolean
 ) => {
@@ -91,7 +92,7 @@ export const fetchTracks = (
       "Content-Type": "application/json",
     };
     axios
-      .get(uri, { headers: headers })
+      .get(`${uri}?market=${country}`, { headers: headers })
       .then((response: AxiosResponse) => JSON.parse(JSON.stringify(response)))
       .then((response: AxiosResponse) => {
         const tracks = updateArray(updateObject(response.data).items).map(

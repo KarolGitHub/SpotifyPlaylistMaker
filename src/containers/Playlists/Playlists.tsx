@@ -51,6 +51,9 @@ const Playlists: FunctionComponent = () => {
   const userId: string = useSelector((state: RootState) => {
     return state.auth.userId;
   });
+  const country: string = useSelector((state: RootState) => {
+    return state.auth.country;
+  });
 
   const dispatch = useDispatch();
 
@@ -61,8 +64,8 @@ const Playlists: FunctionComponent = () => {
   );
   const onFetchTracks = useCallback(
     (playlistInfo: PlaylistInfo, redirect: boolean) =>
-      dispatch(actions.fetchTracks(token, playlistInfo, redirect)),
-    [dispatch, token]
+      dispatch(actions.fetchTracks(token, country, playlistInfo, redirect)),
+    [dispatch, token, country]
   );
   const onDeleteTracks = useCallback(
     (deletedTracks: { tracks: { uri: string | null }[] }) => {
@@ -71,25 +74,26 @@ const Playlists: FunctionComponent = () => {
         dispatch(
           actions.fetchTracks(
             token,
+            country,
             playlistInfo
               ? playlistInfo
               : {
-                id: "",
-                isEditable: true,
-                payload: {
-                  name: "",
-                  public: true,
-                  collaborative: false,
-                  description: "",
+                  id: "",
+                  isEditable: true,
+                  payload: {
+                    name: "",
+                    public: true,
+                    collaborative: false,
+                    description: "",
+                  },
+                  uri: "",
                 },
-                uri: "",
-              },
             false
           )
         ),
       ]);
     },
-    [dispatch, token, playlistInfo]
+    [dispatch, token, country, playlistInfo]
   );
   const onSetTracks = useCallback(() => dispatch(actions.setTracks(tracks)), [
     dispatch,
@@ -119,7 +123,7 @@ const Playlists: FunctionComponent = () => {
       } else if (isPlaylist) {
         onClearPlaylist();
       }
-    },//eslint-disable-next-line
+    }, //eslint-disable-next-line
     [onSetTracks]
   );
 
@@ -405,8 +409,8 @@ const Playlists: FunctionComponent = () => {
       <ReactTable columns={trackColumns} data={tracksData} />
     </div>
   ) : (
-      <ReactTable columns={playlistColumns} data={playlistsData} />
-    );
+    <ReactTable columns={playlistColumns} data={playlistsData} />
+  );
 
   return !error ? (
     !loading ? (
@@ -416,14 +420,14 @@ const Playlists: FunctionComponent = () => {
           {table}
         </div>
       ) : (
-          <Redirect to="/" />
-        )
-    ) : (
-        <Spinner />
+        <Redirect to="/" />
       )
+    ) : (
+      <Spinner />
+    )
   ) : (
-      <p>{error + ""}</p>
-    );
+    <p>{error + ""}</p>
+  );
 };
 
 export default errorHandler(Playlists, axios);
