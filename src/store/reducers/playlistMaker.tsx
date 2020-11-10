@@ -3,14 +3,14 @@ import {
   updateObject,
   Tracklist,
   tracksDiff,
-  updateArray,
+  Track,
+  spreadNestedObject,
 } from "../../shared/utility";
 
 type State = {
   playlist: Tracklist;
   searchResults: Tracklist;
   searchResultsLimit: number;
-  addedTrackIDs: Array<string>;
   error: any;
   loading: boolean;
   saveResult: boolean;
@@ -18,16 +18,16 @@ type State = {
 type Action = {
   type: string;
   index: number;
-  id: string;
+  track: Track;
   tracklist: Tracklist;
   searchResultsLimit: number;
   error: any;
+  tracklists: {};
 };
 export const initialState: State = {
   playlist: [],
   searchResults: [],
   searchResultsLimit: 20,
-  addedTrackIDs: [],
   error: null,
   loading: false,
   saveResult: false,
@@ -36,15 +36,19 @@ export const initialState: State = {
 const addTrack = (state: State, action: Action) => {
   return updateObject(state, {
     playlist: state.playlist.concat(state.searchResults[action.index]),
-    addedTrackIDs: updateArray(state.addedTrackIDs, action.id),
+    searchResults: state.searchResults.filter(
+      (_, index) => index !== action.index
+    ),
   });
 };
 
 const deleteTrack = (state: State, action: Action) => {
   return updateObject(state, {
     playlist: state.playlist.filter((_, index) => index !== action.index),
-    addedTrackIDs: state.addedTrackIDs.filter((id) => id !== action.id),
   });
+};
+const moveTrack = (state: State, action: Action) => {
+  return updateObject(state, spreadNestedObject(action.tracklists));
 };
 
 const searchTracksStart = (state: State, action: Action) => {
@@ -84,13 +88,12 @@ const successConfirm = (state: State) => {
   return updateObject(state, { saveResult: false });
 };
 const setTracks = (state: State, action: Action) => {
-  return updateObject(state, {
-    playlist: action.tracklist,
-    addedTrackIDs: state.addedTrackIDs.filter((id) =>
-      action.tracklist.find((track) => track.id === id)
-    ),
-    error: null,
-  });
+  return updateObject(
+    state,
+    updateObject(spreadNestedObject(action.tracklist), {
+      error: null,
+    })
+  );
 };
 
 const reducer = (state: State = initialState, action?: Action) => {
@@ -99,6 +102,8 @@ const reducer = (state: State = initialState, action?: Action) => {
       return addTrack(state, action);
     case actionTypes.DELETE_TRACK:
       return deleteTrack(state, action);
+    case actionTypes.MOVE_TRACK:
+      return moveTrack(state, action);
     case actionTypes.SEARCH_TRACKS_START:
       return searchTracksStart(state, action);
     case actionTypes.SEARCH_TRACKS_SUCCESS:

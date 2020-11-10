@@ -2,6 +2,7 @@ import * as actionTypes from "./actionsTypes";
 import axios from "../../axios-spotify";
 import { Dispatch } from "redux";
 import {
+  Track,
   Tracklist,
   updateObject,
   updateArray,
@@ -9,18 +10,22 @@ import {
 } from "../../shared/utility";
 import { AxiosResponse, AxiosError } from "axios";
 
-export const addTrack = (index: number, id: string) => {
+export const addTrack = (index: number) => {
   return {
     type: actionTypes.ADD_TRACK,
     index: index,
-    id: id,
   };
 };
-export const deleteTrack = (index: number, id: string) => {
+export const deleteTrack = (index: number) => {
   return {
     type: actionTypes.DELETE_TRACK,
     index: index,
-    id: id,
+  };
+};
+export const moveTrack = (tracklists: {}) => {
+  return {
+    type: actionTypes.MOVE_TRACK,
+    tracklists: tracklists,
   };
 };
 
@@ -212,7 +217,7 @@ export const successConfirm = () => {
   };
 };
 
-export const setTracks = (tracklist: Tracklist) => {
+export const setTracks = (tracklist: {}) => {
   return {
     type: actionTypes.SET_TRACKS,
     tracklist: tracklist,

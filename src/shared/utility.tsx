@@ -73,12 +73,54 @@ export const updateArray = (oldArray: Array<any>, updatedState?: any) => {
     return [...oldArray];
   }
 };
+export const spreadNestedObject = (oldObject: Object) => {
+  const updatedState: any = {};
+  for (const [key, value] of Object.entries(oldObject)) {
+    updatedState[key] = value;
+  }
+  return { ...updatedState };
+};
 
 export const tracksDiff = (search: Tracklist, playlist: Tracklist) => [
   ...search.filter((searchItem) =>
     playlist.every((playlistItem) => searchItem.id !== playlistItem.id)
   ),
 ];
+
+export const reorderItems = (
+  source: Tracklist,
+  endIndex: number,
+  droppableSource: any
+) => {
+  const sourceClone = Array.from(source);
+  const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+  sourceClone.splice(endIndex, 0, removed);
+
+  const result: any = {};
+  result[droppableSource.droppableId] = sourceClone;
+
+  return result;
+};
+
+export const moveItems = (
+  source: any,
+  destination: any,
+  droppableSource: any,
+  droppableDestination: any
+) => {
+  const sourceClone = Array.from(source);
+  const destClone = Array.from(destination);
+  const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+  destClone.splice(droppableDestination.index, 0, removed);
+
+  const result: any = {};
+  result[droppableSource.droppableId] = sourceClone;
+  result[droppableDestination.droppableId] = destClone;
+
+  return result;
+};
 
 type Rules = {
   required?: boolean;

@@ -13,7 +13,12 @@ import errorHandler from "./../../Hoc/errorHandler/errorHandler";
 import * as actions from "../../store/actions/index";
 import playlistsClasses from "./Playlists.module.scss";
 import buttonClasses from "../../components/UI/Button/Button.module.scss";
-import { Playlist, PlaylistInfo, Tracklist } from "../../shared/utility";
+import {
+  Playlist,
+  PlaylistInfo,
+  Tracklist,
+  tracksDiff,
+} from "../../shared/utility";
 import ReactTable from "./ReactTable/ReactTable.js";
 import { CellProps } from "./ReactTable/Filters/Filters";
 import Modal from "./../../components/UI/Modal/Modal";
@@ -32,6 +37,9 @@ const Playlists: FunctionComponent = () => {
   });
   const tracks: Tracklist = useSelector((state: RootState) => {
     return state.playlists.tracks;
+  });
+  const results: Tracklist = useSelector((state: RootState) => {
+    return state.playlistMaker.searchResults;
   });
   const loading: boolean = useSelector((state: RootState) => {
     return state.playlists.loading;
@@ -95,10 +103,16 @@ const Playlists: FunctionComponent = () => {
     },
     [dispatch, token, country, playlistInfo]
   );
-  const onSetTracks = useCallback(() => dispatch(actions.setTracks(tracks)), [
-    dispatch,
-    tracks,
-  ]);
+  const onSetTracks = useCallback(
+    () =>
+      dispatch(
+        actions.setTracks({
+          playlist: tracks,
+          searchResults: tracksDiff(results, tracks),
+        })
+      ),
+    [dispatch, tracks, results]
+  );
   const onSetRedirect = useCallback(() => dispatch(actions.setRedirect()), [
     dispatch,
   ]);

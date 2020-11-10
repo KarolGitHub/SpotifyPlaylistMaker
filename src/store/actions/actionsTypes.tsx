@@ -1,6 +1,7 @@
 export const ADD_TRACK = "ADD_TRACK";
 export const DELETE_TRACK = "DELETE_TRACK";
 export const SET_TRACKS = "SET_TRACKS";
+export const MOVE_TRACK = "MOVE_TRACK";
 
 export const SEARCH_TRACKS_START = "SEARCH_TRACKS_START";
 export const SEARCH_TRACKS = "SEARCH_TRACKS";

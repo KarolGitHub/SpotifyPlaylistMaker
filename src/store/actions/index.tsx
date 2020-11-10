@@ -15,6 +15,7 @@ export {
   editPlaylistSuccess,
   editPlaylistFail,
   setTracks,
+  moveTrack,
 } from "./playlistMaker";
 export {
   authStart,

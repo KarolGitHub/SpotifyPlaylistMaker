@@ -6,10 +6,12 @@ import { Track as TrackData, Tuple } from "../../../../shared/utility";
 type Props = {
   index: number;
   track: TrackData;
-  clicked: (id: string) => void;
+  clicked: () => void;
   playerState: Tuple | null;
   played: () => void;
-  isInPlaylist: boolean | null;
+  isPlaylist: boolean;
+  innerRef: any;
+  provided: any;
 };
 const Track: FunctionComponent<Props> = ({
   index,
@@ -17,16 +19,13 @@ const Track: FunctionComponent<Props> = ({
   clicked,
   playerState,
   played,
-  isInPlaylist,
+  isPlaylist,
+  innerRef,
+  provided,
 }) => {
   let btnClass = [classes.Action, classes.Remove].join(" "),
-    disabled = false,
     children = "-";
-  if (isInPlaylist) {
-    btnClass = [classes.Action, classes.Check].join(" ");
-    disabled = true;
-    children = String.fromCharCode(10004);
-  } else if (isInPlaylist === false) {
+  if (!isPlaylist) {
     btnClass = [classes.Action, classes.Add].join(" ");
     children = "+";
   }
@@ -65,14 +64,15 @@ const Track: FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={classes.Track}>
+    <div
+      className={classes.Track}
+      ref={innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+    >
       {playButton}
       {information}
-      <button
-        className={btnClass}
-        disabled={disabled}
-        onClick={() => clicked(track.id)}
-      >
+      <button className={btnClass} onClick={clicked}>
         {children}
       </button>
     </div>

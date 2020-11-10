@@ -61,11 +61,6 @@
     background-color: var(--mainBg1);
     width: 37px;
 
-    &.Check {
-      cursor: unset;
-      color: $green;
-    }
-
     &.Add:hover {
       color: $green;
     }

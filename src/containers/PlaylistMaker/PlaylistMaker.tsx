@@ -7,6 +7,7 @@ import React, {
   lazy,
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { DragDropContext } from "react-beautiful-dnd";
 
 import classes from "./PlaylistMaker.module.scss";
 import SearchBar from "./SearchBar/SearchBar";
@@ -22,6 +23,8 @@ import {
   authPopup,
   PlaylistPayload,
   PlaylistInfo,
+  moveItems,
+  reorderItems,
 } from "./../../shared/utility";
 import { RootState } from "../../index";
 import errorHandler from "./../../Hoc/errorHandler/errorHandler";
@@ -107,9 +110,14 @@ const PlaylistMaker: FunctionComponent = () => {
       ),
     [dispatch, token, userId, playlistInfo]
   );
-  const onSetTracks = useCallback(() => dispatch(actions.setTracks([])), [
-    dispatch,
-  ]);
+  const onSetTracks = useCallback(
+    (tracklist: {}) => dispatch(actions.setTracks(tracklist)),
+    [dispatch]
+  );
+  const onMoveTrack = useCallback(
+    (tracklist: {}) => dispatch(actions.moveTrack(tracklist)),
+    [dispatch]
+  );
 
   const compareDetails = (
     userPayload: PlaylistPayload,
@@ -157,6 +165,34 @@ const PlaylistMaker: FunctionComponent = () => {
     [onTracksSearch, token, setRedirect]
   );
 
+  const dragEndHandler = (result: any) => {
+    const { source, destination } = result;
+
+    if (!destination) {
+      return;
+    }
+    const sInd = source.droppableId;
+    const dInd = destination.droppableId;
+    const sourceItems = sInd === "playlist" ? tracks : results;
+    if (sInd === dInd) {
+      const updatedItems: {} = reorderItems(
+        sourceItems,
+        destination.index,
+        source
+      );
+      onSetTracks(updatedItems);
+    } else {
+      const destinationItems = dInd === "playlist" ? tracks : results;
+      const updatedItems: {} = moveItems(
+        sourceItems,
+        destinationItems,
+        source,
+        destination
+      );
+      onMoveTrack(updatedItems);
+    }
+  };
+
   useEffect(() => {
     if (redirect) {
       window.addEventListener("storage", () => {
@@ -187,7 +223,7 @@ const PlaylistMaker: FunctionComponent = () => {
     () => () => {
       if (playlistInfo) {
         onClearPlaylist();
-        onSetTracks();
+        onSetTracks({ playlist: [] });
       }
     }, //eslint-disable-next-line
     [playlistInfo]
@@ -275,8 +311,10 @@ const PlaylistMaker: FunctionComponent = () => {
         {modal}
         {searchBar}
         <div className={classes.Playlist}>
-          {searchResults}
-          {playlist}
+          <DragDropContext onDragEnd={dragEndHandler}>
+            {searchResults}
+            {playlist}
+          </DragDropContext>
           {player}
         </div>
       </div>

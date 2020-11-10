@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
 import * as actions from "../../../store/actions/index";
 import classes from "./TrackList.module.scss";
@@ -16,9 +17,10 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
   const playerState: Tuple | null = useSelector((state: RootState) => {
     return state.player.playerState;
   });
-  const addedTrackIDs: Array<string> = useSelector((state: RootState) => {
-    return !isPlaylist ? state.playlistMaker.addedTrackIDs : null;
-  });
+
+  const droppableId: [number, string] = !isPlaylist
+    ? [0, "searchResults"]
+    : [1, "playlist"];
 
   const dispatch = useDispatch();
 
@@ -41,41 +43,55 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
   );
 
   const onAddTrack = useCallback(
-    (index: number, id: string) => dispatch(actions.addTrack(index, id)),
+    (index: number) => dispatch(actions.addTrack(index)),
     [dispatch]
   );
   const onDeleteTrack = useCallback(
-    (index: number, id: string) => dispatch(actions.deleteTrack(index, id)),
+    (index: number) => dispatch(actions.deleteTrack(index)),
     [dispatch]
   );
 
-  const onCLickCallback = isPlaylist ? onDeleteTrack : onAddTrack;
+  const onClickCallback = isPlaylist ? onDeleteTrack : onAddTrack;
 
-  const tracks = tracklist.map((track, index) => {
-    const isInPlaylist = addedTrackIDs
-      ? addedTrackIDs.findIndex((id) => id === track.id) !== -1
-        ? true
-        : false
-      : null;
-    return (
-      <Track
-        key={index}
-        index={index}
-        track={track}
-        clicked={(id: string) => onCLickCallback(index, id)}
-        played={() => onPlayTrack(index)}
-        playerState={
-          playerState &&
-          playerState[0] === index &&
-          playerState[2] === isPlaylist
-            ? playerState
-            : null
-        }
-        isInPlaylist={isInPlaylist}
-      />
-    );
-  });
-  return <div className={classes.TrackList}>{tracks}</div>;
+  return (
+    <Droppable key={droppableId[0]} droppableId={droppableId[1]}>
+      {(provided) => (
+        <div
+          className={classes.TrackList}
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+        >
+          {tracklist.map((track, index) => (
+            <Draggable
+              key={`${track.id}`}
+              draggableId={`${track.id}`}
+              index={index}
+            >
+              {(provided) => (
+                <Track
+                  index={index}
+                  track={track}
+                  clicked={() => onClickCallback(index)}
+                  played={() => onPlayTrack(index)}
+                  playerState={
+                    playerState &&
+                    playerState[0] === index &&
+                    playerState[2] === isPlaylist
+                      ? playerState
+                      : null
+                  }
+                  isPlaylist={isPlaylist}
+                  innerRef={provided.innerRef}
+                  provided={provided}
+                />
+              )}
+            </Draggable>
+          ))}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  );
 };
 
 export default TrackList;
