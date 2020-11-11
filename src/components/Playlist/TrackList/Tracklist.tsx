@@ -13,6 +13,17 @@ type Props = {
   isPlaylist: boolean;
 };
 
+const applyListStyleOnDrag = (isDraggingOver: boolean) => ({
+  boxShadow: isDraggingOver
+    ? "inset 0 0 10px var(--listShadow), 0 0 10px var(--listShadow)"
+    : "none",
+});
+const applyTrackStyleOnDrag = (isDragging: boolean, draggableStyle: any) => ({
+  userSelect: "none",
+  opacity: isDragging ? "0.5" : "1",
+  ...draggableStyle,
+});
+
 const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
   const playerState: Tuple | null = useSelector((state: RootState) => {
     return state.player.playerState;
@@ -55,10 +66,11 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
 
   return (
     <Droppable key={droppableId[0]} droppableId={droppableId[1]}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <div
           className={classes.TrackList}
           ref={provided.innerRef}
+          style={applyListStyleOnDrag(snapshot.isDraggingOver)}
           {...provided.droppableProps}
         >
           {tracklist.map((track, index) => (
@@ -67,7 +79,7 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
               draggableId={`${track.id}`}
               index={index}
             >
-              {(provided) => (
+              {(provided, snapshot) => (
                 <Track
                   index={index}
                   track={track}
@@ -83,6 +95,10 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
                   isPlaylist={isPlaylist}
                   innerRef={provided.innerRef}
                   provided={provided}
+                  style={applyTrackStyleOnDrag(
+                    snapshot.isDragging,
+                    provided.draggableProps.style
+                  )}
                 />
               )}
             </Draggable>

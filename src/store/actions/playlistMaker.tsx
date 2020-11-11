@@ -2,7 +2,6 @@ import * as actionTypes from "./actionsTypes";
 import axios from "../../axios-spotify";
 import { Dispatch } from "redux";
 import {
-  Track,
   Tracklist,
   updateObject,
   updateArray,

@@ -1,13 +1,17 @@
-@import '../../../../assets/variables';
+@import "../../../../assets/variables";
 
 .Track {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid $light;
+  border-top: 0.5px solid $light;
+  border-bottom: 0.5px solid $light;
   height: fit-content;
 
   .PlayButton {
-    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 1s linear;
+    transition: display 0.25s linear;
     position: relative;
     background: transparent;
     box-sizing: border-box;
@@ -26,6 +30,14 @@
       border-width: 0px 0 0px 30px;
     }
   }
+  .Empty {
+    position: relative;
+    box-sizing: border-box;
+    width: 0;
+    height: 30px;
+    border: 0;
+    border-width: 20px 0 20px 30px;
+  }
 
   .Information {
     width: min-content;
@@ -35,7 +47,7 @@
     justify-content: center;
     color: var(--infoFontColor);
 
-    border-right: 1px solid $light;
+    border-right: 2.5px solid $light;
 
     p {
       font-size: inherit;
@@ -56,7 +68,7 @@
     font-size: 30px;
     min-height: 100px;
     font-weight: 600;
-    transition: color .25s;
+    transition: color 0.25s;
     border: 0px;
     background-color: var(--mainBg1);
     width: 37px;
@@ -72,9 +84,13 @@
 }
 
 .Track:hover .PlayButton {
-  display: inline-block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .Track:first-child {
-  border-top: 1px solid $light;
+  border-top: 2.5px solid $light;
+}
+.Track:last-child {
+  border-bottom: 2.5px solid $light;
 }

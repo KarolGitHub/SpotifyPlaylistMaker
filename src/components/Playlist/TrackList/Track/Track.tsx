@@ -12,6 +12,7 @@ type Props = {
   isPlaylist: boolean;
   innerRef: any;
   provided: any;
+  style: any;
 };
 const Track: FunctionComponent<Props> = ({
   index,
@@ -22,6 +23,7 @@ const Track: FunctionComponent<Props> = ({
   isPlaylist,
   innerRef,
   provided,
+  style,
 }) => {
   let btnClass = [classes.Action, classes.Remove].join(" "),
     children = "-";
@@ -42,7 +44,7 @@ const Track: FunctionComponent<Props> = ({
     </div>
   );
 
-  let playButton = null;
+  let playButton = <div className={classes.Empty} />;
 
   if (track.preview_url) {
     let playClasses = classes.PlayButton;
@@ -67,6 +69,7 @@ const Track: FunctionComponent<Props> = ({
     <div
       className={classes.Track}
       ref={innerRef}
+      style={style}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >

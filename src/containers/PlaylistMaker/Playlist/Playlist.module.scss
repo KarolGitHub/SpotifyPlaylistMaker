@@ -3,10 +3,12 @@
 .Playlist {
   display: flex;
   flex-direction: column;
+  width: 50%;
+  height: 950px;
   align-items: center;
   overflow-y: scroll;
-  width: 40%;
   padding: 14px;
+  margin: 0px 10px 0px 0px;
   background-color: var(--playlist);
   box-shadow: 0 4px 2px 2px $gray;
   .Save {
@@ -20,5 +22,6 @@
     min-height: max-content;
     width: 90%;
     margin-bottom: 2rem;
+    margin: 0px;
   }
 }

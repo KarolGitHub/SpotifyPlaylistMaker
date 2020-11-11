@@ -1,4 +1,4 @@
-@import './assets/_variables';
+@import "./assets/_variables";
 
 .light-theme {
   --themeDropDownBg: #{$goldCrayola};
@@ -12,6 +12,7 @@
   --themeSwitchColor: #{$light};
   --playlist: #{$goldCrayola};
   --spinner: #{$lightGradient1};
+  --listShadow: #{$shadowLight};
 }
 
 .dark-theme {
@@ -26,6 +27,7 @@
   --themeSwitchColor: #{$dark};
   --playlist: #{$navy-blue};
   --spinner: #{$darkGradient1};
+  --listShadow: #{$light-blue};
 }
 
 * {
@@ -49,14 +51,14 @@ body {
   background-color: var(--mainBg3);
   margin: 0;
   border: 0;
-  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
