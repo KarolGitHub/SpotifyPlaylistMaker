@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useState, useCallback } from "react";
+import React, {
+  FunctionComponent,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ReactPlayer from "react-player";
 
@@ -15,6 +21,7 @@ type Props = {
 
 const Player: FunctionComponent<Props> = ({ url, playerState }) => {
   const [volume, setVolume] = useState(false);
+  const timerRef = useRef<any>(null);
 
   const error: any = useSelector((state: RootState) => {
     return state.player.error;
@@ -22,23 +29,30 @@ const Player: FunctionComponent<Props> = ({ url, playerState }) => {
 
   const dispatch = useDispatch();
 
-  const onPlay = useCallback(
+  const playHandler = useCallback(
     () => dispatch(actions.playTrackStart(playerState)),
     [dispatch, playerState]
   );
-  const onPause = useCallback(
-    () => dispatch(actions.playTrackPause(playerState)),
-    [dispatch, playerState]
-  );
-  const onEnded = useCallback(() => dispatch(actions.playTrackEnd()), [
+  const pauseHandler = useCallback(() => {
+    timerRef.current = setTimeout(
+      () => dispatch(actions.playTrackPause(playerState)),
+      10
+    );
+  }, [dispatch, playerState]);
+  const seekHandler = () => {
+    clearTimeout(timerRef.current);
+  };
+  const endedHandler = useCallback(() => dispatch(actions.playTrackEnd()), [
     dispatch,
   ]);
-  const onFail = useCallback(
+  const failHandler = useCallback(
     (err: { target: { error: { message: string } } } | null) => {
       dispatch(actions.playTrackFail(err?.target?.error?.message));
     },
     [dispatch]
   );
+
+  useEffect(() => () => clearTimeout(timerRef.current));
 
   const playerWidth: number =
     window.innerWidth > 1280
@@ -48,7 +62,7 @@ const Player: FunctionComponent<Props> = ({ url, playerState }) => {
       : window.innerWidth;
   return (
     <React.Fragment>
-      <Modal open={error} clicked={() => onFail(null)} invisible>
+      <Modal open={error} clicked={() => failHandler(null)} invisible>
         {error ? error : null}
       </Modal>
       <div className={classes.PlayerWrapper}>
@@ -57,10 +71,11 @@ const Player: FunctionComponent<Props> = ({ url, playerState }) => {
           url={url}
           playing={playerState[1]}
           onStart={() => setVolume(true)}
-          onPlay={onPlay}
-          onPause={onPause}
-          onEnded={onEnded}
-          onError={(err: any) => onFail(err)}
+          onPlay={playHandler}
+          onPause={pauseHandler}
+          onSeek={seekHandler}
+          onEnded={endedHandler}
+          onError={(err: any) => failHandler(err)}
           controls
           volume={volume ? undefined : 0.1}
           width={playerWidth}

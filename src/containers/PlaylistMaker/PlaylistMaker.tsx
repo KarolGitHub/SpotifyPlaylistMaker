@@ -27,7 +27,7 @@ import {
   reorderItems,
 } from "./../../shared/utility";
 import { RootState } from "../../index";
-import errorHandler from "./../../Hoc/errorHandler/errorHandler";
+import withErrorHandler from "../../Hoc/withErrorHandler/withErrorHandler";
 import axios from "./../../axios-spotify";
 import * as actions from "./../../store/actions/index";
 import Button from "../../components/UI/Button/Button";
@@ -326,4 +326,4 @@ const PlaylistMaker: FunctionComponent = () => {
   );
 };
 
-export default errorHandler(PlaylistMaker, axios);
+export default withErrorHandler(PlaylistMaker, axios);

@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import axios from "../../axios-spotify";
 import { RootState } from "../..";
-import errorHandler from "./../../Hoc/errorHandler/errorHandler";
+import withErrorHandler from "../../Hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../store/actions/index";
 import playlistsClasses from "./Playlists.module.scss";
 import buttonClasses from "../../components/UI/Button/Button.module.scss";
@@ -444,4 +444,4 @@ const Playlists: FunctionComponent = () => {
   );
 };
 
-export default errorHandler(Playlists, axios);
+export default withErrorHandler(Playlists, axios);

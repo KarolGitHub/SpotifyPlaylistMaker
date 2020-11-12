@@ -44,14 +44,20 @@ const Track: FunctionComponent<Props> = ({
     </div>
   );
 
-  let playButton = <div className={classes.Empty} />;
+  let playButton = null;
 
   if (track.preview_url) {
     let playClasses = classes.PlayButton;
+    let overlayClasses = classes.Overlay;
     if (playerState && playerState[1]) {
       playClasses = [classes.PlayButton, classes.Paused].join(" ");
+      overlayClasses = [classes.Overlay, classes.Paused].join(" ");
     }
-    playButton = <button className={playClasses} onClick={played} />;
+    playButton = (
+      <div className={overlayClasses}>
+        <button className={playClasses} onClick={played} />
+      </div>
+    );
     infoClasses = [classes.Information, classes.Playable].join(" ");
     information = (
       <div className={infoClasses} onClick={played}>
@@ -82,4 +88,4 @@ const Track: FunctionComponent<Props> = ({
   );
 };
 
-export default React.memo(Track);
+export default Track;
