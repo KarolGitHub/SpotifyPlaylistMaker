@@ -1,4 +1,7 @@
 .TrackList {
+  width: 100%;
+}
+
+.TrackList:empty {
   min-height: 100px;
-  width: 100%; 
 }
