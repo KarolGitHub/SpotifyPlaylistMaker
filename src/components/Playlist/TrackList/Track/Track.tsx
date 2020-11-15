@@ -1,7 +1,27 @@
-import React, { FunctionComponent } from "react";
+import React, {
+  FunctionComponent,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 import classes from "./Track.module.scss";
 import { Track as TrackData, Tuple } from "../../../../shared/utility";
+
+const isElementOverflowing = (element: any) => {
+  return element.offsetWidth < element.scrollWidth;
+};
+
+const applyMarqueeOnOverflow = (overflowingElement: any) => {
+  overflowingElement.style.setProperty(
+    "--animation-time",
+    `calc((5.5s*${overflowingElement.scrollWidth})/622)`
+  );
+  overflowingElement.style.setProperty(
+    "--gap-width",
+    `calc(62px/${622 / overflowingElement.scrollWidth})`
+  );
+};
 
 type Props = {
   index: number;
@@ -25,67 +45,88 @@ const Track: FunctionComponent<Props> = ({
   provided,
   style,
 }) => {
-  let btnClass = [classes.Action, classes.Remove].join(" "),
-    children = "-";
+  const [trackClasses, setTrackClasses] = useState(classes.Track);
+  const trackDescRef: any = useRef([]);
+  let btnClass = `${classes.Action} ${classes.Remove}`,
+    actionIndicator = "-",
+    trackDescClasses = classes.Description,
+    onPlayCallback = undefined,
+    playButton = null;
+
   if (!isPlaylist) {
-    btnClass = [classes.Action, classes.Add].join(" ");
-    children = "+";
+    btnClass = `${classes.Action} ${classes.Add}`;
+    actionIndicator = "+";
   }
 
-  let infoClasses = classes.Information;
-  let information = (
-    <div className={infoClasses}>
-      <h3>
-        {index + 1}. {track.name}
-      </h3>
-      <p>
-        {track.artist} | {track.album}
-      </p>
-    </div>
-  );
-
-  let playButton = null;
-
   if (track.preview_url) {
-    let playClasses = classes.PlayButton;
-    let overlayClasses = classes.Overlay;
+    trackDescClasses = `${trackDescClasses} ${classes.Playable}`;
+    onPlayCallback = played;
+
+    let playClasses = classes.PlayButton,
+      overlayClasses = classes.Overlay;
+
     if (playerState && playerState[1]) {
-      playClasses = [classes.PlayButton, classes.Paused].join(" ");
-      overlayClasses = [classes.Overlay, classes.Paused].join(" ");
+      playClasses = [playClasses, classes.Paused].join(" ");
+      overlayClasses = [overlayClasses, classes.Paused].join(" ");
     }
     playButton = (
       <div className={overlayClasses}>
-        <button className={playClasses} onClick={played} />
-      </div>
-    );
-    infoClasses = [classes.Information, classes.Playable].join(" ");
-    information = (
-      <div className={infoClasses} onClick={played}>
-        <h3>
-          {index + 1}. {track.name}
-        </h3>
-        <p>
-          {track.artist} | {track.album}
-        </p>
+        <button className={playClasses} onClick={onPlayCallback} />
       </div>
     );
   }
 
+  useLayoutEffect(() => {
+    if (isElementOverflowing(trackDescRef.current[0])) {
+      applyMarqueeOnOverflow(trackDescRef.current[1]);
+      setTrackClasses(`${trackClasses} ${classes.Marquee}`);
+    }
+    //eslint-disable-next-line
+  }, []);
+
   return (
     <div
-      className={classes.Track}
+      className={trackClasses}
       ref={innerRef}
       style={style}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >
       {playButton}
-      {information}
+      <div
+        className={trackDescClasses}
+        onClick={onPlayCallback}
+        ref={(el: any) => (trackDescRef.current[0] = el)}
+      >
+        <div
+          className={classes.Text}
+          ref={(el: any) => (trackDescRef.current[1] = el)}
+        >
+          <span>
+            <h3>
+              {index + 1}. {track.name}
+            </h3>
+            <p>
+              {track.artist} | {track.album}
+            </p>
+          </span>
+          {trackClasses !== classes.Track && (
+            <span>
+              <h3>
+                {index + 1}. {track.name}
+              </h3>
+              <p>
+                {track.artist} | {track.album}
+              </p>
+            </span>
+          )}
+        </div>
+      </div>
       <button className={btnClass} onClick={clicked}>
-        {children}
+        {actionIndicator}
       </button>
     </div>
   );
 };
 
-export default Track;
+export default React.memo(Track);

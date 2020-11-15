@@ -2,10 +2,6 @@
 
 .Track {
   display: flex;
-  align-items: center;
-  border-top: 0.5px solid $light;
-  border-bottom: 0.5px solid $light;
-  height: fit-content;
   .Overlay {
     position: relative;
     overflow: hidden;
@@ -16,8 +12,9 @@
     .PlayButton {
       position: relative;
       left: 110%;
+      top: 3px;
       width: 0px;
-      height: 30px;
+      height: 39px;
       -webkit-transform: translate(-100%, 0%);
       -ms-transform: translate(-100%, 0%);
       transform: translate(-100%, 0%);
@@ -39,23 +36,35 @@
     }
   }
 
-  .Information {
+  .Description {
     width: min-content;
     flex-grow: 1;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     color: var(--infoFontColor);
+    height: 60px;
+    margin-right: 10px;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
 
-    border-right: 2.5px solid $light;
-
-    p {
-      font-size: inherit;
-      font-weight: 300;
-    }
-
-    h3 {
-      margin-bottom: 3px;
+    .Text {
+      display: grid;
+      grid-auto-flow: column;
+      --gap-width: 62px;
+      gap: var(--gap-width);
+      height: 50px;
+      position: absolute;
+      text-indent: 3px;
+      span {
+        p,
+        h3 {
+          margin: 0;
+        }
+        p {
+          top: 25px;
+        }
+      }
     }
   }
 
@@ -66,19 +75,25 @@
   .Action {
     cursor: pointer;
     font-size: 30px;
-    min-height: 100px;
     font-weight: 600;
     transition: color 0.25s;
-    border: 0px;
     background-color: var(--mainBg1);
     width: 37px;
-
+    height: 50px;
+    border: 1px solid var(--infoFontColor);
+    border-radius: 5px;
+    -webkit-transition: color 0.4s ease-out, border-color 0.4s ease-out;
+    -moz-transition: color 0.4s ease-out, border-color 0.4s ease-out;
+    -o-transition: color 0.4s ease-out, border-color 0.4s ease-out;
+    transition: color 0.4s ease-out, border-color 0.4s ease-out;
     &.Add:hover {
       color: $green;
+      border-color: $green;
     }
 
     &.Remove:hover {
       color: $red;
+      border-color: $red;
     }
   }
 }
@@ -87,9 +102,18 @@
   width: 40px;
 }
 
-.Track:first-child {
-  border-top: 2.5px solid $light;
+.Marquee {
+  &:hover .Text {
+    --animation-time: 5.5s;
+    animation: marquee var(--animation-time) linear 0.3s infinite;
+  }
 }
-.Track:last-child {
-  border-bottom: 2.5px solid $light;
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-52.5%);
+  }
 }
