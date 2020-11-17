@@ -24,7 +24,7 @@ const Modal: FunctionComponent<Props> = ({
         table ? [classes.Table, classes.Modal].join(" ") : classes.Modal
       }
       style={{
-        transform: open ? "translate(0)" : "translate(-100vh)",
+        transform: open ? "translate(0)" : "translate(-100vw)",
         opacity: open ? "1" : "0",
       }}
     >

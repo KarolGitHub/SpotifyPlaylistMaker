@@ -1,5 +1,9 @@
-.ModalButtons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+.Checkout {
+  overflow-y: scroll;
+  max-height: 100vh;
+  .ModalButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 }

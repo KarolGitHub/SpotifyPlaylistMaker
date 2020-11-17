@@ -184,7 +184,7 @@ const Checkout: FunctionComponent<Props> = ({
   ));
 
   return (
-    <div>
+    <div className={classes.Checkout}>
       <h3>Your Playlist</h3>
       {form}
       <div className={classes.ModalButtons}>

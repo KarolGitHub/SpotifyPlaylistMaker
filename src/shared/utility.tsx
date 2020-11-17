@@ -58,7 +58,7 @@ export type PlaylistInfo = {
   uri: string;
 };
 
-export type Tuple = [number, boolean, boolean];
+export type Tuple = [number, boolean, string];
 
 export const updateObject = (oldObject: Object, updatedState?: any) => {
   return {
@@ -120,6 +120,47 @@ export const moveItems = (
   result[droppableDestination.droppableId] = destClone;
 
   return result;
+};
+
+export const updatePlayTrackIndex = (
+  playerState: Tuple,
+  source: { index: number; droppableId: string },
+  destination: { index: number; droppableId: string },
+  dragActionType: "reorder" | "move"
+): Tuple | null => {
+  if (dragActionType === "reorder") {
+    if (source.index === playerState[0]) {
+      return [destination.index, playerState[1], destination.droppableId];
+    } else if (
+      destination.index <= playerState[0] &&
+      source.index > playerState[0]
+    ) {
+      return [playerState[0] + 1, playerState[1], destination.droppableId];
+    } else if (
+      destination.index >= playerState[0] &&
+      source.index < playerState[0]
+    ) {
+      return [playerState[0] - 1, playerState[1], destination.droppableId];
+    } else return null;
+  } else {
+    if (
+      destination.index <= playerState[0] &&
+      destination.droppableId === playerState[2]
+    ) {
+      return [playerState[0] + 1, playerState[1], destination.droppableId];
+    } else if (
+      source.index < playerState[0] &&
+      destination.droppableId !== playerState[2]
+    ) {
+      return [playerState[0] - 1, playerState[1], playerState[2]];
+    }
+    if (
+      source.index === playerState[0] &&
+      source.droppableId === playerState[2]
+    ) {
+      return [destination.index, playerState[1], destination.droppableId];
+    } else return null;
+  }
 };
 
 type Rules = {

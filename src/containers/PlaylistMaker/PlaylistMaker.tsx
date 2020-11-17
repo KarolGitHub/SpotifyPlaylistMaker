@@ -25,6 +25,7 @@ import {
   PlaylistInfo,
   moveItems,
   reorderItems,
+  updatePlayTrackIndex,
 } from "./../../shared/utility";
 import { RootState } from "../../index";
 import withErrorHandler from "../../Hoc/withErrorHandler/withErrorHandler";
@@ -70,7 +71,7 @@ const PlaylistMaker: FunctionComponent = () => {
   const authRedirectPath: string = useSelector((state: RootState) => {
     return state.auth.authRedirectPath;
   });
-  const playerState: Tuple = useSelector((state: RootState) => {
+  const playerState: Tuple | null | false = useSelector((state: RootState) => {
     return state.player.playerState;
   });
   const playlistInfo: PlaylistInfo | null = useSelector((state: RootState) => {
@@ -171,18 +172,30 @@ const PlaylistMaker: FunctionComponent = () => {
     if (!destination) {
       return;
     }
-    const sInd = source.droppableId;
-    const dInd = destination.droppableId;
-    const sourceItems = sInd === "playlist" ? tracks : results;
-    if (sInd === dInd) {
+    const sourceId = source.droppableId;
+    const destinationId = destination.droppableId;
+    const sourceItems = sourceId === "playlist" ? tracks : results;
+    if (sourceId === destinationId) {
       const updatedItems: {} = reorderItems(
         sourceItems,
         destination.index,
         source
       );
       onSetTracks(updatedItems);
+
+      if (playerState && source.droppableId === playerState[2]) {
+        const result: Tuple | null = updatePlayTrackIndex(
+          playerState,
+          source,
+          destination,
+          "reorder"
+        );
+        if (result) {
+          dispatch(actions.playTrackStateUpdate(result));
+        }
+      }
     } else {
-      const destinationItems = dInd === "playlist" ? tracks : results;
+      const destinationItems = destinationId === "playlist" ? tracks : results;
       const updatedItems: {} = moveItems(
         sourceItems,
         destinationItems,
@@ -190,6 +203,18 @@ const PlaylistMaker: FunctionComponent = () => {
         destination
       );
       onMoveTrack(updatedItems);
+
+      if (playerState) {
+        const result: Tuple | null = updatePlayTrackIndex(
+          playerState,
+          source,
+          destination,
+          "move"
+        );
+        if (result) {
+          dispatch(actions.playTrackStateUpdate(result));
+        }
+      }
     }
   };
 
@@ -295,7 +320,7 @@ const PlaylistMaker: FunctionComponent = () => {
       playerState && (
         <Player
           url={
-            playerState[2]
+            playerState[2] === "playlist"
               ? tracks[playerState[0]]?.preview_url
               : results[playerState[0]]?.preview_url
           }

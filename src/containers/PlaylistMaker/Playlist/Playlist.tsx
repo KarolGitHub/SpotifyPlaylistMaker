@@ -14,7 +14,7 @@ const Playlist: FunctionComponent<Props> = ({ tracklist, name, clicked }) => {
   return (
     <div className={classes.Playlist}>
       <h1>{name ? name : "New Playlist"}</h1>
-      <TrackList tracklist={tracklist} isPlaylist />
+      <TrackList tracklist={tracklist} listType="playlist" />
       <div className={classes.Save}>
         <Button
           btnType="purple"

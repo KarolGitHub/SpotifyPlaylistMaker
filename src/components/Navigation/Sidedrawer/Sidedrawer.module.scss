@@ -2,24 +2,24 @@
   position: fixed;
   width: 280px;
   height: 100%;
-  left:0;
-  top:0;
+  left: 0;
+  top: 0;
   z-index: 450;
   background-color: var(--navBg);
   padding: 60px 16px;
   box-sizing: border-box;
-  transition: transform 0.3s ease-out;   
+  transition: transform 0.3s ease-out;
 }
 
 @media (min-width: 601px) {
   .Sidedrawer {
-      display: none;
-      max-width: 70%;
+    display: none;
+    max-width: 70%;
   }
 }
 @media (max-width: 600px) {
   .Sidedrawer {
-      max-width: 70%;
+    max-width: 70%;
   }
 }
 
@@ -32,7 +32,10 @@
 }
 
 .Logo {
-  height: 10%;
-  width: 10%;
+  height: 50px;
+  width: 50px;
   margin-bottom: 32px;
+  @media (max-height: 300px) {
+    display: none;
+  }
 }

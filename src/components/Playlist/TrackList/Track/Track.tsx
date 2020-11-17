@@ -9,7 +9,7 @@ import classes from "./Track.module.scss";
 import { Track as TrackData, Tuple } from "../../../../shared/utility";
 
 const isElementOverflowing = (element: any) => {
-  return element.offsetWidth < element.scrollWidth;
+  return element?.offsetWidth < element?.scrollWidth;
 };
 
 const applyMarqueeOnOverflow = (overflowingElement: any) => {
@@ -22,12 +22,18 @@ const applyMarqueeOnOverflow = (overflowingElement: any) => {
     `calc(62px/${622 / overflowingElement.scrollWidth})`
   );
 };
+const applyMarqueeOnTrackPlay = (overflowingElement: any) => {
+  overflowingElement.style.setProperty("--animation-play-state", "running");
+};
+const applyMarqueeOnTrackEnd = (overflowingElement: any) => {
+  overflowingElement.style.setProperty("--animation-play-state", "initial");
+};
 
 type Props = {
   index: number;
   track: TrackData;
   clicked: () => void;
-  playerState: Tuple | null;
+  playerState: Tuple | null | false;
   played: () => void;
   isPlaylist: boolean;
   innerRef: any;
@@ -47,6 +53,7 @@ const Track: FunctionComponent<Props> = ({
 }) => {
   const [trackClasses, setTrackClasses] = useState(classes.Track);
   const trackDescRef: any = useRef([]);
+
   let btnClass = `${classes.Action} ${classes.Remove}`,
     actionIndicator = "-",
     trackDescClasses = classes.Description,
@@ -65,10 +72,20 @@ const Track: FunctionComponent<Props> = ({
     let playClasses = classes.PlayButton,
       overlayClasses = classes.Overlay;
 
-    if (playerState && playerState[1]) {
-      playClasses = [playClasses, classes.Paused].join(" ");
-      overlayClasses = [overlayClasses, classes.Paused].join(" ");
+    if (playerState) {
+      if (playerState[1]) {
+        playClasses = `${playClasses} ${classes.Paused}`;
+        overlayClasses = `${overlayClasses} ${classes.Paused}`;
+      }
+      if (isElementOverflowing(trackDescRef.current[0])) {
+        applyMarqueeOnTrackPlay(trackDescRef.current[1]);
+      }
+    } else if (playerState === false) {
+      if (isElementOverflowing(trackDescRef.current[0])) {
+        applyMarqueeOnTrackEnd(trackDescRef.current[1]);
+      }
     }
+
     playButton = (
       <div className={overlayClasses}>
         <button className={playClasses} onClick={onPlayCallback} />
@@ -129,4 +146,4 @@ const Track: FunctionComponent<Props> = ({
   );
 };
 
-export default React.memo(Track);
+export default Track;

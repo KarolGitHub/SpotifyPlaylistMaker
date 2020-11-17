@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useRef } from "react";
 import classes from "./Input.module.scss";
 
 type Props = {
@@ -22,7 +22,7 @@ const Input: FunctionComponent<Props> = ({
   note,
 }) => {
   const inputClasses = [classes.InputElement];
-
+  const inputRef: any = useRef<HTMLInputElement>(null);
   let validationError = null;
   let inputElement = null;
 
@@ -72,11 +72,17 @@ const Input: FunctionComponent<Props> = ({
           onKeyUp={pressed}
           onBlur={() => invalid}
           className={inputClasses.join(" ")}
-          autoFocus={focus}
+          ref={(el: any) => (inputRef.current = el)}
           {...elementConfig}
         />
       );
   }
+
+  useEffect(() => {
+    if (focus) {
+      inputRef.current?.focus();
+    } //eslint-disable-next-line
+  }, []);
   return (
     <div className={classes.Input}>
       {inputElement}

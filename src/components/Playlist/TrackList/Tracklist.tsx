@@ -10,7 +10,7 @@ import { RootState } from "../../..";
 
 type Props = {
   tracklist: Tracklist;
-  isPlaylist: boolean;
+  listType: "playlist" | "searchResults";
 };
 
 const applyListStyleOnDrag = (isDraggingOver: boolean) => ({
@@ -24,33 +24,31 @@ const applyTrackStyleOnDrag = (isDragging: boolean, draggableStyle: any) => ({
   ...draggableStyle,
 });
 
-const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
-  const playerState: Tuple | null = useSelector((state: RootState) => {
+const TrackList: FunctionComponent<Props> = ({ tracklist, listType }) => {
+  const playerState: Tuple | null | false = useSelector((state: RootState) => {
     return state.player.playerState;
   });
 
-  const droppableId: [number, string] = !isPlaylist
-    ? [0, "searchResults"]
-    : [1, "playlist"];
+  const droppableKey: number = listType === "playlist" ? 1 : 0;
 
   const dispatch = useDispatch();
 
   const onPlayTrack = useCallback(
     (id: number) => {
-      let newPlayerState: Tuple = [id, true, isPlaylist];
-      if (playerState && playerState[0] === id) {
+      let newPlayerState: Tuple = [id, true, listType];
+      if (playerState && playerState[0] === id && playerState[2] === listType) {
         dispatch(
           actions.playTrackStateUpdate([
             playerState[0],
             !playerState[1],
-            playerState[2],
+            listType,
           ])
         );
       } else {
         dispatch(actions.playTrackStateUpdate(newPlayerState));
       }
     },
-    [dispatch, playerState, isPlaylist]
+    [dispatch, playerState, listType]
   );
 
   const onAddTrack = useCallback(
@@ -62,10 +60,10 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
     [dispatch]
   );
 
-  const onClickCallback = isPlaylist ? onDeleteTrack : onAddTrack;
+  const onClickCallback = listType === "playlist" ? onDeleteTrack : onAddTrack;
 
   return (
-    <Droppable key={droppableId[0]} droppableId={droppableId[1]}>
+    <Droppable key={droppableKey} droppableId={listType}>
       {(provided, snapshot) => (
         <div
           className={classes.TrackList}
@@ -86,13 +84,13 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, isPlaylist }) => {
                   clicked={() => onClickCallback(index)}
                   played={() => onPlayTrack(index)}
                   playerState={
-                    playerState &&
-                    playerState[0] === index &&
-                    playerState[2] === isPlaylist
-                      ? playerState
-                      : null
+                    playerState
+                      ? playerState[0] === index && playerState[2] === listType
+                        ? playerState
+                        : null
+                      : playerState
                   }
-                  isPlaylist={isPlaylist}
+                  isPlaylist={listType === "playlist"}
                   innerRef={provided.innerRef}
                   provided={provided}
                   style={applyTrackStyleOnDrag(

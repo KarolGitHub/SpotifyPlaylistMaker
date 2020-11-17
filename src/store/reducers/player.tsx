@@ -10,7 +10,7 @@ const reducer = (
   state = initialState,
   action?: {
     type: string;
-    playerState: Tuple | null;
+    playerState: Tuple | null | false;
     error: any;
   }
 ) => {
@@ -22,7 +22,7 @@ const reducer = (
     case actionTypes.PLAY_TRACK_PAUSE:
       return updateObject(state, { playerState: action.playerState });
     case actionTypes.PLAY_TRACK_END:
-      return updateObject(state, { playerState: null });
+      return updateObject(state, { playerState: false });
     case actionTypes.PLAY_TRACK_FAIL:
       return updateObject(state, { error: action.error });
     default:

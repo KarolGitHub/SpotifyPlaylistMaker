@@ -25,7 +25,6 @@
       border-color: transparent transparent transparent var(--infoFontColor);
       border-style: solid;
       border-width: 20px 0 20px 30px;
-
       &.Paused {
         border-style: double;
         border-width: 0px 0 0px 30px;
@@ -103,9 +102,14 @@
 }
 
 .Marquee {
-  &:hover .Text {
+  .Text {
     --animation-time: 5.5s;
-    animation: marquee var(--animation-time) linear 0.3s infinite;
+    animation: marquee var(--animation-time) linear 0.3s infinite
+      var(--animation-play-state);
+  }
+
+  &:hover .Text {
+    --animation-play-state: running;
   }
 }
 
