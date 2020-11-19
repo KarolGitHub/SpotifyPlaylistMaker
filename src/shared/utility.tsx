@@ -198,3 +198,7 @@ export const authPopup = (url: string) => {
   const newWindow = window.open(url, "Spotify Playlist Maker", windowFeatures);
   newWindow?.focus();
 };
+
+export const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+  navigator.userAgent
+);

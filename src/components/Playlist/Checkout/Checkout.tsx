@@ -11,12 +11,14 @@ import {
 import classes from "./Checkout.module.scss";
 
 type Props = {
+  open: boolean;
   playlistInfo: PlaylistPayload | null;
   cancel: () => void;
   confirm: (data: PlaylistPayload) => void;
 };
 
 const Checkout: FunctionComponent<Props> = ({
+  open,
   playlistInfo,
   cancel,
   confirm,
@@ -178,7 +180,7 @@ const Checkout: FunctionComponent<Props> = ({
       changed={(event: any) => inputChangedHandler(event, control.id)}
       invalid={control.config.touched ? !control.config.valid : false}
       elementConfig={control.config.elementConfig}
-      focus={index === 0 ? true : false}
+      focus={!index && open}
       note={control.config.note}
     />
   ));

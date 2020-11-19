@@ -271,6 +271,7 @@ const PlaylistMaker: FunctionComponent = () => {
       ) : (
         <Modal open={isModal} clicked={() => modalHandler(isModal)}>
           <Checkout
+            open={isModal}
             playlistInfo={playlistInfo ? playlistInfo.payload : null}
             cancel={() => modalHandler(isModal)}
             confirm={(payload: PlaylistPayload) => savePlaylistHandler(payload)}

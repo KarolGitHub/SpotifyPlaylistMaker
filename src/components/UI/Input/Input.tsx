@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import classes from "./Input.module.scss";
+import { isMobile } from "../../../shared/utility";
 
 type Props = {
   type?: "input" | "select";
@@ -22,7 +23,7 @@ const Input: FunctionComponent<Props> = ({
   note,
 }) => {
   const inputClasses = [classes.InputElement];
-  const inputRef: any = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>();
   let validationError = null;
   let inputElement = null;
 
@@ -41,7 +42,7 @@ const Input: FunctionComponent<Props> = ({
           value={value}
           onBlur={() => invalid}
           onChange={changed}
-          autoFocus={focus}
+          ref={(el: any) => (inputRef.current = el)}
           {...elementConfig}
           title={note}
         />
@@ -79,10 +80,11 @@ const Input: FunctionComponent<Props> = ({
   }
 
   useEffect(() => {
-    if (focus) {
+    if (!isMobile && focus) {
       inputRef.current?.focus();
-    } //eslint-disable-next-line
-  }, []);
+    }
+  }, [focus]);
+
   return (
     <div className={classes.Input}>
       {inputElement}
