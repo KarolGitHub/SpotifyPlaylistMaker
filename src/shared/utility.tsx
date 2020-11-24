@@ -17,8 +17,8 @@ export type Track = {
   id: string;
   key?: number;
   name: string;
-  artist: string;
-  album: string;
+  artist?: string;
+  album?: string;
   uri: string;
   preview_url: string;
 };
@@ -126,9 +126,9 @@ export const updatePlayTrackIndex = (
   playerState: Tuple,
   source: { index: number; droppableId: string },
   destination: { index: number; droppableId: string },
-  dragActionType: "reorder" | "move"
+  dragActionType: 'reorder' | 'move'
 ): Tuple | null => {
-  if (dragActionType === "reorder") {
+  if (dragActionType === 'reorder') {
     if (source.index === playerState[0]) {
       return [destination.index, playerState[1], destination.droppableId];
     } else if (
@@ -171,7 +171,7 @@ type Rules = {
   isNumeric?: boolean;
 } | null;
 
-export const isValid = (value = "", rules: Rules) => {
+export const isValid = (value = '', rules: Rules) => {
   let isValid = true;
 
   if (!rules) {
@@ -180,7 +180,7 @@ export const isValid = (value = "", rules: Rules) => {
 
   if (rules.required) {
     isValid =
-      value.trim() !== "" &&
+      value.trim() !== '' &&
       (rules.minLength ? value.length >= rules.minLength : true) &&
       (rules.maxLength ? value.length <= rules.maxLength : true);
   }
@@ -195,7 +195,7 @@ export const authPopup = (url: string) => {
 
   const windowFeatures = `toolbar=0,scrollbars=1,status=1,resizable=0,location=1,menuBar=0,width=${width},height=${height},top=${top},left=${left}`;
 
-  const newWindow = window.open(url, "Spotify Playlist Maker", windowFeatures);
+  const newWindow = window.open(url, 'Spotify Playlist Maker', windowFeatures);
   newWindow?.focus();
 };
 

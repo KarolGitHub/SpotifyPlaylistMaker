@@ -1,6 +1,6 @@
-import * as actionTypes from "./actionsTypes";
-import axios from "../../axios-spotify";
-import { Dispatch } from "redux";
+import * as actionTypes from './actionsTypes';
+import axios from '../../axios-spotify';
+import { Dispatch } from 'redux';
 import {
   updateObject,
   updateArray,
@@ -8,8 +8,8 @@ import {
   Playlist,
   SpotifyPlaylist,
   PlaylistInfo,
-} from "../../shared/utility";
-import Axios, { AxiosResponse, AxiosError } from "axios";
+} from '../../shared/utility';
+import Axios, { AxiosResponse, AxiosError } from 'axios';
 
 export const fetchPlaylistsStart = () => {
   return {
@@ -25,7 +25,7 @@ export const fetchPlaylists = (
     dispatch(fetchPlaylistsStart());
     const headers = {
       Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
     const queryParams = `users/${userId}/playlists?limit=50`;
     axios
@@ -54,7 +54,7 @@ export const fetchPlaylists = (
           } else if (error.message) {
             dispatch(fetchPlaylistsFail(error.message));
           } else {
-            dispatch(fetchPlaylistsFail("Unexpected Error!"));
+            dispatch(fetchPlaylistsFail('Unexpected Error!'));
           }
         }
       });
@@ -89,15 +89,15 @@ export const fetchTracks = (
     const { id, isEditable, payload, uri } = updateObject(info);
     const headers = {
       Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
     axios
       .get(`${uri}?market=${country}`, { headers: headers })
       .then((response: AxiosResponse) => JSON.parse(JSON.stringify(response)))
       .then((response: AxiosResponse) => {
         const tracks = updateArray(updateObject(response.data).items).map(
-          (item: { track: SpotifyTrack }) => ({
-            id: item.track.id,
+          (item: { track: SpotifyTrack }, index) => ({
+            id: item.track.id ?? `track${index}`,
             name: item.track.name,
             artist: item.track.artists[0].name,
             album: item.track.album.name,
@@ -115,7 +115,7 @@ export const fetchTracks = (
         } else if (error.message) {
           dispatch(fetchTracksFail(error.message));
         } else {
-          dispatch(fetchTracksFail("Unexpected Error!"));
+          dispatch(fetchTracksFail('Unexpected Error!'));
         }
       });
   };
@@ -153,7 +153,7 @@ export const deleteTracks = (
     dispatch(deleteTracksStart());
     const headers = {
       Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
     const queryParams = `playlists/${playlist_id}/tracks`;
     axios
@@ -165,7 +165,7 @@ export const deleteTracks = (
         } else if (error.message) {
           dispatch(deleteTracksFail(error.message));
         } else {
-          dispatch(deleteTracksFail("Unexpected Error!"));
+          dispatch(deleteTracksFail('Unexpected Error!'));
         }
       });
   };

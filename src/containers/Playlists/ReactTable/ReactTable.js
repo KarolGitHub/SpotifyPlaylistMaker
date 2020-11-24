@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 import {
   useTable,
   useBlockLayout,
   useSortBy,
   useFilters,
   usePagination,
-} from "react-table";
-import "./ReactTable.scss";
-import { Filter, ColumnFilter } from "./Filters/Filters";
+} from 'react-table';
+import './ReactTable.scss';
+import { Filter, ColumnFilter } from './Filters/Filters';
 
 const ReactTable = ({ columns, data }) => {
   const {
@@ -36,7 +36,7 @@ const ReactTable = ({ columns, data }) => {
   );
 
   const generateSortingIndicator = (column) => {
-    return column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : "";
+    return column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : '';
   };
   const onChangeInInput = (e) => {
     const page = e.target.value ? Number(e.target.value) - 1 : 0;
@@ -52,7 +52,7 @@ const ReactTable = ({ columns, data }) => {
               {headerGroup.headers.map((column, i) => (
                 <th key={i}>
                   <div {...column.getSortByToggleProps()}>
-                    {column.render("Header")}
+                    {column.render('Header')}
                     {generateSortingIndicator(column)}
                   </div>
                   <Filter column={column} />
@@ -67,7 +67,7 @@ const ReactTable = ({ columns, data }) => {
             return (
               <tr key={i}>
                 {row.cells.map((cell, i) => {
-                  return <td key={i}>{cell.render("Cell")}</td>;
+                  return <td key={i}>{cell.render('Cell')}</td>;
                 })}
               </tr>
             );
@@ -77,14 +77,14 @@ const ReactTable = ({ columns, data }) => {
       <div className="pagination">
         <div>
           <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            {"<<"}
+            {'<<'}
           </button>
           <button onClick={previousPage} disabled={!canPreviousPage}>
-            {"<"}
+            {'<'}
           </button>
         </div>
         <div>
-          Page{" "}
+          Page{' '}
           <strong>
             {pageIndex + 1} of {pageOptions.length}
           </strong>
@@ -100,13 +100,13 @@ const ReactTable = ({ columns, data }) => {
         </div>
         <div>
           <button onClick={nextPage} disabled={!canNextPage}>
-            {">"}
+            {'>'}
           </button>
           <button
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
           >
-            {">>"}
+            {'>>'}
           </button>
         </div>
       </div>

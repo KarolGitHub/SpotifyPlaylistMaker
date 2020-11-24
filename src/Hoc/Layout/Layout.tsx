@@ -1,8 +1,8 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useState } from 'react';
 
-import classes from "./Layout.module.scss";
-import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
-import Sidedrawer from "../../components/Navigation/Sidedrawer/Sidedrawer";
+import classes from './Layout.module.scss';
+import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
+import Sidedrawer from '../../components/Navigation/Sidedrawer/Sidedrawer';
 
 type Props = {
   children: any;

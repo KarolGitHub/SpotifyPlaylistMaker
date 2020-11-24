@@ -3,30 +3,30 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
-} from "react";
+} from 'react';
 
-import classes from "./Track.module.scss";
-import { Track as TrackData, Tuple } from "../../../../shared/utility";
+import classes from './Track.module.scss';
+import { Track as TrackData, Tuple } from '../../../../shared/utility';
 
 const isElementOverflowing = (element: any) => {
-  return element?.offsetWidth < element?.scrollWidth;
+  return element.offsetWidth < element.scrollWidth;
 };
 
 const applyMarqueeOnOverflow = (overflowingElement: any) => {
   overflowingElement.style.setProperty(
-    "--animation-time",
+    '--animation-time',
     `calc((5.5s*${overflowingElement.scrollWidth})/622)`
   );
   overflowingElement.style.setProperty(
-    "--gap-width",
+    '--gap-width',
     `calc(62px/${622 / overflowingElement.scrollWidth})`
   );
 };
 const applyMarqueeOnTrackPlay = (overflowingElement: any) => {
-  overflowingElement.style.setProperty("--animation-play-state", "running");
+  overflowingElement.style.setProperty('--animation-play-state', 'running');
 };
 const applyMarqueeOnTrackEnd = (overflowingElement: any) => {
-  overflowingElement.style.setProperty("--animation-play-state", "initial");
+  overflowingElement.style.setProperty('--animation-play-state', 'initial');
 };
 
 type Props = {
@@ -55,14 +55,14 @@ const Track: FunctionComponent<Props> = ({
   const trackDescRef: any = useRef([]);
 
   let btnClass = `${classes.Action} ${classes.Remove}`,
-    actionIndicator = "-",
+    actionIndicator = '-',
     trackDescClasses = classes.Description,
     onPlayCallback = undefined,
     playButton = null;
 
   if (!isPlaylist) {
     btnClass = `${classes.Action} ${classes.Add}`;
-    actionIndicator = "+";
+    actionIndicator = '+';
   }
 
   if (track.preview_url) {
@@ -93,6 +93,19 @@ const Track: FunctionComponent<Props> = ({
     );
   }
 
+  const trackDesc = (
+    <span>
+      <h3>
+        {index + 1}. {track.name}
+      </h3>
+      <p>
+        {`${track.artist} ${track.artist && track.album ? '|' : ''} ${
+          track.album
+        }`}
+      </p>
+    </span>
+  );
+
   useLayoutEffect(() => {
     if (isElementOverflowing(trackDescRef.current[0])) {
       applyMarqueeOnOverflow(trackDescRef.current[1]);
@@ -119,24 +132,8 @@ const Track: FunctionComponent<Props> = ({
           className={classes.Text}
           ref={(el: any) => (trackDescRef.current[1] = el)}
         >
-          <span>
-            <h3>
-              {index + 1}. {track.name}
-            </h3>
-            <p>
-              {track.artist} | {track.album}
-            </p>
-          </span>
-          {trackClasses !== classes.Track && (
-            <span>
-              <h3>
-                {index + 1}. {track.name}
-              </h3>
-              <p>
-                {track.artist} | {track.album}
-              </p>
-            </span>
-          )}
+          {trackDesc}
+          {trackClasses !== classes.Track && trackDesc}
         </div>
       </div>
       <button className={btnClass} onClick={clicked}>

@@ -4,23 +4,23 @@ import React, {
   useCallback,
   useEffect,
   lazy,
-} from "react";
-import { Route, Switch, withRouter, Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+} from 'react';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Layout from "./Hoc/Layout/Layout";
-import PlaylistMaker from "./containers/PlaylistMaker/PlaylistMaker";
-import Logout from "./containers/Auth/Logout/Logout";
-import Spinner from "./components/UI/Spinner/Spinner";
-import * as actions from "./store/actions/index";
-import { RootState } from "./index";
+import Layout from './Hoc/Layout/Layout';
+import PlaylistMaker from './containers/PlaylistMaker/PlaylistMaker';
+import Logout from './containers/Auth/Logout/Logout';
+import Spinner from './components/UI/Spinner/Spinner';
+import * as actions from './store/actions/index';
+import { RootState } from './index';
 
 const Playlists = lazy(() => {
-  return import("./containers/Playlists/Playlists");
+  return import('./containers/Playlists/Playlists');
 });
 
 const Auth = lazy(() => {
-  return import("./containers/Auth/Auth");
+  return import('./containers/Auth/Auth');
 });
 
 const App: FunctionComponent = () => {

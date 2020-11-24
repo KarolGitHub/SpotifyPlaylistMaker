@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
 
-import classes from "./Backdrop.module.scss";
+import classes from './Backdrop.module.scss';
 
 type Props = {
   open: boolean;
@@ -10,11 +10,7 @@ type Props = {
 const backdrop: FunctionComponent<Props> = ({ open, clicked, invisible }) =>
   open ? (
     <div
-      className={
-        invisible
-          ? classes.Backdrop
-          : [classes.Backdrop, classes.Visible].join(" ")
-      }
+      className={`${classes.Backdrop} ${invisible ? '' : classes.Visible}`}
       onClick={clicked}
     ></div>
   ) : null;

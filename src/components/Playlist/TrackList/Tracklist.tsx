@@ -1,26 +1,26 @@
-import React, { FunctionComponent, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import React, { FunctionComponent, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-import * as actions from "../../../store/actions/index";
-import classes from "./TrackList.module.scss";
-import Track from "./Track/Track";
-import { Tracklist, Tuple } from "../../../shared/utility";
-import { RootState } from "../../..";
+import * as actions from '../../../store/actions/index';
+import classes from './TrackList.module.scss';
+import Track from './Track/Track';
+import { Tracklist, Tuple } from '../../../shared/utility';
+import { RootState } from '../../..';
 
 type Props = {
-  tracklist: Tracklist;
-  listType: "playlist" | "searchResults";
+  tracklist?: Tracklist;
+  listType: 'playlist' | 'searchResults';
 };
 
 const applyListStyleOnDrag = (isDraggingOver: boolean) => ({
   boxShadow: isDraggingOver
-    ? "inset 0 0 10px var(--listShadow), 0 0 10px var(--listShadow)"
-    : "none",
+    ? 'inset 0 0 10px var(--listShadow), 0 0 10px var(--listShadow)'
+    : 'none',
 });
 const applyTrackStyleOnDrag = (isDragging: boolean, draggableStyle: any) => ({
-  userSelect: "none",
-  opacity: isDragging ? "0.5" : "1",
+  userSelect: 'none',
+  opacity: isDragging ? '0.5' : '1',
   ...draggableStyle,
 });
 
@@ -29,7 +29,7 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, listType }) => {
     return state.player.playerState;
   });
 
-  const droppableKey: number = listType === "playlist" ? 1 : 0;
+  const droppableKey: number = listType === 'playlist' ? 1 : 0;
 
   const dispatch = useDispatch();
 
@@ -78,7 +78,7 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, listType }) => {
     [dispatch, playerState, isTrackPlayed]
   );
 
-  const onClickCallback = listType === "playlist" ? onDeleteTrack : onAddTrack;
+  const onClickCallback = listType === 'playlist' ? onDeleteTrack : onAddTrack;
 
   return (
     <Droppable key={droppableKey} droppableId={listType}>
@@ -89,10 +89,10 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, listType }) => {
           style={applyListStyleOnDrag(snapshot.isDraggingOver)}
           {...provided.droppableProps}
         >
-          {tracklist.map((track, index) => (
+          {tracklist?.map((track, index) => (
             <Draggable
-              key={`${track.id}`}
-              draggableId={`${track.id}`}
+              key={`${track.id}${index}`}
+              draggableId={`${track.id}${index}`}
               index={index}
             >
               {(provided, snapshot) => (
@@ -106,7 +106,7 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, listType }) => {
                       ? isTrackPlayed(index, playerState)
                       : playerState
                   }
-                  isPlaylist={listType === "playlist"}
+                  isPlaylist={listType === 'playlist'}
                   innerRef={provided.innerRef}
                   provided={provided}
                   style={applyTrackStyleOnDrag(

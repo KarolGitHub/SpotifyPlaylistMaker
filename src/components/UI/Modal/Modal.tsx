@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
 
-import Backdrop from "../Backdrop/Backdrop";
-import classes from "./Modal.module.scss";
+import Backdrop from '../Backdrop/Backdrop';
+import classes from './Modal.module.scss';
 
 type Props = {
   open: boolean;
@@ -20,12 +20,10 @@ const Modal: FunctionComponent<Props> = ({
   <React.Fragment>
     <Backdrop open={open} clicked={clicked} invisible={invisible} />
     <div
-      className={
-        table ? [classes.Table, classes.Modal].join(" ") : classes.Modal
-      }
+      className={`${classes.Modal} ${table ? classes.Table : ''}`}
       style={{
-        transform: open ? "translate(0)" : "translate(-100vw)",
-        opacity: open ? "1" : "0",
+        transform: open ? 'translate(0)' : 'translate(-100vw)',
+        opacity: open ? '1' : '0',
       }}
     >
       {children}

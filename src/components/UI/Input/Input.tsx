@@ -1,9 +1,9 @@
-import React, { FunctionComponent, useEffect, useRef } from "react";
-import classes from "./Input.module.scss";
-import { isMobile } from "../../../shared/utility";
+import React, { FunctionComponent, useEffect, useRef } from 'react';
+import classes from './Input.module.scss';
+import { isMobile } from '../../../shared/utility';
 
 type Props = {
-  type?: "input" | "select";
+  type?: 'input' | 'select';
   value: string;
   changed: (event: { target: any }) => void;
   pressed?: (event: any) => void;
@@ -22,7 +22,7 @@ const Input: FunctionComponent<Props> = ({
   focus,
   note,
 }) => {
-  const inputClasses = [classes.InputElement];
+  let inputClasses = `${classes.InputElement}`;
   const inputRef = useRef<HTMLInputElement>();
   let validationError = null;
   let inputElement = null;
@@ -31,14 +31,14 @@ const Input: FunctionComponent<Props> = ({
     validationError = (
       <p className={classes.ValidationError}>Please enter a proper value</p>
     );
-    inputClasses.push(classes.Invalid);
+    inputClasses = `${classes.InputElement} ${classes.Invalid}`;
   }
 
   switch (type) {
-    case "input":
+    case 'input':
       inputElement = (
         <input
-          className={inputClasses.join(" ")}
+          className={inputClasses}
           value={value}
           onBlur={() => invalid}
           onChange={changed}
@@ -48,10 +48,10 @@ const Input: FunctionComponent<Props> = ({
         />
       );
       break;
-    case "select":
+    case 'select':
       inputElement = (
         <select
-          className={inputClasses.join(" ")}
+          className={inputClasses}
           value={value}
           onBlur={() => invalid}
           onChange={changed}
@@ -72,7 +72,7 @@ const Input: FunctionComponent<Props> = ({
           onChange={changed}
           onKeyUp={pressed}
           onBlur={() => invalid}
-          className={inputClasses.join(" ")}
+          className={inputClasses}
           ref={(el: any) => (inputRef.current = el)}
           {...elementConfig}
         />

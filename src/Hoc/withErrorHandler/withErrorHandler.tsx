@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import Modal from "../../components/UI/Modal/Modal";
-import useHttpErrorHandler from "../customHooks/http-error-handler";
+import Modal from '../../components/UI/Modal/Modal';
+import useHttpErrorHandler from '../customHooks/http-error-handler';
 
 const withErrorHandler = (WrappedComponent: any, axios: any) => {
   return (props: any) => {

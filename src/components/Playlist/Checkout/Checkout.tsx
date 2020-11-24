@@ -1,14 +1,14 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useState } from 'react';
 
 // import classes from "./Checkout.module.scss";
-import Button from "../../../components/UI/Button/Button";
-import Input from "../../UI/Input/Input";
+import Button from '../../../components/UI/Button/Button';
+import Input from '../../UI/Input/Input';
 import {
   updateObject,
   isValid,
   PlaylistPayload,
-} from "../../../shared/utility";
-import classes from "./Checkout.module.scss";
+} from '../../../shared/utility';
+import classes from './Checkout.module.scss';
 
 type Props = {
   open: boolean;
@@ -27,10 +27,10 @@ const Checkout: FunctionComponent<Props> = ({
     playlistInfo
       ? {
           name: {
-            type: "input",
+            type: 'input',
             elementConfig: {
-              type: "text",
-              placeholder: "Name",
+              type: 'text',
+              placeholder: 'Name',
             },
             value: playlistInfo.name,
             validation: {
@@ -41,36 +41,36 @@ const Checkout: FunctionComponent<Props> = ({
             note: `Required. The name for the new playlist, for example "Your Coolest Playlist". This name does not need to be unique, a user may have several playlists with the same name.`,
           },
           public: {
-            type: "select",
+            type: 'select',
             elementConfig: {
               options: [
-                { value: "true", displayValue: "Public" },
-                { value: "false", displayValue: "Private" },
+                { value: 'true', displayValue: 'Public' },
+                { value: 'false', displayValue: 'Private' },
               ],
             },
-            value: playlistInfo.public + "",
+            value: playlistInfo.public + '',
             validation: null,
             valid: true,
             note: `Optional. Defaults to Public which allows access to other users. If Private it will be unaccessable to other users.`,
           },
           collaborative: {
-            type: "select",
+            type: 'select',
             elementConfig: {
               options: [
-                { value: "true", displayValue: "Collaborative" },
-                { value: "false", displayValue: "Noncollaborative" },
+                { value: 'true', displayValue: 'Collaborative' },
+                { value: 'false', displayValue: 'Noncollaborative' },
               ],
             },
-            value: playlistInfo.collaborative + "",
+            value: playlistInfo.collaborative + '',
             validation: null,
             valid: true,
             note: `Optional. Defaults to Noncollaborative. If set to Collaborative any user that you share a link to your playlist can add, delete, and reorder the tracks. Only private playlists may be collaborative`,
           },
           description: {
-            type: "input",
+            type: 'input',
             elementConfig: {
-              type: "text",
-              placeholder: "Description",
+              type: 'text',
+              placeholder: 'Description',
             },
             value: playlistInfo.description,
             validation: null,
@@ -80,12 +80,12 @@ const Checkout: FunctionComponent<Props> = ({
         }
       : {
           name: {
-            type: "input",
+            type: 'input',
             elementConfig: {
-              type: "text",
-              placeholder: "Name",
+              type: 'text',
+              placeholder: 'Name',
             },
-            value: "",
+            value: '',
             validation: {
               required: true,
             },
@@ -94,38 +94,38 @@ const Checkout: FunctionComponent<Props> = ({
             note: `Required. The name for the new playlist, for example "Your Coolest Playlist". This name does not need to be unique, a user may have several playlists with the same name.`,
           },
           public: {
-            type: "select",
+            type: 'select',
             elementConfig: {
               options: [
-                { value: "true", displayValue: "Public" },
-                { value: "false", displayValue: "Private" },
+                { value: 'true', displayValue: 'Public' },
+                { value: 'false', displayValue: 'Private' },
               ],
             },
-            value: "true",
+            value: 'true',
             validation: null,
             valid: true,
             note: `Optional. Defaults to Public which allows access to other users. If Private it will be unaccessable to other users.`,
           },
           collaborative: {
-            type: "select",
+            type: 'select',
             elementConfig: {
               options: [
-                { value: "true", displayValue: "Collaborative" },
-                { value: "false", displayValue: "Noncollaborative" },
+                { value: 'true', displayValue: 'Collaborative' },
+                { value: 'false', displayValue: 'Noncollaborative' },
               ],
             },
-            value: "false",
+            value: 'false',
             validation: null,
             valid: true,
             note: `Optional. Defaults to Noncollaborative. If set to Collaborative any user that you share a link to your playlist can add, delete, and reorder the tracks. Only private playlists may be collaborative`,
           },
           description: {
-            type: "input",
+            type: 'input',
             elementConfig: {
-              type: "text",
-              placeholder: "Description",
+              type: 'text',
+              placeholder: 'Description',
             },
-            value: "",
+            value: '',
             validation: null,
             valid: true,
             note: `Optional. Value for playlist description as displayed in Spotify Clients and in the Web API.`,
@@ -135,7 +135,7 @@ const Checkout: FunctionComponent<Props> = ({
 
   const inputChangedHandler = (
     event: any,
-    inputID: "name" | "public" | "collaborative" | "description"
+    inputID: 'name' | 'public' | 'collaborative' | 'description'
   ) => {
     event.preventDefault();
     const updatedControls = updateObject(controls, {
@@ -153,9 +153,9 @@ const Checkout: FunctionComponent<Props> = ({
     const formData: any = {};
     Object.entries(controls).map((control: any) => {
       const value = control[1].value;
-      if (value === "true") {
+      if (value === 'true') {
         return (formData[control[0]] = true);
-      } else if (value === "false") {
+      } else if (value === 'false') {
         return (formData[control[0]] = false);
       } else {
         return (formData[control[0]] = value);
@@ -198,8 +198,8 @@ const Checkout: FunctionComponent<Props> = ({
           clicked={(e: any) => confirmHandler(e)}
           disabled={
             !controls.name.valid ||
-            (controls.public.value === "true" &&
-              controls.collaborative.value === "true")
+            (controls.public.value === 'true' &&
+              controls.collaborative.value === 'true')
           }
         >
           Save

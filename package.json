@@ -57,7 +57,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pretty": "prettier --write \"./**/*.{ts,tsx,js,jsx,json}\""
+    "format": "prettier --single-quote --write \"./**/*.{ts,tsx,js,jsx,json}\""
   },
   "jest": {
     "transform": {

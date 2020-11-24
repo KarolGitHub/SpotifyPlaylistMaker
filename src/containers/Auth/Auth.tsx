@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import React, { FunctionComponent, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router';
 
-import { RootState } from "../../index";
-import * as actions from "./../../store/actions/index";
-import Spinner from "../../components/UI/Spinner/Spinner";
-import { authPopup } from "../../shared/utility";
+import { RootState } from '../../index';
+import * as actions from './../../store/actions/index';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import { authPopup } from '../../shared/utility';
 
 const Auth: FunctionComponent = () => {
   const dispatch = useDispatch();
@@ -27,13 +27,16 @@ const Auth: FunctionComponent = () => {
 
   useEffect(() => {
     if (authRedirectPath) {
-      window.addEventListener("storage", () => {
-        const storage = window.localStorage.getItem("token");
-        if (storage !== null) {
-          window.removeEventListener("storage", () => {});
-          dispatch(actions.authCheckState());
-        }
-      });
+      window.addEventListener(
+        'storage',
+        () => {
+          const storage = window.localStorage.getItem('token');
+          if (storage !== null) {
+            dispatch(actions.authCheckState());
+          }
+        },
+        { once: true }
+      );
       authPopup(authRedirectPath);
     } else {
       onAuth();

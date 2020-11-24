@@ -1,11 +1,11 @@
-import * as actionTypes from "../actions/actionsTypes";
+import * as actionTypes from '../actions/actionsTypes';
 import {
   updateObject,
   Tracklist,
   tracksDiff,
   Track,
   spreadNestedObject,
-} from "../../shared/utility";
+} from '../../shared/utility';
 
 type State = {
   playlist: Tracklist;

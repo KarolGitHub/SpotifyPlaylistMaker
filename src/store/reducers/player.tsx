@@ -1,5 +1,5 @@
-import * as actionTypes from "../actions/actionsTypes";
-import { updateObject, Tuple } from "../../shared/utility";
+import * as actionTypes from '../actions/actionsTypes';
+import { updateObject, Tuple } from '../../shared/utility';
 
 export const initialState = {
   playerState: null,

@@ -4,27 +4,27 @@ import React, {
   useMemo,
   useCallback,
   FunctionComponent,
-} from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Spinner from "../../components/UI/Spinner/Spinner";
-import axios from "../../axios-spotify";
-import { RootState } from "../..";
-import withErrorHandler from "../../Hoc/withErrorHandler/withErrorHandler";
-import * as actions from "../../store/actions/index";
-import playlistsClasses from "./Playlists.module.scss";
-import buttonClasses from "../../components/UI/Button/Button.module.scss";
+} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import axios from '../../axios-spotify';
+import { RootState } from '../..';
+import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../store/actions/index';
+import playlistsClasses from './Playlists.module.scss';
+import buttonClasses from '../../components/UI/Button/Button.module.scss';
 import {
   Playlist,
   PlaylistInfo,
   Tracklist,
   tracksDiff,
-} from "../../shared/utility";
-import ReactTable from "./ReactTable/ReactTable.js";
-import { CellProps } from "./ReactTable/Filters/Filters";
-import Modal from "./../../components/UI/Modal/Modal";
-import Button from "../../components/UI/Button/Button";
-import { Redirect } from "react-router-dom";
-import Axios from "axios";
+} from '../../shared/utility';
+import ReactTable from './ReactTable/ReactTable.js';
+import { CellProps } from './ReactTable/Filters/Filters';
+import Modal from './../../components/UI/Modal/Modal';
+import Button from '../../components/UI/Button/Button';
+import { Redirect } from 'react-router-dom';
+import Axios from 'axios';
 
 const Playlists: FunctionComponent = () => {
   const [isPlaylist, setPlaylist] = useState(false);
@@ -86,15 +86,15 @@ const Playlists: FunctionComponent = () => {
             playlistInfo
               ? playlistInfo
               : {
-                  id: "",
+                  id: '',
                   isEditable: true,
                   payload: {
-                    name: "",
+                    name: '',
                     public: true,
                     collaborative: false,
-                    description: "",
+                    description: '',
                   },
-                  uri: "",
+                  uri: '',
                 },
             false
           )
@@ -138,7 +138,7 @@ const Playlists: FunctionComponent = () => {
         onClearPlaylist();
       }
     }, //eslint-disable-next-line
-    [onSetTracks]
+    [redirect, isPlaylist]
   );
 
   const checkAllHandler = useCallback(() => {
@@ -199,7 +199,7 @@ const Playlists: FunctionComponent = () => {
       const selectedTracks: { tracks: { uri: string | null }[] } = {
         tracks: [],
       };
-      if (uri === " ") {
+      if (uri === ' ') {
         Object.values(checked).map((checkedUri) =>
           selectedTracks.tracks.push({ uri: checkedUri })
         );
@@ -221,20 +221,20 @@ const Playlists: FunctionComponent = () => {
   const playlistColumns = useMemo(
     () => [
       {
-        Header: "Name",
-        accessor: "payload.name",
+        Header: 'Name',
+        accessor: 'payload.name',
         maxWidth: 600,
         minWidth: 100,
       },
       {
-        Header: "Tracks",
-        accessor: "tracks.total",
+        Header: 'Tracks',
+        accessor: 'tracks.total',
         maxWidth: 200,
         minWidth: 80,
         disableFilters: true,
       },
       {
-        id: "show",
+        id: 'show',
         maxWidth: 50,
         minWidth: 50,
         sortable: false,
@@ -259,7 +259,7 @@ const Playlists: FunctionComponent = () => {
         },
       },
       {
-        id: "edit",
+        id: 'edit',
         maxWidth: 50,
         minWidth: 40,
         sortable: false,
@@ -298,7 +298,7 @@ const Playlists: FunctionComponent = () => {
             onChange={checkAllHandler}
           />
         ),
-        id: "checkbox",
+        id: 'checkbox',
         maxWidth: 10,
         minWidth: 10,
         disableFilters: true,
@@ -324,24 +324,24 @@ const Playlists: FunctionComponent = () => {
     ]),
     useMemo(() => {
       return {
-        Header: "Name",
-        accessor: "name",
+        Header: 'Name',
+        accessor: 'name',
         maxWidth: 200,
         minWidth: 100,
       };
     }, []),
     useMemo(() => {
       return {
-        Header: "Artist",
-        accessor: "artist",
+        Header: 'Artist',
+        accessor: 'artist',
         maxWidth: 200,
         minWidth: 100,
       };
     }, []),
     useMemo(() => {
       return {
-        Header: "Album",
-        accessor: "album",
+        Header: 'Album',
+        accessor: 'album',
         maxWidth: 200,
         minWidth: 100,
       };
@@ -350,12 +350,8 @@ const Playlists: FunctionComponent = () => {
       Header: useMemo(
         () => () => (
           <button
-            onClick={() => modalHandler(" ")}
-            className={[
-              buttonClasses.Button,
-              buttonClasses.Red,
-              buttonClasses.DeleteAll,
-            ].join(" ")}
+            onClick={() => modalHandler(' ')}
+            className={`${buttonClasses.Button} ${buttonClasses.Red} ${buttonClasses.DeleteAll}`}
             disabled={checkedLength}
           >
             Delete Selected
@@ -363,7 +359,7 @@ const Playlists: FunctionComponent = () => {
         ),
         [checkedLength, modalHandler]
       ),
-      id: "delete",
+      id: 'delete',
       maxWidth: 50,
       minWidth: 50,
       sortable: false,
@@ -411,11 +407,7 @@ const Playlists: FunctionComponent = () => {
     <div className={playlistsClasses.Tracks}>
       <button
         onClick={hidePlaylistHandler}
-        className={[
-          buttonClasses.Button,
-          buttonClasses.Green,
-          buttonClasses.Back,
-        ].join(" ")}
+        className={`${buttonClasses.Button} ${buttonClasses.Green} ${buttonClasses.Back}`}
       >
         Playlists
       </button>
@@ -440,7 +432,7 @@ const Playlists: FunctionComponent = () => {
       <Spinner />
     )
   ) : (
-    <p>{error + ""}</p>
+    <p>{error + ''}</p>
   );
 };
 

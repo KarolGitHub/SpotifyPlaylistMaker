@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import Axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
+import { useState, useEffect } from 'react';
+import Axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
 
 export default (httpClient: any) => {
   const [error, setError] = useState<boolean | any>(false);

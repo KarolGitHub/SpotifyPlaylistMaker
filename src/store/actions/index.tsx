@@ -16,7 +16,7 @@ export {
   editPlaylistFail,
   setTracks,
   moveTrack,
-} from "./playlistMaker";
+} from './playlistMaker';
 export {
   authStart,
   auth,
@@ -25,18 +25,18 @@ export {
   authCheckState,
   setAuthRedirectURL,
   logout,
-} from "./auth";
+} from './auth';
 export {
   playTrackStateUpdate,
   playTrackStart,
   playTrackPause,
   playTrackEnd,
   playTrackFail,
-} from "./player";
+} from './player';
 export {
   fetchPlaylists,
   fetchTracks,
   deleteTracks,
   clearPlaylist,
   setRedirect,
-} from "./playlists";
+} from './playlists';

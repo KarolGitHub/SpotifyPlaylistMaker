@@ -1,13 +1,13 @@
-import * as actionTypes from "./actionsTypes";
-import axios from "../../axios-spotify";
-import { Dispatch } from "redux";
+import * as actionTypes from './actionsTypes';
+import axios from '../../axios-spotify';
+import { Dispatch } from 'redux';
 import {
   Tracklist,
   updateObject,
   updateArray,
   PlaylistPayload,
-} from "../../shared/utility";
-import { AxiosResponse, AxiosError } from "axios";
+} from '../../shared/utility';
+import { AxiosResponse, AxiosError } from 'axios';
 
 export const addTrack = (index: number) => {
   return {
@@ -82,7 +82,7 @@ export const searchTracks = (
         } else if (error.message) {
           dispatch(searchTracksFail(error.message));
         } else {
-          dispatch(searchTracksFail("Unexpected Error!"));
+          dispatch(searchTracksFail('Unexpected Error!'));
         }
       });
   };
@@ -103,7 +103,7 @@ export const savePlaylist = (
     dispatch(savePlaylistStart());
     const headers = {
       Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
     const queryParams = `users/${userId}/playlists`;
     axios
@@ -129,7 +129,7 @@ export const savePlaylist = (
         } else if (error.message) {
           dispatch(savePlaylistFail(error.message));
         } else {
-          dispatch(savePlaylistFail("Unexpected Error!"));
+          dispatch(savePlaylistFail('Unexpected Error!'));
         }
       });
   };
@@ -163,7 +163,7 @@ export const editPlaylist = (
     dispatch(editPlaylistStart());
     const headers = {
       Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
     const queryParams = `users/${user_id}/playlists/${playlist_id}`;
     axios
@@ -177,7 +177,7 @@ export const editPlaylist = (
       })
       .then(() => {
         return axios.post(
-          queryParams + "/tracks",
+          queryParams + '/tracks',
           JSON.stringify({
             uris: trackURIs,
           }),
@@ -193,7 +193,7 @@ export const editPlaylist = (
         } else if (error.message) {
           dispatch(editPlaylistFail(error.message));
         } else {
-          dispatch(editPlaylistFail("Unexpected Error!"));
+          dispatch(editPlaylistFail('Unexpected Error!'));
         }
       });
   };

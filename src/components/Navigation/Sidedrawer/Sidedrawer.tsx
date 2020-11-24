@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
 
-import classes from "./Sidedrawer.module.scss";
-import Logo from "../../Logo/Logo";
-import NavigationItems from "../NavigationItems/NavigationItems";
-import Backdrop from "../../UI/Backdrop/Backdrop";
+import classes from './Sidedrawer.module.scss';
+import Logo from '../../Logo/Logo';
+import NavigationItems from '../NavigationItems/NavigationItems';
+import Backdrop from '../../UI/Backdrop/Backdrop';
 
 type Props = {
   open: boolean;
@@ -11,14 +11,13 @@ type Props = {
 };
 
 const Sidedrawer: FunctionComponent<Props> = ({ open, clicked }) => {
-  let attachedClasses = [classes.Sidedrawer, classes.Close];
-  if (open) {
-    attachedClasses = [classes.Sidedrawer, classes.Open];
-  }
+  const attachedClasses = `${classes.Sidedrawer} ${
+    open ? classes.Open : classes.Close
+  }`;
   return (
     <React.Fragment>
       <Backdrop open={open} clicked={clicked} />
-      <div className={attachedClasses.join(" ")} onClick={clicked}>
+      <div className={attachedClasses} onClick={clicked}>
         <div className={classes.Logo}>
           <Logo />
         </div>

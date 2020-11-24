@@ -4,15 +4,15 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-} from "react";
-import { useSelector, useDispatch } from "react-redux";
-import ReactPlayer from "react-player";
+} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import ReactPlayer from 'react-player';
 
-import classes from "./Player.module.scss";
-import { Tuple } from "../../../shared/utility";
-import { RootState } from "../../../index";
-import * as actions from "../../../store/actions/index";
-import Modal from "../../../components/UI/Modal/Modal";
+import classes from './Player.module.scss';
+import { Tuple } from '../../../shared/utility';
+import { RootState } from '../../../index';
+import * as actions from '../../../store/actions/index';
+import Modal from '../../../components/UI/Modal/Modal';
 
 type Props = {
   url: string;

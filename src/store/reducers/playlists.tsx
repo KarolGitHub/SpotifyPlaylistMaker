@@ -1,11 +1,11 @@
-import * as actionTypes from "../actions/actionsTypes";
+import * as actionTypes from '../actions/actionsTypes';
 import {
   updateObject,
   Playlist,
   Tracklist,
   updateArray,
   PlaylistInfo,
-} from "../../shared/utility";
+} from '../../shared/utility';
 
 type State = {
   playlists: Array<Playlist>;

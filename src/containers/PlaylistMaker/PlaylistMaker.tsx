@@ -5,17 +5,17 @@ import React, {
   useCallback,
   useMemo,
   lazy,
-} from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { DragDropContext } from "react-beautiful-dnd";
+} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { DragDropContext } from 'react-beautiful-dnd';
 
-import classes from "./PlaylistMaker.module.scss";
-import SearchBar from "./SearchBar/SearchBar";
-import Playlist from "./Playlist/Playlist";
-import SearchResults from "./SearchResults/SearchResults";
-import Spinner from "./../../components/UI/Spinner/Spinner";
-import Modal from "./../../components/UI/Modal/Modal";
-import Checkout from "../../components/Playlist/Checkout/Checkout";
+import classes from './PlaylistMaker.module.scss';
+import SearchBar from './SearchBar/SearchBar';
+import Playlist from './Playlist/Playlist';
+import SearchResults from './SearchResults/SearchResults';
+import Spinner from './../../components/UI/Spinner/Spinner';
+import Modal from './../../components/UI/Modal/Modal';
+import Checkout from '../../components/Playlist/Checkout/Checkout';
 import {
   Track,
   Tracklist,
@@ -26,15 +26,15 @@ import {
   moveItems,
   reorderItems,
   updatePlayTrackIndex,
-} from "./../../shared/utility";
-import { RootState } from "../../index";
-import withErrorHandler from "../../Hoc/withErrorHandler/withErrorHandler";
-import axios from "./../../axios-spotify";
-import * as actions from "./../../store/actions/index";
-import Button from "../../components/UI/Button/Button";
+} from './../../shared/utility';
+import { RootState } from '../../index';
+import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler';
+import axios from './../../axios-spotify';
+import * as actions from './../../store/actions/index';
+import Button from '../../components/UI/Button/Button';
 
 const Player = lazy(() => {
-  return import("./Player/Player");
+  return import('./Player/Player');
 });
 
 const PlaylistMaker: FunctionComponent = () => {
@@ -174,7 +174,7 @@ const PlaylistMaker: FunctionComponent = () => {
     }
     const sourceId = source.droppableId;
     const destinationId = destination.droppableId;
-    const sourceItems = sourceId === "playlist" ? tracks : results;
+    const sourceItems = sourceId === 'playlist' ? tracks : results;
     if (sourceId === destinationId) {
       const updatedItems: {} = reorderItems(
         sourceItems,
@@ -188,14 +188,14 @@ const PlaylistMaker: FunctionComponent = () => {
           playerState,
           source,
           destination,
-          "reorder"
+          'reorder'
         );
         if (result) {
           dispatch(actions.playTrackStateUpdate(result));
         }
       }
     } else {
-      const destinationItems = destinationId === "playlist" ? tracks : results;
+      const destinationItems = destinationId === 'playlist' ? tracks : results;
       const updatedItems: {} = moveItems(
         sourceItems,
         destinationItems,
@@ -209,7 +209,7 @@ const PlaylistMaker: FunctionComponent = () => {
           playerState,
           source,
           destination,
-          "move"
+          'move'
         );
         if (result) {
           dispatch(actions.playTrackStateUpdate(result));
@@ -220,11 +220,11 @@ const PlaylistMaker: FunctionComponent = () => {
 
   useEffect(() => {
     if (redirect) {
-      window.addEventListener("storage", () => {
-        const storage = window.localStorage.getItem("token");
+      window.addEventListener('storage', () => {
+        const storage = window.localStorage.getItem('token');
         if (storage !== null) {
           dispatch(actions.authCheckState());
-          window.removeEventListener("storage", () => {});
+          window.removeEventListener('storage', () => {});
         }
       });
       authPopup(authRedirectPath);
@@ -259,7 +259,7 @@ const PlaylistMaker: FunctionComponent = () => {
       saveResult ? (
         <Modal open={isModal} clicked={() => confirmModalHandler(isModal)}>
           <div>
-            <p style={{ color: "green" }}>Playlist Save Succesful!</p>
+            <p style={{ color: 'green' }}>Playlist Save Succesful!</p>
             <Button
               btnType="green"
               clicked={() => confirmModalHandler(isModal)}
@@ -292,7 +292,7 @@ const PlaylistMaker: FunctionComponent = () => {
       <div className={classes.SearchBar}>
         <SearchBar
           clicked={(val: string, limit: number) =>
-            searchHandler("track", val, limit)
+            searchHandler('track', val, limit)
           }
           limit={searchResultsLimit}
         />
@@ -321,7 +321,7 @@ const PlaylistMaker: FunctionComponent = () => {
       playerState && (
         <Player
           url={
-            playerState[2] === "playlist"
+            playerState[2] === 'playlist'
               ? tracks[playerState[0]]?.preview_url
               : results[playerState[0]]?.preview_url
           }
@@ -348,7 +348,7 @@ const PlaylistMaker: FunctionComponent = () => {
       <Spinner />
     )
   ) : (
-    <p>{error + ""}</p>
+    <p>{error + ''}</p>
   );
 };
 

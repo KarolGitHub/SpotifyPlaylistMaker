@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
 
-import classes from "./Menu.module.scss";
+import classes from './Menu.module.scss';
 
 type Props = {
   clicked: () => void;

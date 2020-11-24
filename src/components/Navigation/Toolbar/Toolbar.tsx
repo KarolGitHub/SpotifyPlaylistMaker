@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
 
-import classes from "./Toolbar.module.scss";
-import Logo from "../../Logo/Logo";
-import NavigationItems from "../NavigationItems/NavigationItems";
-import Menu from "../Sidedrawer/Menu/Menu";
+import classes from './Toolbar.module.scss';
+import Logo from '../../Logo/Logo';
+import NavigationItems from '../NavigationItems/NavigationItems';
+import Menu from '../Sidedrawer/Menu/Menu';
 
 type Props = {
   openMenu: () => void;

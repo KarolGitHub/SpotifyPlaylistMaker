@@ -1,5 +1,5 @@
-import * as actionTypes from "../actions/actionsTypes";
-import { Tuple } from "../../shared/utility";
+import * as actionTypes from '../actions/actionsTypes';
+import { Tuple } from '../../shared/utility';
 
 export const playTrackStateUpdate = (playerState: Tuple) => {
   return {

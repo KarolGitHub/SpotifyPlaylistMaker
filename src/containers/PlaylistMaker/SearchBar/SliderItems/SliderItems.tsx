@@ -1,6 +1,6 @@
-import * as React from "react";
-import { SliderItem } from "react-compound-slider";
-import "./SliderItems.scss";
+import * as React from 'react';
+import { SliderItem } from 'react-compound-slider';
+import './SliderItems.scss';
 
 const { Component, Fragment } = React;
 
@@ -8,25 +8,25 @@ const { Component, Fragment } = React;
 // TOOLTIP RAIL
 // *******************************************************
 const railStyle: React.CSSProperties = {
-  position: "absolute",
-  width: "100%",
+  position: 'absolute',
+  width: '100%',
   height: 40,
   top: -13,
   borderRadius: 7,
-  cursor: "pointer",
+  cursor: 'pointer',
   opacity: 0.3,
   zIndex: 300,
-  border: "1px solid grey",
+  border: '1px solid grey',
 };
 
 const railCenterStyle: React.CSSProperties = {
-  position: "absolute",
-  width: "100%",
+  position: 'absolute',
+  width: '100%',
   height: 14,
   borderRadius: 7,
-  cursor: "pointer",
-  pointerEvents: "none",
-  backgroundColor: "rgb(155,155,155)",
+  cursor: 'pointer',
+  pointerEvents: 'none',
+  backgroundColor: 'rgb(155,155,155)',
 };
 
 interface TooltipRailProps {
@@ -46,12 +46,12 @@ export class TooltipRail extends Component<TooltipRailProps> {
   };
 
   onMouseEnter = () => {
-    document.addEventListener("mousemove", this.onMouseMove);
+    document.addEventListener('mousemove', this.onMouseMove);
   };
 
   onMouseLeave = () => {
     this.setState({ value: null, percent: null });
-    document.removeEventListener("mousemove", this.onMouseMove);
+    document.removeEventListener('mousemove', this.onMouseMove);
   };
 
   onMouseMove = (e: Event) => {
@@ -74,9 +74,9 @@ export class TooltipRail extends Component<TooltipRailProps> {
           <div
             style={{
               left: `${percent}%`,
-              position: "absolute",
-              marginLeft: "-11px",
-              marginTop: "-35px",
+              position: 'absolute',
+              marginLeft: '-11px',
+              marginTop: '-35px',
             }}
           >
             <div className="tooltip">
@@ -142,9 +142,9 @@ export class Handle extends Component<HandleProps> {
           <div
             style={{
               left: `${percent}%`,
-              position: "absolute",
-              marginLeft: "-11px",
-              marginTop: "-35px",
+              position: 'absolute',
+              marginLeft: '-11px',
+              marginTop: '-35px',
             }}
           >
             <div className="tooltip">
@@ -159,17 +159,17 @@ export class Handle extends Component<HandleProps> {
           aria-valuenow={value}
           style={{
             left: `${percent}%`,
-            position: "absolute",
-            marginLeft: "-11px",
-            marginTop: "-6px",
+            position: 'absolute',
+            marginLeft: '-11px',
+            marginTop: '-6px',
             zIndex: 400,
             width: 24,
             height: 24,
-            cursor: "pointer",
+            cursor: 'pointer',
             border: 0,
-            borderRadius: "50%",
-            boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.4)",
-            backgroundColor: disabled ? "#666" : "#007bff",
+            borderRadius: '50%',
+            boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.4)',
+            backgroundColor: disabled ? '#666' : '#007bff',
           }}
           {...getHandleProps(id, {
             onMouseEnter: this.onMouseEnter,
@@ -200,12 +200,12 @@ export function Track({
   return (
     <div
       style={{
-        position: "absolute",
+        position: 'absolute',
         height: 14,
         zIndex: 1,
-        backgroundColor: disabled ? "#999" : "#3e1db3",
+        backgroundColor: disabled ? '#999' : '#3e1db3',
         borderRadius: 7,
-        cursor: "pointer",
+        cursor: 'pointer',
         left: `${source.percent}%`,
         width: `${target.percent - source.percent}%`,
       }}
@@ -230,20 +230,20 @@ export function Tick({ tick, count, format = defaultFormat }: TickProps) {
     <div>
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           marginTop: 17,
           width: 1,
           height: 5,
-          backgroundColor: "rgb(200,200,200)",
+          backgroundColor: 'rgb(200,200,200)',
           left: `${tick.percent}%`,
         }}
       />
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           marginTop: 25,
           fontSize: 10,
-          textAlign: "center",
+          textAlign: 'center',
           marginLeft: `${-(100 / count) / 2}%`,
           width: `${100 / count}%`,
           left: `${tick.percent}%`,

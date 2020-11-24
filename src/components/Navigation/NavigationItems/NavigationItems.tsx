@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useLayoutEffect, useState } from "react";
-import { RootState } from "../../../index";
-import { useSelector } from "react-redux";
+import React, { FunctionComponent, useLayoutEffect, useState } from 'react';
+import { RootState } from '../../../index';
+import { useSelector } from 'react-redux';
 
-import NavigationItem from "./NavigationItem/NavigationItem";
-import "./NavigationItems.scss";
+import NavigationItem from './NavigationItem/NavigationItem';
+import './NavigationItems.scss';
 
-let savedThemeMode = localStorage.getItem("theme");
+let savedThemeMode = localStorage.getItem('theme');
 
 const NavigationItems: FunctionComponent = () => {
   const token: boolean = useSelector((state: RootState) => {
@@ -15,17 +15,17 @@ const NavigationItems: FunctionComponent = () => {
 
   const themeSwitchHandler = () => {
     if (theme) {
-      localStorage.removeItem("theme");
+      localStorage.removeItem('theme');
     } else {
-      localStorage.setItem("theme", "dark-theme");
+      localStorage.setItem('theme', 'dark-theme');
     }
     setTheme(!theme);
-    document.body.classList.toggle("dark-theme");
+    document.body.classList.toggle('dark-theme');
   };
 
   useLayoutEffect(() => {
     if (savedThemeMode) {
-      document.body.classList.toggle("dark-theme");
+      document.body.classList.toggle('dark-theme');
       savedThemeMode = null;
     }
   }, []);

@@ -1,5 +1,5 @@
-import React from "react";
-import classes from "./Filters.module.scss";
+import React from 'react';
+import classes from './Filters.module.scss';
 
 export type CellProps = {
   row: any;
@@ -22,7 +22,7 @@ type FilterProps = {
 export const ColumnFilter = ({ column }: ColumnProps) => (
   <input
     className={classes.Input}
-    value={column.filterValue || ""}
+    value={column.filterValue || ''}
     onChange={(e) => {
       column.setFilter(e.target.value || undefined);
     }}
@@ -31,5 +31,5 @@ export const ColumnFilter = ({ column }: ColumnProps) => (
 );
 
 export const Filter = ({ column }: FilterProps) => {
-  return <div>{column.canFilter && column.render("Filter")}</div>;
+  return <div>{column.canFilter && column.render('Filter')}</div>;
 };

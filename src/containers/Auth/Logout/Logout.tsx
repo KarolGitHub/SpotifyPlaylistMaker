@@ -1,8 +1,8 @@
-import React, { useEffect, FunctionComponent, useCallback } from "react";
-import { Redirect } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import React, { useEffect, FunctionComponent, useCallback } from 'react';
+import { Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-import * as actions from "../../../store/actions/index";
+import * as actions from '../../../store/actions/index';
 
 const Logout: FunctionComponent = () => {
   const dispatch = useDispatch();

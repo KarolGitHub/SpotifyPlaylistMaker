@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import classes from "./Spinner.module.scss";
+import classes from './Spinner.module.scss';
 
 const spinner = () => {
   return <div className={classes.Spinner}>Loading...</div>;

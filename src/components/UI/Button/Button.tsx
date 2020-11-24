@@ -1,12 +1,12 @@
-import React, { FunctionComponent } from "react";
-import classes from "./Button.module.scss";
+import React, { FunctionComponent } from 'react';
+import classes from './Button.module.scss';
 
 type Props = {
   btnType?: string;
   table?: boolean;
   clicked?: (event: any) => void;
   disabled?: boolean;
-  type?: "button" | "submit";
+  type?: 'button' | 'submit';
   children?: any;
 };
 const Button: FunctionComponent<Props> = ({
@@ -17,36 +17,36 @@ const Button: FunctionComponent<Props> = ({
   type,
   disabled,
 }) => {
-  let className;
+  let btnClassType;
   switch (btnType) {
-    case "blue":
-      className = [classes.Button, classes.Blue].join(" ");
+    case 'blue':
+      btnClassType = ` ${classes.Blue} `;
       break;
-    case "purple":
-      className = [classes.Button, classes.Purple].join(" ");
+    case 'purple':
+      btnClassType = ` ${classes.Purple} `;
       break;
-    case "red":
-      className = [classes.Button, classes.Red].join(" ");
+    case 'red':
+      btnClassType = ` ${classes.Red} `;
       break;
-    case "green":
-      className = [classes.Button, classes.Green].join(" ");
+    case 'green':
+      btnClassType = ` ${classes.Green} `;
       break;
-    case "cancel":
-      className = [classes.Button, classes.Cancel].join(" ");
+    case 'cancel':
+      btnClassType = ` ${classes.Cancel} `;
       break;
     default:
-      className = classes.Button;
+      btnClassType = ``;
   }
-  if (table) {
-    className = [className, classes.TableButton].join(" ");
-  }
+  const btnClasses = `${classes.Button}${btnClassType}${
+    table ? ' ' + classes.TableButton : ''
+  }`;
 
   return (
     <button
-      className={className}
+      className={btnClasses}
       onClick={clicked}
       disabled={disabled}
-      type={type ? type : "button"}
+      type={type ? type : 'button'}
     >
       {children}
     </button>

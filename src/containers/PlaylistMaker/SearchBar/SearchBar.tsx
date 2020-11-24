@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useState, useRef, useMemo } from "react";
-import { Slider, Rail, Handles, Tracks } from "react-compound-slider";
+import React, { FunctionComponent, useState, useRef, useMemo } from 'react';
+import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 
-import { Handle, Track, TooltipRail } from "./SliderItems/SliderItems";
-import classes from "./SearchBar.module.scss";
-import Button from "../../../components/UI/Button/Button";
-import Input from "../../../components/UI/Input/Input";
-import { updateObject, isValid } from "../../../shared/utility";
+import { Handle, Track, TooltipRail } from './SliderItems/SliderItems';
+import classes from './SearchBar.module.scss';
+import Button from '../../../components/UI/Button/Button';
+import Input from '../../../components/UI/Input/Input';
+import { updateObject, isValid } from '../../../shared/utility';
 
 type Props = {
   clicked: (val: string, limit: number) => void;
@@ -14,15 +14,15 @@ type Props = {
 
 const SearchBar: FunctionComponent<Props> = ({ clicked, limit }) => {
   const [input, setInput] = useState({
-    value: "",
+    value: '',
     validation: {
       required: true,
     },
     valid: false,
     touched: false,
     elementConfig: {
-      type: "text",
-      placeholder: "Enter A Song Name",
+      type: 'text',
+      placeholder: 'Enter A Song Name',
     },
   });
 
