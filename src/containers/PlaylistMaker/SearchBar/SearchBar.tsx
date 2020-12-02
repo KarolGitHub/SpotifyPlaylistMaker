@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 
 import { Handle, Track, TooltipRail } from './SliderItems/SliderItems';
@@ -12,7 +12,7 @@ type Props = {
   limit: number;
 };
 
-const SearchBar: FunctionComponent<Props> = ({ clicked, limit }) => {
+const SearchBar: React.FC<Props> = ({ clicked, limit }) => {
   const [input, setInput] = useState({
     value: '',
     validation: {

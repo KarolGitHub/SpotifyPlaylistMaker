@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import classes from './Button.module.scss';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   type?: 'button' | 'submit';
   children?: any;
 };
-const Button: FunctionComponent<Props> = ({
+const Button: React.FC<Props> = ({
   btnType,
   table,
   children,

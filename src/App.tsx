@@ -1,10 +1,4 @@
-import React, {
-  FunctionComponent,
-  Suspense,
-  useCallback,
-  useEffect,
-  lazy,
-} from 'react';
+import React, { Suspense, useCallback, useEffect, lazy } from 'react';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,7 +17,7 @@ const Auth = lazy(() => {
   return import('./containers/Auth/Auth');
 });
 
-const App: FunctionComponent = () => {
+const App: React.FC = () => {
   const token: boolean = useSelector((state: RootState) => {
     return state.auth.token !== null;
   });

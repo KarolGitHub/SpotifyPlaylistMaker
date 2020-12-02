@@ -1,14 +1,14 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { useState } from 'react';
 
 import classes from './Layout.module.scss';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import Sidedrawer from '../../components/Navigation/Sidedrawer/Sidedrawer';
 
 type Props = {
-  children: any;
+  children: React.ReactNode;
 };
 
-const Layout: FunctionComponent<Props> = ({ children }) => {
+const Layout: React.FC<Props> = ({ children }) => {
   const [showSideDrawer, setSideDrawer] = useState(false);
 
   return (

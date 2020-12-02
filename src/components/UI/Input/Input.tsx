@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import classes from './Input.module.scss';
 import { isMobile } from '../../../shared/utility';
 
@@ -12,7 +12,7 @@ type Props = {
   focus: boolean;
   note?: string;
 };
-const Input: FunctionComponent<Props> = ({
+const Input: React.FC<Props> = ({
   type,
   value,
   changed,

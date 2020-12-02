@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { RootState } from '../../../index';
 import { useSelector } from 'react-redux';
 
@@ -7,7 +7,7 @@ import './NavigationItems.scss';
 
 let savedThemeMode = localStorage.getItem('theme');
 
-const NavigationItems: FunctionComponent = () => {
+const NavigationItems: React.FC = () => {
   const token: boolean = useSelector((state: RootState) => {
     return state.auth.token !== null;
   });
@@ -17,15 +17,15 @@ const NavigationItems: FunctionComponent = () => {
     if (theme) {
       localStorage.removeItem('theme');
     } else {
-      localStorage.setItem('theme', 'dark-theme');
+      localStorage.setItem('theme', 'theme-dark');
     }
     setTheme(!theme);
-    document.body.classList.toggle('dark-theme');
+    document.body.classList.toggle('theme-dark');
   };
 
   useLayoutEffect(() => {
     if (savedThemeMode) {
-      document.body.classList.toggle('dark-theme');
+      document.body.classList.toggle('theme-dark');
       savedThemeMode = null;
     }
   }, []);

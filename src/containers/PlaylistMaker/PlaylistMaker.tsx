@@ -1,11 +1,4 @@
-import React, {
-  FunctionComponent,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  lazy,
-} from 'react';
+import React, { useState, useEffect, useCallback, useMemo, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext } from 'react-beautiful-dnd';
 
@@ -37,7 +30,7 @@ const Player = lazy(() => {
   return import('./Player/Player');
 });
 
-const PlaylistMaker: FunctionComponent = () => {
+const PlaylistMaker: React.FC = () => {
   const [isModal, setModal] = useState(false);
   const [redirect, setRedirect] = useState(false);
 

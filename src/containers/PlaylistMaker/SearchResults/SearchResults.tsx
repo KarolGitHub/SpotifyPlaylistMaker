@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
 import classes from './SearchResults.module.scss';
 import TrackList from '../../../components/Playlist/TrackList/Tracklist';
@@ -8,7 +8,7 @@ type Props = {
   tracklist: Tracklist;
 };
 
-const SearchResults: FunctionComponent<Props> = ({ tracklist }) => {
+const SearchResults: React.FC<Props> = ({ tracklist }) => {
   return (
     <div className={classes.SearchResults}>
       <h1>Search Results</h1>

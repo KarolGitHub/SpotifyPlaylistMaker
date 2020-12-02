@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
 import classes from './Playlist.module.scss';
 import Button from '../../../components/UI/Button/Button';
@@ -10,7 +10,7 @@ type Props = {
   name: string | null;
   clicked: any;
 };
-const Playlist: FunctionComponent<Props> = ({ tracklist, name, clicked }) => {
+const Playlist: React.FC<Props> = ({ tracklist, name, clicked }) => {
   return (
     <div className={classes.Playlist}>
       <h1>{name ? name : 'New Playlist'}</h1>

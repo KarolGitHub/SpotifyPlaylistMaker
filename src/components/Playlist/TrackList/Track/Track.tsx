@@ -1,9 +1,4 @@
-import React, {
-  FunctionComponent,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 import classes from './Track.module.scss';
 import { Track as TrackData, Tuple } from '../../../../shared/utility';
@@ -40,7 +35,7 @@ type Props = {
   provided: any;
   style: any;
 };
-const Track: FunctionComponent<Props> = ({
+const Track: React.FC<Props> = ({
   index,
   track,
   clicked,

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 
@@ -7,7 +7,7 @@ import * as actions from './../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { authPopup } from '../../shared/utility';
 
-const Auth: FunctionComponent = () => {
+const Auth: React.FC = () => {
   const dispatch = useDispatch();
 
   const token: string = useSelector((state: RootState) => {

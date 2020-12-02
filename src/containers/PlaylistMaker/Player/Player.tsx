@@ -1,10 +1,4 @@
-import React, {
-  FunctionComponent,
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-} from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactPlayer from 'react-player';
 
@@ -19,7 +13,7 @@ type Props = {
   playerState: Tuple;
 };
 
-const Player: FunctionComponent<Props> = ({ url, playerState }) => {
+const Player: React.FC<Props> = ({ url, playerState }) => {
   const [volume, setVolume] = useState(false);
   const timerRef = useRef<any>(null);
 

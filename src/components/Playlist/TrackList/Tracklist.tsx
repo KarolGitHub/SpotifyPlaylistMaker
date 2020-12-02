@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -24,7 +24,7 @@ const applyTrackStyleOnDrag = (isDragging: boolean, draggableStyle: any) => ({
   ...draggableStyle,
 });
 
-const TrackList: FunctionComponent<Props> = ({ tracklist, listType }) => {
+const TrackList: React.FC<Props> = ({ tracklist, listType }) => {
   const playerState: Tuple | null | false = useSelector((state: RootState) => {
     return state.player.playerState;
   });

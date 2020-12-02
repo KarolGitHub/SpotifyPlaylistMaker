@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
 import classes from './NavigationItem.module.scss';
 import { NavLink } from 'react-router-dom';
@@ -6,14 +6,10 @@ import { NavLink } from 'react-router-dom';
 type Props = {
   link: string;
   exact?: boolean;
-  children: any;
+  children: React.ReactNode;
 };
 
-const NavigationItem: FunctionComponent<Props> = ({
-  link,
-  exact,
-  children,
-}) => (
+const NavigationItem: React.FC<Props> = ({ link, exact, children }) => (
   <li className={classes.NavigationItem}>
     <NavLink to={link} activeClassName={classes.active} exact={exact}>
       {children}

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
 import classes from './Backdrop.module.scss';
 
@@ -7,7 +7,7 @@ type Props = {
   clicked: () => void;
   invisible?: boolean;
 };
-const backdrop: FunctionComponent<Props> = ({ open, clicked, invisible }) =>
+const backdrop: React.FC<Props> = ({ open, clicked, invisible }) =>
   open ? (
     <div
       className={`${classes.Backdrop} ${invisible ? '' : classes.Visible}`}

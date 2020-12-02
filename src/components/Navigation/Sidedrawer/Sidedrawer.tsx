@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
 import classes from './Sidedrawer.module.scss';
 import Logo from '../../Logo/Logo';
@@ -10,7 +10,7 @@ type Props = {
   clicked: () => void;
 };
 
-const Sidedrawer: FunctionComponent<Props> = ({ open, clicked }) => {
+const Sidedrawer: React.FC<Props> = ({ open, clicked }) => {
   const attachedClasses = `${classes.Sidedrawer} ${
     open ? classes.Open : classes.Close
   }`;

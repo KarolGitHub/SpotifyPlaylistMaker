@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
 import classes from './Toolbar.module.scss';
 import Logo from '../../Logo/Logo';
@@ -9,7 +9,7 @@ type Props = {
   openMenu: () => void;
 };
 
-const toolbar: FunctionComponent<Props> = ({ openMenu }) => (
+const toolbar: React.FC<Props> = ({ openMenu }) => (
   <header className={classes.Toolbar}>
     <Menu clicked={openMenu} />
     <div className={classes.Logo}>

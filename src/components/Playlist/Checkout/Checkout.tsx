@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { useState } from 'react';
 
 // import classes from "./Checkout.module.scss";
 import Button from '../../../components/UI/Button/Button';
@@ -17,12 +17,7 @@ type Props = {
   confirm: (data: PlaylistPayload) => void;
 };
 
-const Checkout: FunctionComponent<Props> = ({
-  open,
-  playlistInfo,
-  cancel,
-  confirm,
-}) => {
+const Checkout: React.FC<Props> = ({ open, playlistInfo, cancel, confirm }) => {
   const [controls, setControls] = useState(
     playlistInfo
       ? {

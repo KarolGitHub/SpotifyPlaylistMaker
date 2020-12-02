@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  FunctionComponent,
-} from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-spotify';
@@ -26,7 +20,7 @@ import Button from '../../components/UI/Button/Button';
 import { Redirect } from 'react-router-dom';
 import Axios from 'axios';
 
-const Playlists: FunctionComponent = () => {
+const Playlists: React.FC = () => {
   const [isPlaylist, setPlaylist] = useState(false);
   const [isModal, setModal] = useState<string | null>(null);
   const [areAllChecked, setAreAllChecked] = useState(false);

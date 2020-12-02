@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
 import Backdrop from '../Backdrop/Backdrop';
 import classes from './Modal.module.scss';
@@ -8,9 +8,9 @@ type Props = {
   clicked: () => void;
   invisible?: boolean;
   table?: boolean;
-  children: any;
+  children: React.ReactNode;
 };
-const Modal: FunctionComponent<Props> = ({
+const Modal: React.FC<Props> = ({
   open,
   clicked,
   invisible,
