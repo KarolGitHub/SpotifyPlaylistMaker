@@ -41,6 +41,25 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, listType }) => {
     [listType]
   );
 
+  const updatePlayTrackIndex = useCallback(
+    (index: number, playerState: Tuple) => {
+      if (playerState[2] === listType) {
+        if (playerState[0] === index) {
+          dispatch(actions.playTrackEnd());
+        } else if (playerState[0] > index) {
+          dispatch(
+            actions.playTrackStateUpdate([
+              playerState[0] - 1,
+              playerState[1],
+              listType,
+            ])
+          );
+        }
+      }
+    },
+    [listType, dispatch]
+  );
+
   const onPlayTrack = useCallback(
     (id: number) => {
       let newPlayerState: Tuple = [id, true, listType];
@@ -62,20 +81,20 @@ const TrackList: FunctionComponent<Props> = ({ tracklist, listType }) => {
   const onAddTrack = useCallback(
     (index: number) => {
       dispatch(actions.addTrack(index));
-      if (playerState && isTrackPlayed(index, playerState)) {
-        dispatch(actions.playTrackEnd());
+      if (playerState) {
+        updatePlayTrackIndex(index, playerState);
       }
     },
-    [dispatch, playerState, isTrackPlayed]
+    [dispatch, playerState, updatePlayTrackIndex]
   );
   const onDeleteTrack = useCallback(
     (index: number) => {
       dispatch(actions.deleteTrack(index));
-      if (playerState && isTrackPlayed(index, playerState)) {
-        dispatch(actions.playTrackEnd());
+      if (playerState) {
+        updatePlayTrackIndex(index, playerState);
       }
     },
-    [dispatch, playerState, isTrackPlayed]
+    [dispatch, playerState, updatePlayTrackIndex]
   );
 
   const onClickCallback = listType === 'playlist' ? onDeleteTrack : onAddTrack;

@@ -9,7 +9,7 @@ import classes from './Track.module.scss';
 import { Track as TrackData, Tuple } from '../../../../shared/utility';
 
 const isElementOverflowing = (element: any) => {
-  return element.offsetWidth < element.scrollWidth;
+  return element?.offsetWidth < element?.scrollWidth;
 };
 
 const applyMarqueeOnOverflow = (overflowingElement: any) => {
