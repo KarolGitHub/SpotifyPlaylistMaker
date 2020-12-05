@@ -1,6 +1,6 @@
 @import './assets/_variables';
 
-.theme-light {
+.light-theme {
   --themeDropDownBg: #{$goldCrayola};
   --navBg: #{$cream};
   --hover: #{$gray};
@@ -15,7 +15,7 @@
   --listShadow: #{$shadowLight};
 }
 
-.theme-dark {
+.dark-theme {
   --themeDropDownBg: #{$dark};
   --navBg: #{$gray-dark};
   --hover: #{$richBlackForeground};
@@ -32,11 +32,11 @@
 
 * {
   color: var(--fontColor);
-  -webkit-transition: background-color 0.6s ease, color 1s ease;
-  -moz-transition: background-color 0.6s ease, color 1s ease;
-  -o-transition: background-color 0.6s ease, color 1s ease;
-  transition: background-color 0.6s ease, color 1s ease;
   outline: none;
+  -webkit-transition: var(--theme-transition);
+  -moz-transition: var(--theme-transition);
+  -o-transition: var(--theme-transition);
+  transition: var(--theme-transition);
 }
 
 body,

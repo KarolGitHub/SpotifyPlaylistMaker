@@ -1,34 +1,27 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RootState } from '../../../index';
 import { useSelector } from 'react-redux';
 
 import NavigationItem from './NavigationItem/NavigationItem';
 import './NavigationItems.scss';
 
-let savedThemeMode = localStorage.getItem('theme');
+const savedThemeMode = localStorage.getItem('theme') === 'dark-theme';
 
 const NavigationItems: React.FC = () => {
   const token: boolean = useSelector((state: RootState) => {
     return state.auth.token !== null;
   });
-  const [theme, setTheme] = useState(savedThemeMode ? true : false);
+  const [theme, setTheme] = useState(savedThemeMode);
 
   const themeSwitchHandler = () => {
     if (theme) {
       localStorage.removeItem('theme');
     } else {
-      localStorage.setItem('theme', 'theme-dark');
+      localStorage.setItem('theme', 'dark-theme');
     }
     setTheme(!theme);
-    document.body.classList.toggle('theme-dark');
+    document.body.classList.toggle('dark-theme');
   };
-
-  useLayoutEffect(() => {
-    if (savedThemeMode) {
-      document.body.classList.toggle('theme-dark');
-      savedThemeMode = null;
-    }
-  }, []);
 
   return (
     <ul className="navigationItems">
